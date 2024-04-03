@@ -4,32 +4,66 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import GameObjects.Block;
+import GameObjects.Entity;
+import GameObjects.PlayerCharacter;
+import GameObjects.World;
+import Server.GameMaster;
+
 public class ClientConnection extends Thread {
-    private PrintWriter out;
-    private BufferedReader in;
-    
-    public void run(){
-    	String inputLine;
-    	try {
-        	inputLine = in.readLine();
-			while((inputLine = in.readLine()) != null) {
-				
+	private static int count = 0;
+	private int id;
+
+	private PrintWriter out;
+	private BufferedReader in;
+
+	private PlayerCharacter p;
+
+	public ClientConnection(PrintWriter out, BufferedReader in) {
+		GameMaster.addListeners(this);
+		this.out = out;
+		this.in = in;
+		id = count++;
+		sendMessage("" + Entity.getNextID());
+		p = new PlayerCharacter();
+		GameMaster.addEntity(p);
+
+		sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length);
+		Block[][] world = World.getWorld();
+		for (int x = 0; x < world.length; x++) {
+			for (int y = 0; y < world[0].length; y++) {
+				sendMessage("block;"+x+";"+y+";"+world[x][y].getId());
+			}
+		}
+	}
+
+	public void run() {
+		String inputLine;
+		try {
+			while ((inputLine = in.readLine()) != null) {
+				// System.out.println(inputLine);
+				p.messageReceived(inputLine);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				in.close();
+			} catch (IOException e1) {
+			}
+			out.close();
+			GameMaster.removeEntity(p);
+			GameMaster.removeListener(this);
 		}
-    }
-    
-    public void sendMessage(String message) {
-    	out.println(message);
-    }
+	}
 
-    public void setWriter(PrintWriter out) {
-        this.out = out;
-    }
+	public void sendMessage(String message) {
+		out.println(message);
+	}
 
-    public void setReader(BufferedReader in) {
-        this.in = in;
-    }
+	public void setWriter(PrintWriter out) {
+		this.out = out;
+	}
+
+	public void setReader(BufferedReader in) {
+		this.in = in;
+	}
 }

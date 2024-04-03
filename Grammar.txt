@@ -1,0 +1,25 @@
+From Client:-------------------------
+Keyboard actions:
+"key;"
+	Key Pressed:
+	"down;<keycode>"
+	Key Lifted:
+	"up;<keycode>"
+
+From Server: -----------------------------
+Entity Position updates:
+"entity;<id>;<x>;<y>"
+
+Create Entity
+"createEntity;"
+	Player:
+	"player;<id>;<x>;<y>"
+
+Remove Entity
+"removeEntity;<id>"
+
+createWorldSize
+"createWorld;<width>;<height>"
+
+Update Blocks
+"block;<x>;<y>;<id>"

@@ -25,9 +25,7 @@ public class PortListener extends Thread{
             Socket connection;
 			try {
 				connection = serverSocket.accept();
-				ClientConnection clientConnection = new ClientConnection();
-				clientConnection.setWriter(new PrintWriter(connection.getOutputStream(), true));
-				clientConnection.setReader(new BufferedReader(new InputStreamReader(connection.getInputStream())));
+				ClientConnection clientConnection = new ClientConnection(new PrintWriter(connection.getOutputStream(), true),new BufferedReader(new InputStreamReader(connection.getInputStream())));
 				clientConnection.start();
 			} catch (Exception e) {
 				e.printStackTrace();
