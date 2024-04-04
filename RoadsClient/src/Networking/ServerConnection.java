@@ -15,7 +15,7 @@ public class ServerConnection extends Thread {
 
 	public ServerConnection() {
 		try {
-			Socket clientSocket = new Socket("localhost", 61852);
+			Socket clientSocket = new Socket("192.168.178.78", 61852);
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			

@@ -46,41 +46,43 @@ public class World {
 	// target if nothing hit
 	public static double[] getCastResult(double xSource, double ySource, double xTarget, double yTarget) {
 		double[] p = { -1, 0 };
-
-		if (world[(int) xTarget / Block.size][(int) yTarget / Block.size].blocksMovement) {
-			p[0] = xSource;
-			p[1] = ySource;
-			int counter = 10;
-			while (counter-- > 0) {
-				boolean stay = false;
-				if (world[(int) xSource / Block.size][(int) p[1] / Block.size].blocksMovement == false) {
-					if (Math.abs(xTarget - xSource)>1) {
-						p[0] = (int) xSource;
-						xSource += (xTarget > xSource ? 1 : -1);
-						stay = true;
-					}else {
-						p[0]=xSource;
-						xSource=xTarget;
-						stay = true;
+		try {
+			if (world[(int) xTarget / Block.size][(int) yTarget / Block.size].blocksMovement) {
+				p[0] = xSource;
+				p[1] = ySource;
+				int counter = 10;
+				while (counter-- > 0) {
+					boolean stay = false;
+					if (world[(int) xSource / Block.size][(int) p[1] / Block.size].blocksMovement == false) {
+						if (Math.abs(xTarget - xSource) > 1) {
+							p[0] = (int) xSource;
+							xSource += (xTarget > xSource ? 1 : -1);
+							stay = true;
+						} else {
+							p[0] = xSource;
+							xSource = xTarget;
+							stay = true;
+						}
 					}
-				}
-				if (world[(int) p[0] / Block.size][(int) ySource / Block.size].blocksMovement == false) {
-					if (Math.abs(yTarget - ySource)>1) {
-						p[1] = (int) ySource;
-						ySource += (yTarget > ySource ? 1 : -1);
-						stay = true;
-					}else {
-						p[1]=ySource;
-						ySource=yTarget;
-						stay = true;
+					if (world[(int) p[0] / Block.size][(int) ySource / Block.size].blocksMovement == false) {
+						if (Math.abs(yTarget - ySource) > 1) {
+							p[1] = (int) ySource;
+							ySource += (yTarget > ySource ? 1 : -1);
+							stay = true;
+						} else {
+							p[1] = ySource;
+							ySource = yTarget;
+							stay = true;
+						}
 					}
+					if (!stay)
+						break;
 				}
-				if (!stay)
-					break;
 			}
+		} catch (Exception e) {
 		}
-
 		return p;
+
 	}
 
 	public static void setBlock(int x, int y, Block block) {

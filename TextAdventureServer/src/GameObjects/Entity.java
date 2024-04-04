@@ -33,6 +33,9 @@ public class Entity {
 
 	public void action() {
 		velocity[0] /= drag;
+		if (Math.abs(velocity[0]) <= 0.1) {
+			velocity[0] = 0;
+		}
 		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;
 		double targety = pos.getY() + velocity[1];
