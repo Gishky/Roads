@@ -24,16 +24,16 @@ public class World {
 		for (int i = 0; i < world.length; i++) {
 			for (int j = 0; j < worldHeight; j++) {
 				if (j < worldHeight - höhe[i])
-					world[i][j] = new BlockAir();
+					setBlock(i, j, new BlockAir());
 				else {
 					int material = r.nextInt(worldHeight);
 					if (material < j - 30)
-						world[i][j] = new BlockStone();
+						setBlock(i, j, new BlockStone());
 					else
-						world[i][j] = new BlockDirt();
+						setBlock(i, j, new BlockDirt());
 
-					if ( r.nextInt(2) >= Math.abs(worldHeight - höhe[i] - j)) {
-						world[i][j] = new BlockGrass();
+					if (r.nextInt(2) >= Math.abs(worldHeight - höhe[i] - j)) {
+						setBlock(i, j, new BlockGrass());
 					}
 				}
 			}
@@ -84,22 +84,11 @@ public class World {
 	}
 
 	public static void setBlock(int x, int y, Block block) {
+		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
 		world[x][y] = block;
 	}
 
 	public static Block[][] getWorld() {
 		return world;
-	}
-
-	public static String getWorldString() {
-		String worldString = "";
-
-		for (int x = 0; x < world.length; x++) {
-			for (int y = 0; y < world[0].length; y++) {
-				String block = "block;" + x + ";" + y + ";" + world[x][y].getId();
-				worldString += block + "\n";
-			}
-		}
-		return worldString;
 	}
 }

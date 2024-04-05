@@ -11,9 +11,9 @@ public class PlayerCharacter extends Entity {
 
 	public PlayerCharacter() {
 		entityIdentifier = "player";
-		GameMaster.sendToAll("createEntity;player;" + id + ";" + (int)pos.getX() + ";" + (int)pos.getY());
+		GameMaster.sendToAll("createEntity;player;" + id + ";" + (int) pos.getX() + ";" + (int) pos.getY());
 		keyboard = new VirtualKeyboard();
-		
+
 	}
 
 	public void messageReceived(String message) {
@@ -27,16 +27,16 @@ public class PlayerCharacter extends Entity {
 	public String action() {
 
 		if (keyboard.getKey("" + KeyEvent.VK_A)) {
-			velocity[0] -= accelleration;
-		} 
+			velocity[0] -= accelleration * (velocity[0] > 0 ? 2 : 1);
+		}
 		if (keyboard.getKey("" + KeyEvent.VK_D)) {
-			velocity[0] += accelleration;
-		} 
+			velocity[0] += accelleration * (velocity[0] < 0 ? 2 : 1);
+		}
 		if (keyboard.getKey("" + KeyEvent.VK_SPACE)) {
 			if (isGrounded)
 				velocity[1] = -jumpforce;
 		}
-		
+
 		return super.action();
 	}
 

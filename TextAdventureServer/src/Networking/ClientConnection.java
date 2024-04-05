@@ -26,13 +26,22 @@ public class ClientConnection extends Thread {
 		id = count++;
 		sendMessage("" + Entity.getNextID());
 		for (Entity e : GameMaster.getEntities()) {
-			sendMessage("createEntity;"+e.getEntityIdentifier()+";" + e.getId() + ";" + (int) e.getPos().getX() + ";" + (int) e.getPos().getY());
+			sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX()
+					+ ";" + (int) e.getPos().getY());
 		}
 		p = new PlayerCharacter();
 		GameMaster.addEntity(p);
 
 		sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length);
-		sendMessage(World.getWorldString());
+
+		Block[][] world = World.getWorld();
+		for (int x = 0; x < world.length; x++) {
+			String worldString = "";
+			for (int y = 0; y < world[0].length; y++) {
+				worldString += world[x][y].blockString + "\n";
+			}
+			sendMessage(worldString);
+		}
 	}
 
 	public void run() {

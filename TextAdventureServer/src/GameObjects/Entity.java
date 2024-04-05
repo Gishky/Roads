@@ -20,7 +20,7 @@ public class Entity {
 	protected boolean isGrounded = false;
 
 	public Entity() {
-		pos = new Position(World.getWorld().length / 2, 0);
+		pos = new Position(World.getWorld().length * Block.size / 2, 0);
 		id = count++;
 	}
 
@@ -35,7 +35,7 @@ public class Entity {
 	public String action() {
 		velocity[0] /= drag;
 		if (Math.abs(velocity[0]) <= 0.1) {
-			velocity[0] = 0;
+			// velocity[0] = 0;
 		}
 		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;
@@ -48,11 +48,10 @@ public class Entity {
 			} else {
 				pos.set(p[0], p[1]);
 
-				if (p[0] != targetx) {
-					velocity[0] = 0;
-				}
+				velocity[0] -= targetx - p[0];
+				velocity[1] -= targety - p[1];
+
 				if (p[1] != targety) {
-					velocity[1] = 0;
 					isGrounded = true;
 				} else {
 					isGrounded = false;
