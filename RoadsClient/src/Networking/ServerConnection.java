@@ -15,7 +15,8 @@ public class ServerConnection extends Thread {
 
 	public ServerConnection() {
 		try {
-			Socket clientSocket = new Socket("192.168.178.78", 61852);
+			Socket clientSocket = new Socket("80.109.230.74", 61852);
+			//Socket clientSocket = new Socket("localhost", 61852);
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			
@@ -31,7 +32,9 @@ public class ServerConnection extends Thread {
 		try {
 			World.playerid = Integer.parseInt(in.readLine());
 			while ((inputLine = in.readLine()) != null) {
-				MessageInterpreter.filterMessage(inputLine);
+				for(String s: inputLine.split("\n")) {
+					MessageInterpreter.filterMessage(s);
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

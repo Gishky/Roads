@@ -10,9 +10,10 @@ public class PlayerCharacter extends Entity {
 	private VirtualKeyboard keyboard;
 
 	public PlayerCharacter() {
+		entityIdentifier = "player";
 		GameMaster.sendToAll("createEntity;player;" + id + ";" + (int)pos.getX() + ";" + (int)pos.getY());
 		keyboard = new VirtualKeyboard();
-
+		
 	}
 
 	public void messageReceived(String message) {
@@ -23,8 +24,7 @@ public class PlayerCharacter extends Entity {
 	}
 
 	@Override
-	public void action() {
-		super.action();
+	public String action() {
 
 		if (keyboard.getKey("" + KeyEvent.VK_A)) {
 			velocity[0] -= accelleration;
@@ -36,6 +36,8 @@ public class PlayerCharacter extends Entity {
 			if (isGrounded)
 				velocity[1] = -jumpforce;
 		}
+		
+		return super.action();
 	}
 
 }

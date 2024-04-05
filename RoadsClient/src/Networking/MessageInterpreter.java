@@ -14,9 +14,13 @@ public class MessageInterpreter {
 
 	public static void filterMessage(String message) {
 		String[] messageParts = message.split(";");
+		if(messageParts.length == 0) {
+			return;
+		}
 
 		switch (messageParts[0]) {
 		case "createEntity":
+			System.out.println(message);
 			createEntity(messageParts);
 			break;
 		case "entity":
@@ -28,6 +32,18 @@ public class MessageInterpreter {
 		case "block":
 			updateWorld(messageParts);
 			break;
+		case "removeEntity":
+			removeEntity(messageParts[1]);
+			break;
+		}
+	}
+
+	private static void removeEntity(String id) {
+		for (Entity e : Panel.getEntities()) {
+			if (("" + e.getId()).equals(id)) {
+				Panel.getEntities().remove(Integer.parseInt(id));
+				return;
+			}
 		}
 	}
 
@@ -63,6 +79,7 @@ public class MessageInterpreter {
 					World.cameraX = Integer.parseInt(messageParts[2]);
 					World.cameraY = Integer.parseInt(messageParts[3]);
 				}
+				return;
 			}
 		}
 

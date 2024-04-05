@@ -7,6 +7,7 @@ public class Entity {
 
 	private static int count = 0;
 	protected int id;
+	protected String entityIdentifier = "entity";
 
 	protected Position pos;
 	protected double[] velocity = { 0.0, 0.0 };
@@ -19,7 +20,7 @@ public class Entity {
 	protected boolean isGrounded = false;
 
 	public Entity() {
-		pos = new Position();
+		pos = new Position(World.getWorld().length / 2, 0);
 		id = count++;
 	}
 
@@ -31,7 +32,7 @@ public class Entity {
 		this.pos = pos;
 	}
 
-	public void action() {
+	public String action() {
 		velocity[0] /= drag;
 		if (Math.abs(velocity[0]) <= 0.1) {
 			velocity[0] = 0;
@@ -46,7 +47,7 @@ public class Entity {
 				isGrounded = true;
 			} else {
 				pos.set(p[0], p[1]);
-				GameMaster.entityPositionUpdate(this);
+
 				if (p[0] != targetx) {
 					velocity[0] = 0;
 				}
@@ -56,12 +57,15 @@ public class Entity {
 				} else {
 					isGrounded = false;
 				}
+
+				return "entity;" + getId() + ";" + (int) p[0] + ";" + (int) p[1];
 			}
 		} else {
 			isGrounded = false;
 			pos.set(targetx, targety);
-			GameMaster.entityPositionUpdate(this);
+			return "entity;" + getId() + ";" + (int) targetx + ";" + (int) targety;
 		}
+		return "";
 
 	}
 
@@ -73,4 +77,7 @@ public class Entity {
 		return count;
 	}
 
+	public String getEntityIdentifier() {
+		return entityIdentifier;
+	}
 }

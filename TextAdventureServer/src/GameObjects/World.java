@@ -1,40 +1,38 @@
 package GameObjects;
 
-import java.awt.Point;
-import java.awt.geom.Line2D;
 import java.util.Random;
 
 public class World {
 
-	private static Block[][] world = new Block[1000][500];
+	private static Block[][] world = new Block[1000][100];
 
 	public static void generateWorld() {
+		int worldHeight = world[0].length;
 		Random r = new Random();
 		int[] höhe = new int[world.length];
 		for (int i = 0; i < world.length; i++) {
 			if (i == 0)
-				höhe[i] = r.nextInt(41) + 100;
+				höhe[i] = worldHeight / 2;
 			else {
 				höhe[i] = höhe[i - 1] + r.nextInt(5) - 2;
-				if (höhe[i] >= 200)
-					höhe[i] = 199;
+				if (höhe[i] >= worldHeight)
+					höhe[i] = 99;
+				else if (höhe[i] <= 0)
+					höhe[i] = 1;
 			}
 		}
 		for (int i = 0; i < world.length; i++) {
-			for (int j = 0; j < world[0].length; j++) {
-				if (j < 200 - höhe[i])
+			for (int j = 0; j < worldHeight; j++) {
+				if (j < worldHeight - höhe[i])
 					world[i][j] = new BlockAir();
 				else {
-					int material = r.nextInt(100);
-					if (material < j - 80)
+					int material = r.nextInt(worldHeight);
+					if (material < j - 30)
 						world[i][j] = new BlockStone();
 					else
 						world[i][j] = new BlockDirt();
-				}
-				if (200 - j == höhe[i] - 2) {
-					world[i][j - 2] = new BlockGrass();
-					world[i][j - 1] = new BlockGrass();
-					if (i < 999 && höhe[i] - höhe[i + 1] == 2 || i > 0 && höhe[i] - höhe[i - 1] == 2) {
+
+					if ( r.nextInt(2) >= Math.abs(worldHeight - höhe[i] - j)) {
 						world[i][j] = new BlockGrass();
 					}
 				}
@@ -91,5 +89,17 @@ public class World {
 
 	public static Block[][] getWorld() {
 		return world;
+	}
+
+	public static String getWorldString() {
+		String worldString = "";
+
+		for (int x = 0; x < world.length; x++) {
+			for (int y = 0; y < world[0].length; y++) {
+				String block = "block;" + x + ";" + y + ";" + world[x][y].getId();
+				worldString += block + "\n";
+			}
+		}
+		return worldString;
 	}
 }
