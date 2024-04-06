@@ -20,10 +20,13 @@ public class World {
 	public static void draw(Graphics2D g) {
 		if (world == null)
 			return;
+
+		int cameraX = World.cameraX;
+		int cameraY = World.cameraY;
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < world[0].length; y++) {
 				if (world[x][y] != null) {
-					world[x][y].draw(x, y, g);
+					world[x][y].draw(x, y, g, cameraX, cameraY);
 				}
 			}
 		}

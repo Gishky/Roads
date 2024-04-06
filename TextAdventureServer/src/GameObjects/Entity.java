@@ -34,8 +34,9 @@ public class Entity {
 
 	public String action() {
 		velocity[0] /= drag;
-		if (Math.abs(velocity[0]) <= 0.1) {
-			// velocity[0] = 0;
+		if (isGrounded) {
+			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
+					.getFriction();
 		}
 		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;
