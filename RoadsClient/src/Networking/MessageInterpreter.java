@@ -14,13 +14,19 @@ public class MessageInterpreter {
 
 	public static void filterMessage(String message) {
 		String[] messageParts = message.split(";");
-		if(messageParts.length == 0) {
+		if (messageParts.length == 0) {
 			return;
 		}
 
 		switch (messageParts[0]) {
+		case "ping":
+			long old = Long.parseLong(messageParts[1]);
+			float delay = System.currentTimeMillis() - old;
+			ServerConnection.ping.add(delay);
+			ServerConnection.ping.removeFirst();
+			break;
 		case "createEntity":
-			System.out.println(message);
+			//System.out.println(message);
 			createEntity(messageParts);
 			break;
 		case "entity":
@@ -41,7 +47,7 @@ public class MessageInterpreter {
 	private static void removeEntity(String id) {
 		for (Entity e : Panel.getEntities()) {
 			if (("" + e.getId()).equals(id)) {
-				Panel.getEntities().remove(Integer.parseInt(id));
+				Panel.getEntities().remove(e);
 				return;
 			}
 		}

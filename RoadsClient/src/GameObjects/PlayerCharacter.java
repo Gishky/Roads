@@ -8,16 +8,20 @@ import Window.Panel;
 
 public class PlayerCharacter extends Entity {
 
-
 	public PlayerCharacter(String id, String x, String y) {
-		this.id=Integer.parseInt(id);
+		this.id = Integer.parseInt(id);
 		pos = new Position(Integer.parseInt(x), Integer.parseInt(y));
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		g.setColor(Color.black);
-		g.fillOval(pos.getX()-5-World.cameraX+Panel.windowWidth/2, pos.getY()-5-World.cameraY+Panel.windowHeight/2, 10, 10);
+		if (id == World.playerid) {
+			cameraX = World.cameraX;
+			cameraY = World.cameraY;
+		}
+		g.fillOval(pos.getX() - 5 - cameraX + Panel.windowWidth / 2, pos.getY() - 5 - cameraY + Panel.windowHeight / 2,
+				10, 10);
 	}
 
 }

@@ -20,7 +20,9 @@ public class Entity {
 	protected boolean isGrounded = false;
 
 	public Entity() {
-		pos = new Position(World.getWorld().length * Block.size / 2, 0);
+		pos = new Position();
+		pos.setX(World.getWorld().length * Block.size / 2 + Block.size / 2);
+		pos.setY(World.getHeight((int) (pos.getX() / Block.size)) * Block.size - Block.size / 2);
 		id = count++;
 	}
 
@@ -32,7 +34,8 @@ public class Entity {
 		this.pos = pos;
 	}
 
-	public String action() {
+	public String action(boolean override) {
+		System.out.println("got here");
 		velocity[0] /= drag;
 		if (isGrounded) {
 			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
@@ -46,13 +49,15 @@ public class Entity {
 		if (p[0] != -1) {
 			if (p[0] == pos.getX() && p[1] == pos.getY()) {
 				isGrounded = true;
+				velocity[0] = 0;
+				velocity[1] = 0;
 			} else {
 				pos.set(p[0], p[1]);
 
 				velocity[0] -= targetx - p[0];
 				velocity[1] -= targety - p[1];
 
-				if (p[1] != targety) {
+				if (p[1] < targety) {
 					isGrounded = true;
 				} else {
 					isGrounded = false;
@@ -65,6 +70,8 @@ public class Entity {
 			pos.set(targetx, targety);
 			return "entity;" + getId() + ";" + (int) targetx + ";" + (int) targety;
 		}
+		if (override)
+			return "entity;" + getId() + ";" + (int) targetx + ";" + (int) targety;
 		return "";
 
 	}

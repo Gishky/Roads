@@ -20,14 +20,14 @@ public class GameMaster implements ActionListener {
 	private ArrayList<Entity> entities;
 
 	public GameMaster() {
+		if (master == null) {
+			master = this;
+		}
+
 		new Timer(50, this).start();
 		entities = new ArrayList<Entity>();
 		clients = new ArrayList<ClientConnection>();
 		World.generateWorld();
-
-		if (master == null) {
-			master = this;
-		}
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class GameMaster implements ActionListener {
 		String updateString = "";
 
 		for (Entity entity : entities) {
-			String entityString = entity.action();
+			String entityString = entity.action(false);
 			if (!entityString.equals("")) {
 				updateString += entityString + "\n";
 			}

@@ -8,6 +8,8 @@ public class Block {
 
 	protected boolean blocksMovement = true;
 	protected double friction = 1;
+	protected boolean breakable = false;
+	protected int breakThreshhold = 1;
 
 	public int getId() {
 		return id;
@@ -15,5 +17,9 @@ public class Block {
 
 	public double getFriction() {
 		return friction;
+	}
+
+	public int getBreakThreshhold() {
+		return breakThreshhold;
 	}
 }

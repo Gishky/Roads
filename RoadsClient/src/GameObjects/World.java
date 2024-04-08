@@ -17,12 +17,10 @@ public class World {
 		World.world = world;
 	}
 
-	public static void draw(Graphics2D g) {
+	public static void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (world == null)
 			return;
 
-		int cameraX = World.cameraX;
-		int cameraY = World.cameraY;
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < world[0].length; y++) {
 				if (world[x][y] != null) {

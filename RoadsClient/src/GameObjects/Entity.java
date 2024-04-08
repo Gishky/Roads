@@ -24,9 +24,9 @@ public class Entity {
 
 	}
 	
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		g.setColor(Color.gray);
-		g.fillOval(pos.getX()-2-World.cameraX, pos.getY()-2-World.cameraY, 4, 4);
+		g.fillOval(pos.getX()-2-cameraX, pos.getY()-2-cameraY, 4, 4);
 	}
 
 	public int getId() {

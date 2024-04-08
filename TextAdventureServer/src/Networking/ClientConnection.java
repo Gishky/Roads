@@ -11,8 +11,6 @@ import GameObjects.World;
 import Server.GameMaster;
 
 public class ClientConnection extends Thread {
-	private static int count = 0;
-	private int id;
 
 	private PrintWriter out;
 	private BufferedReader in;
@@ -23,13 +21,12 @@ public class ClientConnection extends Thread {
 		GameMaster.addListeners(this);
 		this.out = out;
 		this.in = in;
-		id = count++;
 		sendMessage("" + Entity.getNextID());
 		for (Entity e : GameMaster.getEntities()) {
 			sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX()
 					+ ";" + (int) e.getPos().getY());
 		}
-		p = new PlayerCharacter();
+		p = new PlayerCharacter(this);
 		GameMaster.addEntity(p);
 
 		sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length);
