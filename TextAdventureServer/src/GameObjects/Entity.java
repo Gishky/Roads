@@ -34,8 +34,9 @@ public class Entity {
 		this.pos = pos;
 	}
 
-	public String action(boolean override) {
-		System.out.println("got here");
+	public boolean action() {
+		int x = (int) pos.getX();
+		int y = (int) pos.getY();
 		velocity[0] /= drag;
 		if (isGrounded) {
 			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
@@ -63,16 +64,15 @@ public class Entity {
 					isGrounded = false;
 				}
 
-				return "entity;" + getId() + ";" + (int) p[0] + ";" + (int) p[1];
+				if (x != (int) pos.getX() || y != (int) pos.getY())
+					return true;
 			}
 		} else {
 			isGrounded = false;
 			pos.set(targetx, targety);
-			return "entity;" + getId() + ";" + (int) targetx + ";" + (int) targety;
+			return true;
 		}
-		if (override)
-			return "entity;" + getId() + ";" + (int) targetx + ";" + (int) targety;
-		return "";
+		return false;
 
 	}
 

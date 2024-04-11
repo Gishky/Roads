@@ -30,17 +30,20 @@ public class World {
 		}
 	}
 
-	public static void createWorld(String width, String height) {
-		world = new Block[Integer.parseInt(width)][Integer.parseInt(height)];
-		for (Block[] c : world) {
-			for (Block b : c) {
-				b = new BlockAir();
+	public static void createWorld(String widthS, String heightS) {
+		int width = Integer.parseInt(widthS);
+		int height = Integer.parseInt(heightS);
+		world = new Block[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				world[x][y] = new Block();
 			}
 		}
 	}
 
 	public static void setBlock(int x, int y, Block block) {
-		world[x][y] = block;
+		if (world != null)
+			world[x][y] = block;
 	}
 
 }

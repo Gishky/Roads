@@ -13,6 +13,7 @@ import Window.Panel;
 public class MessageInterpreter {
 
 	public static void filterMessage(String message) {
+		System.out.println(message);
 		String[] messageParts = message.split(";");
 		if (messageParts.length == 0) {
 			return;
@@ -20,13 +21,10 @@ public class MessageInterpreter {
 
 		switch (messageParts[0]) {
 		case "ping":
-			long old = Long.parseLong(messageParts[1]);
-			float delay = System.currentTimeMillis() - old;
-			ServerConnection.ping.add(delay);
-			ServerConnection.ping.removeFirst();
+			ConnectionEvaluator.addPing(Long.parseLong(messageParts[1]));
 			break;
 		case "createEntity":
-			//System.out.println(message);
+			// System.out.println(message);
 			createEntity(messageParts);
 			break;
 		case "entity":
@@ -41,7 +39,14 @@ public class MessageInterpreter {
 		case "removeEntity":
 			removeEntity(messageParts[1]);
 			break;
+		case "key":
+			updateServerKeyboard(message);
+			break;
 		}
+	}
+
+	private static void updateServerKeyboard(String message) {
+		Panel.getServerKeyboard().inputReceived(message);
 	}
 
 	private static void removeEntity(String id) {
