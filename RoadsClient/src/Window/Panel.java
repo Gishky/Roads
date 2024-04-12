@@ -10,56 +10,36 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.print.attribute.HashAttributeSet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import GameObjects.Entity;
 import GameObjects.World;
-import HelperObjects.VirtualKeyboard;
-import Networking.ConnectionEvaluator;
-import Networking.ServerConnection;
+import HelperObjects.MessageInterpreter;
+import Networking.UDPServerConnection;
 
 public class Panel extends JPanel implements ActionListener, KeyListener {
 
 	private Timer t = new Timer(50, this);
-	private static ServerConnection connection;
+	private static UDPServerConnection connection;
 
 	public static int windowWidth, windowHeight;
 
 	private static ArrayList<Entity> entities;
-	private static VirtualKeyboard actualKeyboard = new VirtualKeyboard();
-	private static VirtualKeyboard serverKeyboard = new VirtualKeyboard();
 
 	public Panel() {
 		this.addKeyListener(this);
 		this.setFocusable(true);
-		t.start();
-		connection = new ServerConnection();
 
 		entities = new ArrayList<Entity>();
-	}
 
-	private int pingCounter = 0;
+		t.start();
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
-
-		for (String key : actualKeyboard.getKeys()) {
-			boolean isPressed = actualKeyboard.getKey(key);
-			if (serverKeyboard.getKey(key) != actualKeyboard.getKey(key)) {
-				connection.sendMessage("key;" + (isPressed ? "down" : "up") + ";" + key);
-			}
-		}
-
-		pingCounter--;
-		if (pingCounter <= 0) {
-			pingCounter = 10;
-			long milis = System.currentTimeMillis();
-			ConnectionEvaluator.addPackage(milis);
-			connection.sendMessage("ping;" + milis);
-		}
 	}
 
 	@Override
@@ -80,9 +60,9 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 
 		g.setFont(new Font("Arial", Font.PLAIN, 15));
 		g.setColor(Color.green);
-		g.drawString("" + ConnectionEvaluator.getPing(), 2, 15);
+		g.drawString("" + connection.getPing(), 2, 15);
 		g.setColor(Color.orange);
-		g.drawString(ConnectionEvaluator.getPackagePercentile() + "%", 2, 30);
+		g.drawString(connection.getPackagePercentile() + "%", 2, 30);
 	}
 
 	@Override
@@ -91,27 +71,29 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 
 	}
 
+	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
+
 	@Override
 	public void keyPressed(KeyEvent e) {
-		connection.sendMessage("key;down;" + e.getKeyCode());
-		actualKeyboard.inputReceived("key;down;" + e.getKeyCode());
+		int key = e.getKeyCode();
+		if (!pressedKeys.contains(key)) {
+			connection.sendMessage("key;down;" + key, true);
+			pressedKeys.add(key);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		connection.sendMessage("key;up;" + e.getKeyCode());
-		actualKeyboard.inputReceived("key;up;" + e.getKeyCode());
+		int key = e.getKeyCode();
+		connection.sendMessage("key;up;" + key, true);
+		pressedKeys.remove(pressedKeys.indexOf(key));
 	}
 
 	public static ArrayList<Entity> getEntities() {
 		return entities;
 	}
 
-	public static ServerConnection getServerConnection() {
+	public static UDPServerConnection getServerConnection() {
 		return connection;
-	}
-
-	public static VirtualKeyboard getServerKeyboard() {
-		return serverKeyboard;
 	}
 }

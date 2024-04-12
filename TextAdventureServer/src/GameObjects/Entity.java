@@ -17,6 +17,8 @@ public class Entity {
 	protected double jumpforce = 25;
 	protected double drag = 1.1;
 
+	protected int breakCount = 0;
+	
 	protected boolean isGrounded = false;
 
 	public Entity() {
@@ -86,5 +88,9 @@ public class Entity {
 
 	public String getEntityIdentifier() {
 		return entityIdentifier;
+	}
+
+	public int getBreakCount() {
+		return breakCount;
 	}
 }

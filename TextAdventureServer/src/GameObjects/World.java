@@ -1,12 +1,13 @@
 package GameObjects;
 
+import java.lang.annotation.Target;
 import java.util.Random;
 
 import Server.GameMaster;
 
 public class World {
 
-	private static Block[][] world = new Block[400][200];
+	private static Block[][] world = new Block[50][200];
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
@@ -88,13 +89,13 @@ public class World {
 			}
 		} catch (Exception e) {
 		}
-		return p;
 
+		return p;
 	}
 
 	public static void setBlock(int x, int y, Block block) {
 		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
-		GameMaster.sendToAll(block.blockString);
+		GameMaster.sendToAll(block.blockString, true);
 		world[x][y] = block;
 	}
 

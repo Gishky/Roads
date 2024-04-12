@@ -1,14 +1,21 @@
 package Server;
 
-import Networking.PortListener;
+import HelperObjects.PlayerCharacterCreator;
+import UDPServer.UDPServer;
 
 public class MainThread {
 
 	public static void main(String[] args) {
-		new GameMaster();
+		UDPServer server = null;
+		try {
+			server = new UDPServer("RoadsServer", 61852, new PlayerCharacterCreator());
+			server.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		PortListener listener = new PortListener(61852);
-		listener.start();
+		new GameMaster(server);
 	}
 
 }

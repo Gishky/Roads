@@ -1,4 +1,4 @@
-package Networking;
+package HelperObjects;
 
 import GameObjects.BlockAir;
 import GameObjects.BlockDirt;
@@ -7,31 +7,26 @@ import GameObjects.BlockStone;
 import GameObjects.Entity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
-import HelperObjects.Position;
+import Networking.UDPMessageListener;
 import Window.Panel;
 
-public class MessageInterpreter {
+public class MessageInterpreter implements UDPMessageListener {
 
-	public static void filterMessage(String message) {
-		System.out.println(message);
+	public void receivedMessage(String message) {
 		String[] messageParts = message.split(";");
 		if (messageParts.length == 0) {
 			return;
 		}
 
 		switch (messageParts[0]) {
-		case "ping":
-			ConnectionEvaluator.addPing(Long.parseLong(messageParts[1]));
-			break;
 		case "createEntity":
-			// System.out.println(message);
 			createEntity(messageParts);
 			break;
 		case "entity":
 			updateEntity(messageParts);
 			break;
 		case "createWorld":
-			World.createWorld(messageParts[1], messageParts[2]);
+			createWorld(messageParts);
 			break;
 		case "block":
 			updateWorld(messageParts);
@@ -39,14 +34,18 @@ public class MessageInterpreter {
 		case "removeEntity":
 			removeEntity(messageParts[1]);
 			break;
-		case "key":
-			updateServerKeyboard(message);
+		case "id":
+			World.playerid = Integer.parseInt(messageParts[1]);
 			break;
+		default:
+			System.out.println("unknown command: " + message);
 		}
 	}
 
-	private static void updateServerKeyboard(String message) {
-		Panel.getServerKeyboard().inputReceived(message);
+	private void createWorld(String[] messageParts) {
+		int columns = Integer.parseInt(messageParts[1]);
+		int rows = Integer.parseInt(messageParts[2]);
+		World.createWorld(columns, rows);
 	}
 
 	private static void removeEntity(String id) {
@@ -65,19 +64,15 @@ public class MessageInterpreter {
 		switch (Integer.parseInt(messageParts[3])) {
 		case 0:
 			World.setBlock(x, y, new BlockAir());
-			;
 			break;
 		case 1:
 			World.setBlock(x, y, new BlockDirt());
-			;
 			break;
 		case 2:
 			World.setBlock(x, y, new BlockGrass());
-			;
 			break;
 		case 3:
 			World.setBlock(x, y, new BlockStone());
-			;
 			break;
 		}
 	}

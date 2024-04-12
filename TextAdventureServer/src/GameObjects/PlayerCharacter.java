@@ -3,52 +3,37 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 
 import HelperObjects.VirtualKeyboard;
-import Networking.Connection;
 import Server.GameMaster;
+import UDPServer.UDPClientConnection;
+import UDPServer.UDPClientObject;
 
-public class PlayerCharacter extends Entity {
+public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	private VirtualKeyboard keyboard;
-	private Connection con;
 
-	private int breakCount = 0;
+	private UDPClientConnection connection;
 
 	private Block heldBlock = null;
 
-	public PlayerCharacter(Connection con) {
-		this.con = con;
+	public PlayerCharacter() {
 		entityIdentifier = "player";
-		GameMaster.sendToAll("createEntity;player;" + id + ";" + (int) pos.getX() + ";" + (int) pos.getY());
 		keyboard = new VirtualKeyboard();
+		GameMaster.addEntity(this);
 	}
 
-	private int aliveCounter = 1000;
-
-	public void messageReceived(String message) {
-		aliveCounter = 50;
+	public void receivedMessage(String message) {
 		String[] contents = message.split(";");
 		if (contents[0].equals("key")) {
 			keyboard.inputReceived(message);
-		} else if (contents[0].equals("ping")) {
-			con.sendMessage("ping;" + contents[1]);
 		} else if (contents[0].equals("block")) {
-			con.sendMessage(World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).blockString);
+			connection.sendMessage(
+					World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).blockString, true);
 		}
+
 	}
 
 	@Override
 	public boolean action() {
-		aliveCounter--;
-		if (aliveCounter <= 0) {
-			if (heldBlock != null)
-				World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size, heldBlock);
-			GameMaster.removeListener(con);
-			GameMaster.removeEntity(this);
-		}
-
-		for (String key : keyboard.getKeys()) {
-			con.sendMessage("key;" + (keyboard.getKey(key) ? "down" : "up") + ";" + key);
-		}
 
 		boolean update = false;
 
@@ -93,8 +78,38 @@ public class PlayerCharacter extends Entity {
 		return false;
 	}
 
-	public Connection getConnection() {
-		return con;
+	public UDPClientConnection getConnection() {
+		return connection;
+	}
+
+	@Override
+	public void remove() {
+		GameMaster.removeEntity(this);
+	}
+
+	@Override
+	public void setClientConnection(UDPClientConnection con) {
+		connection = con;
+		sendInitialData();
+	}
+
+	private void sendInitialData() {
+		connection.sendMessage("id;" + id, true);
+		for (Entity e : GameMaster.getEntities()) {
+			if (!e.equals(this))
+				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
+						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY() + ";" + e.getBreakCount(), true);
+		}
+		connection.getServer().sendToAll("createEntity;" + getEntityIdentifier() + ";" + getId() + ";"
+				+ (int) getPos().getX() + ";" + (int) getPos().getY() + ";" + getBreakCount(), true);
+		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
+	}
+
+	@Override
+	public void disconnected() {
+		if (heldBlock != null)
+			World.setBlock((int) pos.getX() / Block.size, (int) pos.getY() / Block.size, heldBlock);
+		GameMaster.removeEntity(this);
 	}
 
 }

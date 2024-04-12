@@ -2,32 +2,29 @@ package Server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
 import GameObjects.Entity;
-import GameObjects.PlayerCharacter;
 import GameObjects.World;
-import Networking.Connection;
+import UDPServer.UDPServer;
 
 public class GameMaster implements ActionListener {
 
 	private static GameMaster master;
-
-	private ArrayList<Connection> clients;
+	private UDPServer server;
 
 	private ArrayList<Entity> entities;
 
-	public GameMaster() {
+	public GameMaster(UDPServer server) {
 		if (master == null) {
 			master = this;
 		}
 
+		this.server = server;
 		new Timer(50, this).start();
 		entities = new ArrayList<Entity>();
-		clients = new ArrayList<Connection>();
 		World.generateWorld();
 	}
 
@@ -37,7 +34,7 @@ public class GameMaster implements ActionListener {
 			Entity entity = entities.get(i);
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
-						+ (int) entity.getPos().getY());
+						+ (int) entity.getPos().getY(), false);
 		}
 
 	}
@@ -47,39 +44,15 @@ public class GameMaster implements ActionListener {
 	}
 
 	public static void removeEntity(Entity e) {
-		sendToAll("removeEntity;" + e.getId());
 		master.entities.remove(e);
-	}
-
-	public static void addListeners(Connection clientConnection) {
-		master.clients.add(clientConnection);
-	}
-
-	public static void removeListener(Connection clientConnection) {
-		master.clients.remove(clientConnection);
-	}
-
-	public static void sendToAll(String message) {
-		for (Connection client : master.clients) {
-			client.sendMessage(message);
-		}
+		sendToAll("removeEntity;" + e.getId(), true);
 	}
 
 	public static ArrayList<Entity> getEntities() {
 		return master.entities;
 	}
 
-	public static ArrayList<Connection> getConnections() {
-		return master.clients;
+	public static void sendToAll(String message, boolean priority) {
+		master.server.sendToAll(message, priority);
 	}
-
-	public static Connection hasConnection(InetAddress address, int port) {
-		for (Connection con : master.clients) {
-			if (con.getAddress().equals(address) && con.getPort() == port) {
-				return con;
-			}
-		}
-		return null;
-	}
-
 }

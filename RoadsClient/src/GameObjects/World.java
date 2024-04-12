@@ -2,12 +2,14 @@ package GameObjects;
 
 import java.awt.Graphics2D;
 
+import Window.Panel;
+
 public class World {
 
 	private static Block[][] world;
 
 	public static int cameraX, cameraY;
-	public static int playerid = 0;
+	public static int playerid = -1;
 
 	public static Block[][] getWorld() {
 		return world;
@@ -21,22 +23,32 @@ public class World {
 		if (world == null)
 			return;
 
-		for (int x = 0; x < world.length; x++) {
-			for (int y = 0; y < world[0].length; y++) {
+		for (int x = (cameraX - Panel.windowWidth / 2) / Block.size - 2; x <= (cameraX + Panel.windowWidth / 2)
+				/ Block.size + 2; x++) {
+			if (x >= world.length)
+				break;
+			else if (x < 0)
+				continue;
+			for (int y = (cameraY - Panel.windowHeight / 2) / Block.size - 2; y <= (cameraY + Panel.windowHeight / 2)
+					/ Block.size + 2; y++) {
+				if (y >= world[0].length)
+					break;
+				else if (y < 0)
+					continue;
 				if (world[x][y] != null) {
 					world[x][y].draw(x, y, g, cameraX, cameraY);
+				} else {
+					Panel.getServerConnection().sendMessage("block;" + x + ";" + y, true);
 				}
 			}
 		}
 	}
 
-	public static void createWorld(String widthS, String heightS) {
-		int width = Integer.parseInt(widthS);
-		int height = Integer.parseInt(heightS);
+	public static void createWorld(int width, int height) {
 		world = new Block[width][height];
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				world[x][y] = new Block();
+				world[x][y] = null;
 			}
 		}
 	}
