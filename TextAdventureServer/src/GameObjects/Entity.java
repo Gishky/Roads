@@ -1,7 +1,6 @@
 package GameObjects;
 
 import HelperObjects.Position;
-import Server.GameMaster;
 
 public class Entity {
 
@@ -18,7 +17,7 @@ public class Entity {
 	protected double drag = 1.1;
 
 	protected int breakCount = 0;
-	
+
 	protected boolean isGrounded = false;
 
 	public Entity() {
@@ -55,6 +54,9 @@ public class Entity {
 				velocity[0] = 0;
 				velocity[1] = 0;
 			} else {
+				if ((int) (pos.getX() / Block.size) != (int) (p[0] / Block.size)) {
+					breakCount = 0;
+				}
 				pos.set(p[0], p[1]);
 
 				velocity[0] -= targetx - p[0];
@@ -71,6 +73,7 @@ public class Entity {
 			}
 		} else {
 			isGrounded = false;
+			breakCount = 0;
 			pos.set(targetx, targety);
 			return true;
 		}

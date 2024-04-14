@@ -1,4 +1,4 @@
-package Networking;
+package UDPClient;
 
 public interface UDPMessageListener {
 

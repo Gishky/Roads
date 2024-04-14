@@ -1,4 +1,4 @@
-package Networking;
+package UDPClient;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,6 +87,8 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (priorityMessages.size() < 1)
+			return;
 		for (int i = 0; i < priorityMessages.size(); i++) {
 			if (priorityMessages.get(i) != null) {
 				sendMessage(priorityMessages.get(i), false);

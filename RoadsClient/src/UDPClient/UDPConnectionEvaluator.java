@@ -1,4 +1,4 @@
-package Networking;
+package UDPClient;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

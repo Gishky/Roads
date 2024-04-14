@@ -14,6 +14,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private UDPClientConnection connection;
 
 	private Block heldBlock = null;
+	private boolean placeFlag = false;
 
 	public PlayerCharacter() {
 		entityIdentifier = "player";
@@ -54,25 +55,33 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 								.getBreakThreshhold() <= breakCount) {
 					heldBlock = World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1);
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
-				} else if (heldBlock != null && breakCount == 0 && !World.getBlock((int) pos.getX() / Block.size,
+					breakCount = 0;
+				} else if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
 						(int) (pos.getY()) / Block.size - 1).blocksMovement) {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size, heldBlock);
 					heldBlock = null;
 					velocity[1] = -jumpforce;
-					update = true;
 				}
-				breakCount++;
+				if (heldBlock == null) {
+					update = true;
+					breakCount++;
+				}
 			} else {
-				if (heldBlock != null && breakCount == 0 && !World.getBlock((int) pos.getX() / Block.size,
+				if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
 						(int) (pos.getY()) / Block.size + 1).blocksMovement) {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, heldBlock);
 					heldBlock = null;
 				}
 			}
+			placeFlag = false;
 		} else {
+			if (breakCount != 0) {
+				update = true;
+			}
+			placeFlag = true;
 			breakCount = 0;
 		}
-		if (update || super.action()) {
+		if (super.action() || update) {
 			return true;
 		}
 		return false;
@@ -98,10 +107,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		for (Entity e : GameMaster.getEntities()) {
 			if (!e.equals(this))
 				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
-						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY() + ";" + e.getBreakCount(), true);
+						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY(), true);
 		}
 		connection.getServer().sendToAll("createEntity;" + getEntityIdentifier() + ";" + getId() + ";"
-				+ (int) getPos().getX() + ";" + (int) getPos().getY() + ";" + getBreakCount(), true);
+				+ (int) getPos().getX() + ";" + (int) getPos().getY(), true);
 		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
 	}
 

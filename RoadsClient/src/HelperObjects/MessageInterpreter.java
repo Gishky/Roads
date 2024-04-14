@@ -7,7 +7,7 @@ import GameObjects.BlockStone;
 import GameObjects.Entity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
-import Networking.UDPMessageListener;
+import UDPClient.UDPMessageListener;
 import Window.Panel;
 
 public class MessageInterpreter implements UDPMessageListener {
@@ -81,6 +81,7 @@ public class MessageInterpreter implements UDPMessageListener {
 		for (Entity e : Panel.getEntities()) {
 			if (("" + e.getId()).equals(messageParts[1])) {
 				e.setPos(new Position(messageParts[2], messageParts[3]));
+				e.setBreakCount(Integer.parseInt(messageParts[4]));
 				if (e.getId() == World.playerid) {
 					World.cameraX = Integer.parseInt(messageParts[2]);
 					World.cameraY = Integer.parseInt(messageParts[3]);

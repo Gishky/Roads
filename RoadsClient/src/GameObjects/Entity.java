@@ -11,6 +11,7 @@ public class Entity {
 
 	protected Position pos;
 
+	protected int breakCount;
 
 	public Position getPos() {
 		return pos;
@@ -23,14 +24,21 @@ public class Entity {
 	public void action() {
 
 	}
-	
+
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		g.setColor(Color.gray);
-		g.fillOval(pos.getX()-2-cameraX, pos.getY()-2-cameraY, 4, 4);
+		g.fillOval(pos.getX() - 2 - cameraX, pos.getY() - 2 - cameraY, 4, 4);
 	}
 
 	public int getId() {
 		return id;
 	}
 
+	public void setBreakCount(int count) {
+		this.breakCount = count;
+	}
+
+	public int getBreakCount() {
+		return breakCount;
+	}
 }

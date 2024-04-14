@@ -16,7 +16,7 @@ import javax.swing.Timer;
 import GameObjects.Entity;
 import GameObjects.World;
 import HelperObjects.MessageInterpreter;
-import Networking.UDPServerConnection;
+import UDPClient.UDPServerConnection;
 
 public class Panel extends JPanel implements ActionListener, KeyListener {
 

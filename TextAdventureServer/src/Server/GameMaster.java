@@ -34,7 +34,7 @@ public class GameMaster implements ActionListener {
 			Entity entity = entities.get(i);
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
-						+ (int) entity.getPos().getY(), false);
+						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount(), false);
 		}
 
 	}

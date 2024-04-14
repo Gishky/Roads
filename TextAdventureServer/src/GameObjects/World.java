@@ -1,13 +1,12 @@
 package GameObjects;
 
-import java.lang.annotation.Target;
 import java.util.Random;
 
 import Server.GameMaster;
 
 public class World {
 
-	private static Block[][] world = new Block[50][200];
+	private static Block[][] world = new Block[10000][300];
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
