@@ -27,8 +27,13 @@ public class UDPConnectionEvaluator implements ActionListener {
 
 	private void receivedPackage(Long pingTime) {
 		int i = packageLossTracker.indexOf(pingTime);
-		if (i != -1)
-			packageLossTracker.set(i, (long) 0);
+		if (i != -1) {
+			try {
+				packageLossTracker.set(i, (long) 0);
+			} catch (IndexOutOfBoundsException e) {
+				
+			}
+		}
 	}
 
 	public int getPackagePercentile() {

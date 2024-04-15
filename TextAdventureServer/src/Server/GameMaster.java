@@ -41,10 +41,13 @@ public class GameMaster implements ActionListener {
 
 	public static void addEntity(Entity e) {
 		master.entities.add(e);
+		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX() + ";"
+				+ (int) e.getPos().getY(), true);
 	}
 
 	public static void removeEntity(Entity e) {
 		master.entities.remove(e);
+		System.out.println("removing: " + e.getId());
 		sendToAll("removeEntity;" + e.getId(), true);
 	}
 

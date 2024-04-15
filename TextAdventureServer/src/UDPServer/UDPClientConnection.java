@@ -67,7 +67,11 @@ public class UDPClientConnection implements ActionListener {
 		if (priorityMessages.size() < 1)
 			return;
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			sendMessage(priorityMessages.get(i), false);
+			if (priorityMessages.get(i) != null) {
+				sendMessage(priorityMessages.get(i), false);
+			} else {
+				priorityMessages.remove(i);
+			}
 		}
 	}
 

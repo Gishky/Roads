@@ -1,6 +1,7 @@
 package GameObjects;
 
 import HelperObjects.Position;
+import Server.GameMaster;
 
 public class Entity {
 
@@ -17,6 +18,8 @@ public class Entity {
 	protected double drag = 1.1;
 
 	protected int breakCount = 0;
+	protected int maxHP = 100;
+	protected int HP;
 
 	protected boolean isGrounded = false;
 
@@ -25,6 +28,18 @@ public class Entity {
 		pos.setX(World.getWorld().length * Block.size / 2 + Block.size / 2);
 		pos.setY(World.getHeight((int) (pos.getX() / Block.size)) * Block.size - Block.size / 2);
 		id = count++;
+		HP = maxHP;
+		GameMaster.addEntity(this);
+	}
+
+	public Entity(String identifier) {
+		entityIdentifier = identifier;
+		pos = new Position();
+		pos.setX(World.getWorld().length * Block.size / 2 + Block.size / 2);
+		pos.setY(World.getHeight((int) (pos.getX() / Block.size)) * Block.size - Block.size / 2);
+		id = count++;
+		HP = maxHP;
+		GameMaster.addEntity(this);
 	}
 
 	public Position getPos() {
@@ -38,6 +53,7 @@ public class Entity {
 	public boolean action() {
 		int x = (int) pos.getX();
 		int y = (int) pos.getY();
+
 		velocity[0] /= drag;
 		if (isGrounded) {
 			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]

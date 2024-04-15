@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -16,6 +17,7 @@ import javax.swing.Timer;
 import GameObjects.Entity;
 import GameObjects.World;
 import HelperObjects.MessageInterpreter;
+import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
 
 public class Panel extends JPanel implements ActionListener, KeyListener {
@@ -26,6 +28,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 	public static int windowWidth, windowHeight;
 
 	private static ArrayList<Entity> entities;
+	private static LinkedList<Particle> particles = new LinkedList<Particle>();
 
 	public Panel() {
 		this.addKeyListener(this);
@@ -56,6 +59,13 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 
 		for (Entity e : entities) {
 			e.draw(g, cameraX, cameraY);
+		}
+		
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+			if (p.draw(g, cameraX, cameraY)) {
+				particles.remove(p);
+			}
 		}
 
 		g.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -93,7 +103,15 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		return entities;
 	}
 
+	public static void addParticle(Particle p) {
+		particles.add(p);
+	}
+
 	public static UDPServerConnection getServerConnection() {
 		return connection;
+	}
+
+	public static void removeEntity(Entity e) {
+		entities.remove(e);
 	}
 }

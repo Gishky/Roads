@@ -17,9 +17,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private boolean placeFlag = false;
 
 	public PlayerCharacter() {
-		entityIdentifier = "player";
+		super("player");
 		keyboard = new VirtualKeyboard();
-		GameMaster.addEntity(this);
 	}
 
 	public void receivedMessage(String message) {
@@ -33,9 +32,11 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	}
 
+	private int fireCooldown = 0;
+
 	@Override
 	public boolean action() {
-
+		fireCooldown--;
 		boolean update = false;
 
 		if (keyboard.getKey("" + KeyEvent.VK_A)) {
@@ -44,9 +45,15 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (keyboard.getKey("" + KeyEvent.VK_D)) {
 			velocity[0] += accelleration * (velocity[0] < 0 ? 2 : 1);
 		}
-		if (keyboard.getKey("" + KeyEvent.VK_SPACE) || keyboard.getKey("" + KeyEvent.VK_W)) {
+		if (keyboard.getKey("" + KeyEvent.VK_W)) {
 			if (isGrounded)
 				velocity[1] = -jumpforce;
+		}
+		if (keyboard.getKey("" + KeyEvent.VK_SPACE)) {
+			if (fireCooldown <= 0) {
+				fireCooldown = 10;
+				shootFirebolt();
+			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
 			if (isGrounded) {
@@ -87,6 +94,19 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		return false;
 	}
 
+	private void shootFirebolt() {
+		double[] fireboltVelocity = { 0, -5 };
+
+		if ((int) velocity[0] < 0) {
+			fireboltVelocity[0] = -40;
+		} else if ((int) velocity[0] > 0) {
+			fireboltVelocity[0] = 40;
+		} else {
+			fireboltVelocity[1] = -70;
+		}
+		new Firebolt(pos.clone(), fireboltVelocity);
+	}
+
 	public UDPClientConnection getConnection() {
 		return connection;
 	}
@@ -109,8 +129,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
 						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY(), true);
 		}
-		connection.getServer().sendToAll("createEntity;" + getEntityIdentifier() + ";" + getId() + ";"
-				+ (int) getPos().getX() + ";" + (int) getPos().getY(), true);
 		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
 	}
 

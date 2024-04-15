@@ -5,6 +5,7 @@ import GameObjects.BlockDirt;
 import GameObjects.BlockGrass;
 import GameObjects.BlockStone;
 import GameObjects.Entity;
+import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import UDPClient.UDPMessageListener;
@@ -51,7 +52,8 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void removeEntity(String id) {
 		for (Entity e : Panel.getEntities()) {
 			if (("" + e.getId()).equals(id)) {
-				Panel.getEntities().remove(e);
+				e.setRemoved(true);
+				Panel.removeEntity(e);
 				return;
 			}
 		}
@@ -96,6 +98,9 @@ public class MessageInterpreter implements UDPMessageListener {
 		switch (messageParts[1]) {
 		case "player":
 			Panel.getEntities().add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4]));
+			break;
+		case "firebolt":
+			Panel.getEntities().add(new Firebolt(messageParts[2], messageParts[3], messageParts[4]));
 			break;
 		}
 	}
