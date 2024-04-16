@@ -15,6 +15,7 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.5;
 		isGrounded = false;
 		breakCount = 0;
+		drag = 1.0001;
 		hitBox = new Hitbox(false, 3);
 	}
 
@@ -40,7 +41,7 @@ public class Firebolt extends Entity {
 		} else {
 			pos.set(targetx, targety);
 		}
-		
+
 		for (Entity e : GameMaster.getEntities()) {
 			if (e.getHP() > 0
 					&& hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {

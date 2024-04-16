@@ -49,10 +49,6 @@ public class Entity {
 					pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
 					HPBarLength * HPPercent / 100, HPBarHeight);
 		}
-
-		g.setColor(Color.pink);
-		g.fillOval(pos.getX() - 2 - cameraX + Panel.windowWidth / 2, pos.getY() - 2 - cameraY + Panel.windowHeight / 2,
-				4, 4);
 	}
 
 	public int getId() {

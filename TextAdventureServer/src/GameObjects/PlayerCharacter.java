@@ -99,15 +99,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void shootFirebolt() {
-		double[] fireboltVelocity = { 0, -5 };
-
-		if ((int) velocity[0] < 0) {
-			fireboltVelocity[0] = -40;
-		} else if ((int) velocity[0] > 0) {
-			fireboltVelocity[0] = 40;
-		} else {
-			fireboltVelocity[1] = -70;
-		}
+		double[] fireboltVelocity = { velocity[0] * 2.5, velocity[1] * 2.5-3 };
 		new Firebolt(pos.clone(), fireboltVelocity);
 	}
 
