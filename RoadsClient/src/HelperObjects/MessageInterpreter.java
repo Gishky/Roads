@@ -84,6 +84,7 @@ public class MessageInterpreter implements UDPMessageListener {
 			if (("" + e.getId()).equals(messageParts[1])) {
 				e.setPos(new Position(messageParts[2], messageParts[3]));
 				e.setBreakCount(Integer.parseInt(messageParts[4]));
+				e.setHPPercent(Integer.parseInt(messageParts[5]));
 				if (e.getId() == World.playerid) {
 					World.cameraX = Integer.parseInt(messageParts[2]);
 					World.cameraY = Integer.parseInt(messageParts[3]);
@@ -97,10 +98,11 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void createEntity(String[] messageParts) {
 		switch (messageParts[1]) {
 		case "player":
-			Panel.getEntities().add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4]));
+			Panel.getEntities()
+					.add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
 			break;
 		case "firebolt":
-			Panel.getEntities().add(new Firebolt(messageParts[2], messageParts[3], messageParts[4]));
+			Panel.getEntities().add(new Firebolt(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
 			break;
 		}
 	}

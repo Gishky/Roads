@@ -2,6 +2,7 @@ package GameObjects;
 
 import java.awt.event.KeyEvent;
 
+import HelperObjects.Hitbox;
 import HelperObjects.VirtualKeyboard;
 import Server.GameMaster;
 import UDPServer.UDPClientConnection;
@@ -18,7 +19,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	public PlayerCharacter() {
 		super("player");
+		hitBox = new Hitbox(false, 5);
 		keyboard = new VirtualKeyboard();
+		maxHP = 100;
+		HP = maxHP;
 	}
 
 	public void receivedMessage(String message) {
@@ -127,7 +131,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		for (Entity e : GameMaster.getEntities()) {
 			if (!e.equals(this))
 				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
-						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY(), true);
+						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY() + ";" + e.getHPPercentile(), true);
 		}
 		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
 	}

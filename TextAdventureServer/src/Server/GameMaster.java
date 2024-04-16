@@ -34,7 +34,8 @@ public class GameMaster implements ActionListener {
 			Entity entity = entities.get(i);
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
-						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount(), false);
+						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile(),
+						false);
 		}
 
 	}
@@ -42,7 +43,7 @@ public class GameMaster implements ActionListener {
 	public static void addEntity(Entity e) {
 		master.entities.add(e);
 		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX() + ";"
-				+ (int) e.getPos().getY(), true);
+				+ (int) e.getPos().getY() + ";" + e.getHPPercentile(), true);
 	}
 
 	public static void removeEntity(Entity e) {

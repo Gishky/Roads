@@ -37,7 +37,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		entities = new ArrayList<Entity>();
 
 		t.start();
-		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
 	}
 
 	@Override
@@ -57,10 +57,11 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 
 		World.draw(g, cameraX, cameraY);
 
-		for (Entity e : entities) {
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
 			e.draw(g, cameraX, cameraY);
 		}
-		
+
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 			if (p.draw(g, cameraX, cameraY)) {

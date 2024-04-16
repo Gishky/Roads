@@ -1,9 +1,12 @@
 package GameObjects;
 
+import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import Server.GameMaster;
 
 public class Firebolt extends Entity {
+
+	private int damage = 10;
 
 	public Firebolt(Position initialPosition, double[] initialVelocity) {
 		super("firebolt");
@@ -12,6 +15,7 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.5;
 		isGrounded = false;
 		breakCount = 0;
+		hitBox = new Hitbox(false, 3);
 	}
 
 	@Override
@@ -20,12 +24,12 @@ public class Firebolt extends Entity {
 			GameMaster.removeEntity(this);
 			return false;
 		}
+
 		velocity[0] /= drag;
 		if (isGrounded) {
 			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
 					.getFriction();
 		}
-		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
@@ -36,6 +40,16 @@ public class Firebolt extends Entity {
 		} else {
 			pos.set(targetx, targety);
 		}
+		
+		for (Entity e : GameMaster.getEntities()) {
+			if (e.getHP() > 0
+					&& hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
+				e.receiveDamage(damage);
+				GameMaster.removeEntity(this);
+				return false;
+			}
+		}
+
 		return true;
 	}
 }

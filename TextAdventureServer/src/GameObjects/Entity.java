@@ -1,5 +1,6 @@
 package GameObjects;
 
+import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import Server.GameMaster;
 
@@ -18,8 +19,9 @@ public class Entity {
 	protected double drag = 1.1;
 
 	protected int breakCount = 0;
-	protected int maxHP = 100;
+	protected int maxHP = 0;
 	protected int HP;
+	protected Hitbox hitBox = new Hitbox(false, 0);
 
 	protected boolean isGrounded = false;
 
@@ -97,6 +99,16 @@ public class Entity {
 
 	}
 
+	public void receiveDamage(int damage) {
+		HP -= damage;
+		if (HP <= 0) {
+			GameMaster.removeEntity(this);
+			return;
+		}
+		GameMaster.sendToAll("entity;" + getId() + ";" + (int) getPos().getX() + ";" + (int) getPos().getY() + ";"
+				+ getBreakCount() + ";" + ((int) (getHP() * 100 / getMaxHP())), true);
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -111,5 +123,23 @@ public class Entity {
 
 	public int getBreakCount() {
 		return breakCount;
+	}
+
+	public Hitbox getHitBox() {
+		return hitBox;
+	}
+
+	public int getHP() {
+		return HP;
+	}
+
+	public int getMaxHP() {
+		return maxHP;
+	}
+
+	public int getHPPercentile() {
+		if (maxHP == 0)
+			return 100;
+		return (int) (HP * 100 / maxHP);
 	}
 }
