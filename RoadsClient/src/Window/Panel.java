@@ -37,7 +37,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		entities = new ArrayList<Entity>();
 
 		t.start();
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 	}
 
 	@Override

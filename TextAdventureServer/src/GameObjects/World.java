@@ -7,48 +7,76 @@ import Server.GameMaster;
 public class World {
 
 	private static Block[][] world = new Block[10000][300];
+	private static int[] höhe;
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
 		Random r = new Random();
-		int[] höhe = new int[world.length];
+
+		// funktionen bestimmmen
+		int functions = r.nextInt(10) + 20;
+		double[] frequencies = new double[functions];
+		double[] altitudes = new double[functions];
+
+		for (int i = 0; i < functions; i++) {
+			frequencies[i] = r.nextDouble() * world.length / 100;
+			altitudes[i] = r.nextDouble() * frequencies[i] / (world[0].length / 40);
+		}
+
+		// höhengeneration
+		höhe = new int[world.length];
 		for (int i = 0; i < world.length; i++) {
-			if (i == 0)
-				höhe[i] = worldHeight / 2;
-			else {
-				höhe[i] = höhe[i - 1] + r.nextInt(5) - 2;
-				if (höhe[i] >= worldHeight)
-					höhe[i] = 99;
-				else if (höhe[i] <= 0)
-					höhe[i] = 1;
+			int delta = 0;
+			for (int m = 0; m < functions; m++) {
+				delta += Math.sin((double) i / frequencies[m]) * altitudes[m];
+			}
+			höhe[i] = worldHeight / 2 + delta;
+			if (höhe[i] >= worldHeight)
+				höhe[i] = worldHeight - 1;
+			if (höhe[i] <= 0) {
+				höhe[i] = 1;
 			}
 		}
-		for (int i = 0; i < world.length; i++) {
-			for (int j = 0; j < worldHeight; j++) {
-				if (j < worldHeight - höhe[i])
-					setBlock(i, j, new BlockAir());
+
+		// glätten
+		for (int i = 1; i < world.length - 1; i++) {
+			if (höhe[i - 1] - höhe[i] == -(höhe[i] - höhe[i + 1])) {
+				höhe[i] = höhe[i - 1];
+			}
+		}
+
+		for (int x = 0; x < world.length; x++) {
+			for (int y = 0; y < worldHeight; y++) {
+				if (y < worldHeight - höhe[x])
+					setBlock(x, y, new BlockAir());
 				else {
 					int material = r.nextInt(worldHeight);
-					if (material < j / 1.5)
-						setBlock(i, j, new BlockStone());
+					if (material < y / 2)
+						setBlock(x, y, new BlockStone());
 					else
-						setBlock(i, j, new BlockDirt());
+						setBlock(x, y, new BlockDirt());
 
-					if (r.nextInt(2) >= Math.abs(worldHeight - höhe[i] - j)) {
-						setBlock(i, j, new BlockGrass());
+					if (r.nextInt(2) >= Math.abs(worldHeight - höhe[x] - y)) {
+						setBlock(x, y, new BlockGrass());
 					}
+				}
+			}
+			if (x != 0 && höhe[x] - höhe[x - 1] >= 3) {
+				for (int y = worldHeight - höhe[x]; y <= worldHeight - höhe[x-1]; y++) {
+					setBlock(x, y, new BlockStone());
+				}
+			}else if (x != 0 && höhe[x-1] - höhe[x] >= 3) {
+				for (int y = worldHeight - höhe[x-1]; y <= worldHeight - höhe[x]; y++) {
+					setBlock(x-1, y, new BlockStone());
 				}
 			}
 		}
 	}
 
 	public static int getHeight(int x) {
-		for (int y = 0; y < world[x].length; y++) {
-			if (world[x][y].blocksMovement == true) {
-				return y;
-			}
-		}
-		return -1;
+		if (x < 0 || x >= höhe.length)
+			return 0;
+		return world[0].length - höhe[x];
 	}
 
 	// casts a ray from source to target and returns hit coordinates if hit, returns

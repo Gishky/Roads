@@ -25,15 +25,6 @@ public class Entity {
 
 	protected boolean isGrounded = false;
 
-	public Entity() {
-		pos = new Position();
-		pos.setX(World.getWorld().length * Block.size / 2 + Block.size / 2);
-		pos.setY(World.getHeight((int) (pos.getX() / Block.size)) * Block.size - Block.size / 2);
-		id = count++;
-		HP = maxHP;
-		GameMaster.addEntity(this);
-	}
-
 	public Entity(String identifier) {
 		entityIdentifier = identifier;
 		pos = new Position();
