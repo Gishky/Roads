@@ -9,7 +9,6 @@ import Window.Panel;
 public class Entity {
 
 	protected int id;
-	protected boolean removed = false;
 
 	protected Position pos;
 
@@ -61,10 +60,6 @@ public class Entity {
 
 	public int getBreakCount() {
 		return breakCount;
-	}
-
-	public void setRemoved(boolean isRemoved) {
-		removed = isRemoved;
 	}
 
 	public void setHPPercent(int int1) {

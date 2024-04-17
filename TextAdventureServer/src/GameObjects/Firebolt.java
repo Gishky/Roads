@@ -27,10 +27,6 @@ public class Firebolt extends Entity {
 		}
 
 		velocity[0] /= drag;
-		if (isGrounded) {
-			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
-					.getFriction();
-		}
 		velocity[1] += fallingaccelleration;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
@@ -46,11 +42,9 @@ public class Firebolt extends Entity {
 			if (e.getHP() > 0
 					&& hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
 				e.receiveDamage(damage);
-				GameMaster.removeEntity(this);
-				return false;
+				isGrounded = true;
 			}
 		}
-
 		return true;
 	}
 }

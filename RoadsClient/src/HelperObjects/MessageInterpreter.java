@@ -52,7 +52,6 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void removeEntity(String id) {
 		for (Entity e : Panel.getEntities()) {
 			if (("" + e.getId()).equals(id)) {
-				e.setRemoved(true);
 				Panel.removeEntity(e);
 				return;
 			}
@@ -96,6 +95,18 @@ public class MessageInterpreter implements UDPMessageListener {
 	}
 
 	private static void createEntity(String[] messageParts) {
+
+		if(Panel.existsEntityID(messageParts[2])) {
+			return;
+		}
+		for (int index = 0; index < Panel.getRemovedEntityIDs().size(); index++) {
+			if ((Panel.getRemovedEntityIDs().get(index) + "").equals(messageParts[2])) {
+				System.out.println("Removed Entity before adding");
+				Panel.getRemovedEntityIDs().remove(index);
+				return;
+			}
+		}
+		
 		switch (messageParts[1]) {
 		case "player":
 			Panel.getEntities()

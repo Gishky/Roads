@@ -27,17 +27,18 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 
 	public static int windowWidth, windowHeight;
 
-	private static ArrayList<Entity> entities;
+	private static LinkedList<Entity> entities;
+	private static LinkedList<Integer> removedEntityIDs = new LinkedList<Integer>();
 	private static LinkedList<Particle> particles = new LinkedList<Particle>();
 
 	public Panel() {
 		this.addKeyListener(this);
 		this.setFocusable(true);
 
-		entities = new ArrayList<Entity>();
+		entities = new LinkedList<Entity>();
 
 		t.start();
-		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("192.168.17.105", 61852, new MessageInterpreter());
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		pressedKeys.remove(pressedKeys.indexOf(key));
 	}
 
-	public static ArrayList<Entity> getEntities() {
+	public static LinkedList<Entity> getEntities() {
 		return entities;
 	}
 
@@ -113,6 +114,23 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public static void removeEntity(Entity e) {
-		entities.remove(e);
+		if (entities.contains(e)) {
+			entities.remove(e);
+		} else {
+			removedEntityIDs.add(e.getId());
+		}
+	}
+	
+	public static LinkedList<Integer> getRemovedEntityIDs(){
+		return removedEntityIDs;
+	}
+	
+	public static boolean existsEntityID(String id) {
+		for(int i = 0;i<entities.size();i++) {
+			if((entities.get(i).getId()+"").equals(id)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

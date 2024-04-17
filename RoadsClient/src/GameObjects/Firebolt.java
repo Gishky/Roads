@@ -15,9 +15,8 @@ public class Firebolt extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		if(removed)
-			return;
 		super.draw(g, cameraX, cameraY);
+		//System.out.println(id+": "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
 			Panel.addParticle(new Particle(pos.getX() + r.nextDouble() * 5 - 3, pos.getY() + r.nextDouble() * 5 - 3, 0,

@@ -14,8 +14,6 @@ public class PlayerCharacter extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		if(removed)
-			return;
 		super.draw(g, cameraX, cameraY);
 		
 		g.setColor(Color.black);

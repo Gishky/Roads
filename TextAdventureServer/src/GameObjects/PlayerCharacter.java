@@ -3,6 +3,7 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 
 import HelperObjects.Hitbox;
+import HelperObjects.Position;
 import HelperObjects.VirtualKeyboard;
 import Server.GameMaster;
 import UDPServer.UDPClientConnection;
@@ -99,8 +100,17 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void shootFirebolt() {
-		double[] fireboltVelocity = { velocity[0] * 2.5, velocity[1] * 2.5-3 };
-		new Firebolt(pos.clone(), fireboltVelocity);
+
+		double[] fireboltVelocity = { velocity[0] * 2.5, velocity[1] * 2.5 - 3 };
+		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
+		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
+		// fireboltVelocity[0] = unitVelocity[0] * 20;
+		// fireboltVelocity[1] = unitVelocity[1] * 20;
+
+		Position fireboltpos = new Position();
+		fireboltpos.set(pos.getX() + unitVelocity[0] * (hitBox.getRadius()+3),
+				pos.getY() + unitVelocity[1] * (hitBox.getRadius()+3));
+		 new Firebolt(fireboltpos, fireboltVelocity);
 	}
 
 	public UDPClientConnection getConnection() {
