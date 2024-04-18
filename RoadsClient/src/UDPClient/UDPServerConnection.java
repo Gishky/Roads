@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 
@@ -26,7 +26,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	private final String PRIORITY_MARK = "PRIORITY;";
 	private final String PRIORITY_RESPONSE = "RECEIVEDPRIORITY;";
 
-	private LinkedList<String> priorityMessages = new LinkedList<String>();
+	private ArrayList<String> priorityMessages = new ArrayList<String>();
 
 	public UDPServerConnection(String serverAddress, int serverPort, UDPMessageListener listener) {
 		this.port = serverPort;
@@ -70,7 +70,11 @@ public class UDPServerConnection extends Thread implements ActionListener {
 				if (receivedString.startsWith("NetworkPingRequest")) {
 					eval.addPing(Long.parseLong(receivedString.split(";")[1]));
 				} else if (receivedString.startsWith(PRIORITY_RESPONSE)) {
-					priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
+					try {
+						priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
+					}catch(Exception e) {
+						
+					}
 				} else {
 					if (receivedString.startsWith(PRIORITY_MARK)) {
 						receivedString = receivedString.substring(PRIORITY_MARK.length());
@@ -87,14 +91,8 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (priorityMessages.size() < 1)
-			return;
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			if (priorityMessages.get(i) != null) {
-				sendMessage(priorityMessages.get(i), false);
-			} else {
-				priorityMessages.remove(i);
-			}
+			sendMessage(priorityMessages.get(i), false);
 		}
 	}
 

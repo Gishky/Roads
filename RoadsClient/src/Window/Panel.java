@@ -38,7 +38,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		entities = new LinkedList<Entity>();
 
 		t.start();
-		connection = new UDPServerConnection("192.168.17.105", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("172.26.208.1", 61852, new MessageInterpreter());
 	}
 
 	@Override
