@@ -8,4 +8,8 @@ public class BlockDirt extends Block {
 		breakable = true;
 		breakThreshhold = 25;
 	}
+
+	public Block clone() {
+		return new BlockDirt();
+	}
 }

@@ -18,6 +18,7 @@ public class Entity {
 	protected double jumpforce = 25;
 	protected double drag = 1.1;
 
+	protected Block heldBlock = null;
 	protected int breakCount = 0;
 	protected int maxHP = 0;
 	protected int HP;
@@ -97,7 +98,7 @@ public class Entity {
 			return;
 		}
 		GameMaster.sendToAll("entity;" + getId() + ";" + (int) getPos().getX() + ";" + (int) getPos().getY() + ";"
-				+ getBreakCount() + ";" + ((int) (getHP() * 100 / getMaxHP())), true);
+				+ getBreakCount() + ";" + ((int) (getHP() * 100 / getMaxHP()) + ";" + getHeldBlockId()), true);
 	}
 
 	public int getId() {
@@ -132,5 +133,15 @@ public class Entity {
 		if (maxHP == 0)
 			return 100;
 		return (int) (HP * 100 / maxHP);
+	}
+
+	public Block getHeldBlock() {
+		return heldBlock;
+	}
+
+	public int getHeldBlockId() {
+		if (heldBlock != null)
+			return heldBlock.getId();
+		return -1;
 	}
 }

@@ -8,4 +8,8 @@ public class BlockGrass extends Block {
 		breakable = true;
 		breakThreshhold = 25;
 	}
+
+	public Block clone() {
+		return new BlockGrass();
+	}
 }

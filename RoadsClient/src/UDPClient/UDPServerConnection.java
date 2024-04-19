@@ -66,6 +66,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 				receivedString = receivedString.substring(
 						receivedString.indexOf(MESSAGE_START) + MESSAGE_START.length(),
 						receivedString.length() - MESSAGE_END.length());
+				System.out.println(receivedString);
 
 				if (receivedString.startsWith("NetworkPingRequest")) {
 					eval.addPing(Long.parseLong(receivedString.split(";")[1]));
@@ -98,6 +99,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	public void sendMessage(String message, boolean priority) {
 		if (priority) {
+			System.out.println(message);
 			message = PRIORITY_MARK + message;
 			priorityMessages.add(message);
 		}

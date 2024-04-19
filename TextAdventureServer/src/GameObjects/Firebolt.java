@@ -8,10 +8,11 @@ public class Firebolt extends Entity {
 
 	private int damage = 10;
 
-	public Firebolt(Position initialPosition, double[] initialVelocity) {
+	public Firebolt(Position initialPosition, double[] initialVelocity, Block heldBlock) {
 		super("firebolt");
 		this.velocity = initialVelocity;
 		this.pos = initialPosition;
+		this.heldBlock=heldBlock;
 		fallingaccelleration = 0.5;
 		isGrounded = false;
 		breakCount = 0;

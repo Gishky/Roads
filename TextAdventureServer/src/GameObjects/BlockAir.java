@@ -6,4 +6,9 @@ public class BlockAir extends Block{
 		blocksMovement = false;
 		friction = 1;
 	}
+	
+
+	public Block clone() {
+		return new BlockAir();
+	}
 }

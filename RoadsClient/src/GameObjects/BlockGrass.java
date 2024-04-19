@@ -9,18 +9,13 @@ public class BlockGrass extends Block {
 	
 	public BlockGrass() {
 		breakThreshhold = 25;
+		c=new Color(34, 139, 34);
 	}
 	
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		super.draw(x, y, g, cameraX, cameraY);
 		g.setColor(new Color(34, 139, 34));
-		
-		Color c = g.getColor();
-		g.setColor(new Color((int) (c.getRed() * (1 - World.getBlockBreakCount(x, y) / breakThreshhold)),
-				(int) (c.getGreen() * (1 - World.getBlockBreakCount(x, y) / breakThreshhold)),
-				(int) (c.getBlue() * (1 - World.getBlockBreakCount(x, y) / breakThreshhold))));
-
 		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 
 		g.setColor(g.getColor().brighter());

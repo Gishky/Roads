@@ -12,6 +12,7 @@ public class Entity {
 
 	protected Position pos;
 
+	protected Block heldBlock;
 	protected int breakCount;
 	protected int HPPercent = 100;
 
@@ -64,5 +65,13 @@ public class Entity {
 
 	public void setHPPercent(int int1) {
 		HPPercent = int1;
+	}
+
+	public void setHeldBlock(Block b) {
+		heldBlock = b;
+	}
+
+	public Block getHeldBlock() {
+		return heldBlock;
 	}
 }

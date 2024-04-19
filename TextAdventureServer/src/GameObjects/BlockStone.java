@@ -8,4 +8,8 @@ public class BlockStone extends Block {
 		breakable = true;
 		breakThreshhold = 100;
 	}
+
+	public Block clone() {
+		return new BlockStone();
+	}
 }

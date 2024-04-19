@@ -22,4 +22,8 @@ public class Block {
 	public int getBreakThreshhold() {
 		return breakThreshhold;
 	}
+	
+	public Block clone() {
+		return null;
+	}
 }

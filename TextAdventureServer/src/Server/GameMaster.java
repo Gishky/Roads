@@ -34,8 +34,8 @@ public class GameMaster implements ActionListener {
 			Entity entity = entities.get(i);
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
-						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile(),
-						false);
+						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
+						+ ";" + entity.getHeldBlockId(), false);
 		}
 
 	}
@@ -48,7 +48,7 @@ public class GameMaster implements ActionListener {
 
 	public static void removeEntity(Entity e) {
 		master.entities.remove(e);
-		//System.out.println("removing: " + e.getId());
+		// System.out.println("removing: " + e.getId());
 		sendToAll("removeEntity;" + e.getId(), true);
 	}
 

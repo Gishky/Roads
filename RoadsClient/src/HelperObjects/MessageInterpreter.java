@@ -1,9 +1,6 @@
 package HelperObjects;
 
-import GameObjects.BlockAir;
-import GameObjects.BlockDirt;
-import GameObjects.BlockGrass;
-import GameObjects.BlockStone;
+import GameObjects.Block;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
@@ -36,6 +33,7 @@ public class MessageInterpreter implements UDPMessageListener {
 			removeEntity(messageParts[1]);
 			break;
 		case "id":
+			System.out.println(messageParts[1]);
 			World.playerid = Integer.parseInt(messageParts[1]);
 			break;
 		default:
@@ -62,20 +60,7 @@ public class MessageInterpreter implements UDPMessageListener {
 		int x = Integer.parseInt(messageParts[1]);
 		int y = Integer.parseInt(messageParts[2]);
 
-		switch (Integer.parseInt(messageParts[3])) {
-		case 0:
-			World.setBlock(x, y, new BlockAir());
-			break;
-		case 1:
-			World.setBlock(x, y, new BlockDirt());
-			break;
-		case 2:
-			World.setBlock(x, y, new BlockGrass());
-			break;
-		case 3:
-			World.setBlock(x, y, new BlockStone());
-			break;
-		}
+		World.setBlock(x, y, Block.getBlockFromID(messageParts[3]));
 	}
 
 	private static void updateEntity(String[] messageParts) {
@@ -84,6 +69,7 @@ public class MessageInterpreter implements UDPMessageListener {
 				e.setPos(new Position(messageParts[2], messageParts[3]));
 				e.setBreakCount(Integer.parseInt(messageParts[4]));
 				e.setHPPercent(Integer.parseInt(messageParts[5]));
+				e.setHeldBlock(Block.getBlockFromID(messageParts[6]));
 				if (e.getId() == World.playerid) {
 					World.cameraX = Integer.parseInt(messageParts[2]);
 					World.cameraY = Integer.parseInt(messageParts[3]);
@@ -96,7 +82,7 @@ public class MessageInterpreter implements UDPMessageListener {
 
 	private static void createEntity(String[] messageParts) {
 
-		if(Panel.existsEntityID(messageParts[2])) {
+		if (Panel.existsEntityID(messageParts[2])) {
 			return;
 		}
 		for (int index = 0; index < Panel.getRemovedEntityIDs().size(); index++) {
@@ -106,7 +92,7 @@ public class MessageInterpreter implements UDPMessageListener {
 				return;
 			}
 		}
-		
+
 		switch (messageParts[1]) {
 		case "player":
 			Panel.getEntities()

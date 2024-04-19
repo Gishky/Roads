@@ -15,7 +15,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	private UDPClientConnection connection;
 
-	private Block heldBlock = null;
 	private boolean placeFlag = false;
 
 	public PlayerCharacter() {
@@ -67,6 +66,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 								.getBreakThreshhold() <= breakCount) {
 					heldBlock = World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1);
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
+					pos.setY(pos.getY() + Block.size / 2);
+					pos.setX((int) (pos.getX() / Block.size) * Block.size + Block.size / 2);
 					breakCount = 0;
 				} else if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
 						(int) (pos.getY()) / Block.size - 1).blocksMovement) {
@@ -100,6 +101,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void shootFirebolt() {
+		if (heldBlock == null)
+			return;
 
 		double[] fireboltVelocity = { velocity[0] * 2.5, velocity[1] * 2.5 - 3 };
 		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -108,9 +111,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		// fireboltVelocity[1] = unitVelocity[1] * 20;
 
 		Position fireboltpos = new Position();
-		fireboltpos.set(pos.getX() + unitVelocity[0] * (hitBox.getRadius()+3),
-				pos.getY() + unitVelocity[1] * (hitBox.getRadius()+3));
-		 new Firebolt(fireboltpos, fireboltVelocity);
+		fireboltpos.set(pos.getX() + unitVelocity[0] * (hitBox.getRadius() + 3),
+				pos.getY() + unitVelocity[1] * (hitBox.getRadius() + 3));
+		new Firebolt(fireboltpos, fireboltVelocity, heldBlock.clone());
 	}
 
 	public UDPClientConnection getConnection() {
