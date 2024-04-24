@@ -13,12 +13,9 @@ public class UDPClientConnection implements ActionListener {
 	private UDPServer server;
 	private InetAddress address;
 	private int port;
-	private String receivedString;
 
 	private UDPClientObject clientObject;
 
-	private final String MESSAGE_START = "BEGIN;";
-	private final String MESSAGE_END = ";END";
 	private final String PRIORITY_MARK = "PRIORITY;";
 	private final String PRIORITY_RESPONSE = "RECEIVEDPRIORITY;";
 
@@ -47,7 +44,6 @@ public class UDPClientConnection implements ActionListener {
 			message = PRIORITY_MARK + message;
 			priorityMessages.add(message);
 		}
-		message = MESSAGE_START + message + MESSAGE_END;
 		byte[] buf = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 		server.sendMessage(packet);
@@ -67,10 +63,14 @@ public class UDPClientConnection implements ActionListener {
 		if (priorityMessages.size() < 1)
 			return;
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			if (priorityMessages.get(i) != null) {
-				sendMessage(priorityMessages.get(i), false);
-			} else {
-				priorityMessages.remove(i);
+			try {
+				if (priorityMessages.get(i) != null) {
+					sendMessage(priorityMessages.get(i), false);
+				} else {
+					priorityMessages.remove(i);
+				}
+			} catch (Exception ex) {
+
 			}
 		}
 	}
@@ -84,14 +84,8 @@ public class UDPClientConnection implements ActionListener {
 		return clientObject;
 	}
 
-	public void receivedString(String received) {
+	public void receivedString(String receivedString) {
 		connectionTimeoutCounter = 10;
-		receivedString += received;
-		if (!receivedString.endsWith(MESSAGE_END)) {
-			return;
-		}
-		receivedString = receivedString.substring(receivedString.indexOf(MESSAGE_START) + MESSAGE_START.length(),
-				receivedString.length() - MESSAGE_END.length());
 		if (receivedString.startsWith("NetworkPingRequest")) {
 			sendMessage(receivedString, false);
 		} else if (receivedString.startsWith(PRIORITY_RESPONSE)) {

@@ -21,8 +21,6 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	private String receivedString;
 
-	private final String MESSAGE_START = "BEGIN;";
-	private final String MESSAGE_END = ";END";
 	private final String PRIORITY_MARK = "PRIORITY;";
 	private final String PRIORITY_RESPONSE = "RECEIVEDPRIORITY;";
 
@@ -57,24 +55,16 @@ public class UDPServerConnection extends Thread implements ActionListener {
 			while (true) {
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				socket.receive(packet);
-				String received = new String(packet.getData(), 0, packet.getLength());
 
-				receivedString += received;
-				if (!receivedString.endsWith(MESSAGE_END)) {
-					return;
-				}
-				receivedString = receivedString.substring(
-						receivedString.indexOf(MESSAGE_START) + MESSAGE_START.length(),
-						receivedString.length() - MESSAGE_END.length());
-				System.out.println(receivedString);
+				receivedString = new String(packet.getData(), 0, packet.getLength());
 
 				if (receivedString.startsWith("NetworkPingRequest")) {
 					eval.addPing(Long.parseLong(receivedString.split(";")[1]));
 				} else if (receivedString.startsWith(PRIORITY_RESPONSE)) {
 					try {
 						priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
-					}catch(Exception e) {
-						
+					} catch (Exception e) {
+
 					}
 				} else {
 					if (receivedString.startsWith(PRIORITY_MARK)) {
@@ -93,8 +83,17 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			sendMessage(priorityMessages.get(i), false);
+			try {
+				if (priorityMessages.get(i) != null) {
+					sendMessage(priorityMessages.get(i), false);
+				} else {
+					priorityMessages.remove(i);
+				}
+			} catch (Exception ex) {
+
+			}
 		}
+
 	}
 
 	public void sendMessage(String message, boolean priority) {
@@ -103,7 +102,6 @@ public class UDPServerConnection extends Thread implements ActionListener {
 			message = PRIORITY_MARK + message;
 			priorityMessages.add(message);
 		}
-		message = MESSAGE_START + message + MESSAGE_END;
 		byte[] buf = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 		try {
