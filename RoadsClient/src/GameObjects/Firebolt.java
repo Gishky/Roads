@@ -23,8 +23,12 @@ public class Firebolt extends Entity {
 
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			Panel.addParticle(new Particle(pos.getX() + r.nextDouble() * 5 - 3, pos.getY() + r.nextDouble() * 5 - 3, 0,
-					0, r.nextDouble() * 0.5 - 0.3, -r.nextDouble() * 0.5, heldBlock.getColor()));
+			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone)
+				Panel.addParticle(new Particle(pos.getX() + r.nextDouble() * 4 - 2, pos.getY() + r.nextDouble() * 4 - 2,
+						0, 0, r.nextDouble() * 0.5 - 0.3, -r.nextDouble() * 0.5, heldBlock.getColor()));
+			else if (heldBlock instanceof BlockGrass)
+				Panel.addParticle(new Particle(pos.getX(), pos.getY(), r.nextDouble() * 2 - 1, -1 * r.nextDouble(), 0,
+						r.nextDouble() * 0.1, heldBlock.getColor()));
 		}
 	}
 }

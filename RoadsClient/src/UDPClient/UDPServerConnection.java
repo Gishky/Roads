@@ -98,7 +98,6 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	public void sendMessage(String message, boolean priority) {
 		if (priority) {
-			System.out.println(message);
 			message = PRIORITY_MARK + message;
 			priorityMessages.add(message);
 		}

@@ -33,7 +33,6 @@ public class MessageInterpreter implements UDPMessageListener {
 			removeEntity(messageParts[1]);
 			break;
 		case "id":
-			System.out.println(messageParts[1]);
 			World.playerid = Integer.parseInt(messageParts[1]);
 			break;
 		default:

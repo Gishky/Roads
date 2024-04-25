@@ -22,8 +22,16 @@ public class Block {
 	public int getBreakThreshhold() {
 		return breakThreshhold;
 	}
-	
+
 	public Block clone() {
 		return null;
+	}
+
+	public void activateAbility(Entity e) {
+
+	}
+
+	public int getAbilityCooldown() {
+		return 0;
 	}
 }

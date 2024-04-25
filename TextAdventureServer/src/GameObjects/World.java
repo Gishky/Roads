@@ -7,7 +7,6 @@ import Server.GameMaster;
 public class World {
 
 	private static Block[][] world = new Block[10000][300];
-	private static int[] höhe;
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
@@ -24,7 +23,7 @@ public class World {
 		}
 
 		// höhengeneration
-		höhe = new int[world.length];
+		int[] höhe = new int[world.length];
 		for (int i = 0; i < world.length; i++) {
 			int delta = 0;
 			for (int m = 0; m < functions; m++) {
@@ -62,21 +61,24 @@ public class World {
 				}
 			}
 			if (x != 0 && höhe[x] - höhe[x - 1] >= 3) {
-				for (int y = worldHeight - höhe[x]; y <= worldHeight - höhe[x-1]; y++) {
+				for (int y = worldHeight - höhe[x]; y <= worldHeight - höhe[x - 1]; y++) {
 					setBlock(x, y, new BlockStone());
 				}
-			}else if (x != 0 && höhe[x-1] - höhe[x] >= 3) {
-				for (int y = worldHeight - höhe[x-1]; y <= worldHeight - höhe[x]; y++) {
-					setBlock(x-1, y, new BlockStone());
+			} else if (x != 0 && höhe[x - 1] - höhe[x] >= 3) {
+				for (int y = worldHeight - höhe[x - 1]; y <= worldHeight - höhe[x]; y++) {
+					setBlock(x - 1, y, new BlockStone());
 				}
 			}
 		}
 	}
 
 	public static int getHeight(int x) {
-		if (x < 0 || x >= höhe.length)
-			return 0;
-		return world[0].length - höhe[x];
+		for (int i = 0; i < world[x].length; i++) {
+			if (world[x][i].id != 0) {
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	// casts a ray from source to target and returns hit coordinates if hit, returns
@@ -87,7 +89,7 @@ public class World {
 			if (world[(int) (xTarget / Block.size)][(int) (yTarget / Block.size)].blocksMovement) {
 				p[0] = xSource;
 				p[1] = ySource;
-				int counter = 50;
+				int counter = 100;
 				while (counter-- > 0) {
 					boolean stay = false;
 					if (world[(int) (xSource / Block.size)][(int) (p[1] / Block.size)].blocksMovement == false) {
@@ -127,7 +129,11 @@ public class World {
 	}
 
 	public static Block getBlock(int x, int y) {
-		return world[x][y];
+		try {
+			return world[x][y];
+		} catch (Exception e) {
+		}
+		return null;
 	}
 
 	public static Block[][] getWorld() {

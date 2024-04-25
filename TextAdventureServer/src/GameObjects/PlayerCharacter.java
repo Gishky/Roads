@@ -54,9 +54,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				velocity[1] = -jumpforce;
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_SPACE)) {
-			if (fireCooldown <= 0) {
-				fireCooldown = 10;
-				shootFirebolt();
+			if (fireCooldown <= 0 && heldBlock != null) {
+				fireCooldown = heldBlock.getAbilityCooldown();
+				heldBlock.activateAbility(this);
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
@@ -98,22 +98,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			return true;
 		}
 		return false;
-	}
-
-	private void shootFirebolt() {
-		if (heldBlock == null)
-			return;
-
-		double[] fireboltVelocity = { velocity[0] * 2.5, velocity[1] * 2.5 - 3 };
-		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
-		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
-		// fireboltVelocity[0] = unitVelocity[0] * 20;
-		// fireboltVelocity[1] = unitVelocity[1] * 20;
-
-		Position fireboltpos = new Position();
-		fireboltpos.set(pos.getX() + unitVelocity[0] * (hitBox.getRadius() + 3),
-				pos.getY() + unitVelocity[1] * (hitBox.getRadius() + 3));
-		new Firebolt(fireboltpos, fireboltVelocity, heldBlock.clone());
 	}
 
 	public UDPClientConnection getConnection() {
