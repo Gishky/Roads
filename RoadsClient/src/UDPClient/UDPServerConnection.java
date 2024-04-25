@@ -68,6 +68,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 					}
 				} else {
 					if (receivedString.startsWith(PRIORITY_MARK)) {
+						System.out.println("receiving: "+receivedString);
 						receivedString = receivedString.substring(PRIORITY_MARK.length());
 						sendMessage(PRIORITY_RESPONSE + receivedString, false);
 					}
@@ -83,8 +84,11 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < priorityMessages.size(); i++) {
+			if(i>10) 
+				return;
 			try {
 				if (priorityMessages.get(i) != null) {
+					System.out.println("sending: "+priorityMessages.get(i));
 					sendMessage(priorityMessages.get(i), false);
 				} else {
 					priorityMessages.remove(i);
@@ -99,6 +103,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	public void sendMessage(String message, boolean priority) {
 		if (priority) {
 			message = PRIORITY_MARK + message;
+			System.out.println("sending: "+message);
 			priorityMessages.add(message);
 		}
 		byte[] buf = message.getBytes();

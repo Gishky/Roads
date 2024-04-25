@@ -48,6 +48,7 @@ public class Firebolt extends Entity {
 					&& hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
 				e.receiveDamage(damage);
 				isGrounded = true;
+				break;
 			}
 		}
 		return true;
