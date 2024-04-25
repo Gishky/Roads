@@ -117,4 +117,8 @@ public class UDPServer extends Thread {
 			e.printStackTrace();
 		}
 	}
+
+	public void stopServer() {
+		running = false;
+	}
 }

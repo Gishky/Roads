@@ -39,7 +39,6 @@ public class GrassCrawler extends Entity {
 
 		target[0] = pos.getX() + speed * (goLeft ? -1 : 1);
 		p = World.getCastResult(pos.getX(), pos.getY(), target[0], pos.getY());
-		System.out.println(p[0]);
 		if (p[0] == -1) {
 			pos.setX(target[0]);
 			return true;

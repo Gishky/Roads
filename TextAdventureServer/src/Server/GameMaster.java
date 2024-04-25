@@ -2,18 +2,21 @@ package Server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
 import GameObjects.Entity;
 import GameObjects.World;
+import HelperObjects.PlayerCharacterCreator;
 import UDPServer.UDPServer;
 
 public class GameMaster implements ActionListener {
 
 	private static GameMaster master;
 	private UDPServer server;
+	private Timer t;
 
 	private ArrayList<Entity> entities;
 
@@ -23,7 +26,8 @@ public class GameMaster implements ActionListener {
 		}
 
 		this.server = server;
-		new Timer(50, this).start();
+		t = new Timer(50, this);
+		t.start();
 		entities = new ArrayList<Entity>();
 		World.generateWorld();
 	}
@@ -38,6 +42,21 @@ public class GameMaster implements ActionListener {
 						+ ";" + entity.getHeldBlockId(), false);
 		}
 
+		LocalDateTime t = LocalDateTime.now();
+		if (t.getHour() == 0) { // restart server
+			UDPServer.getInstances().get(0).stopServer();
+
+			UDPServer server = null;
+			try {
+				server = new UDPServer("RoadsServer", 61852, new PlayerCharacterCreator());
+				server.start();
+			} catch (Exception ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+			master = null;
+			new GameMaster(server);
+		}
 	}
 
 	public static void addEntity(Entity e) {
