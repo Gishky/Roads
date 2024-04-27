@@ -2,14 +2,15 @@ package Server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
 import GameObjects.Entity;
 import GameObjects.World;
-import HelperObjects.PlayerCharacterCreator;
 import UDPServer.UDPServer;
 
 public class GameMaster implements ActionListener {
@@ -20,10 +21,13 @@ public class GameMaster implements ActionListener {
 
 	private ArrayList<Entity> entities;
 
+	private LocalDate currentDate;
 	public GameMaster(UDPServer server) {
 		if (master == null) {
 			master = this;
 		}
+		
+		currentDate = LocalDate.now();
 
 		this.server = server;
 		t = new Timer(50, this);
@@ -41,21 +45,9 @@ public class GameMaster implements ActionListener {
 						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
 						+ ";" + entity.getHeldBlockId(), false);
 		}
-
-		LocalDateTime t = LocalDateTime.now();
-		if (t.getHour() == 0) { // restart server
-			UDPServer.getInstances().get(0).stopServer();
-
-			UDPServer server = null;
-			try {
-				server = new UDPServer("RoadsServer", 61852, new PlayerCharacterCreator());
-				server.start();
-			} catch (Exception ex) {
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
-			}
-			master = null;
-			new GameMaster(server);
+		
+		if(!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
+			restartServer();
 		}
 	}
 
@@ -77,5 +69,13 @@ public class GameMaster implements ActionListener {
 
 	public static void sendToAll(String message, boolean priority) {
 		master.server.sendToAll(message, priority);
+	}
+
+	public static void restartServer() {
+		try {
+			Runtime.getRuntime().exec("sudo reboot");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

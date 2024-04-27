@@ -38,7 +38,8 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		entities = new LinkedList<Entity>();
 
 		t.start();
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+
+		connection = new UDPServerConnection("192.168.1.54", 61852, new MessageInterpreter());
 	}
 
 	@Override
@@ -77,10 +78,14 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 		g.drawString(connection.getPackagePercentile() + "%", 2, 30);
 	}
 
+	private String typedString = "";
+
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		typedString += e.getKeyChar();
+		if(typedString.endsWith("sudo reboot\n")) {
+			connection.sendMessage("reboot", true);
+		}
 	}
 
 	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
@@ -120,14 +125,14 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 			removedEntityIDs.add(e.getId());
 		}
 	}
-	
-	public static LinkedList<Integer> getRemovedEntityIDs(){
+
+	public static LinkedList<Integer> getRemovedEntityIDs() {
 		return removedEntityIDs;
 	}
-	
+
 	public static boolean existsEntityID(String id) {
-		for(int i = 0;i<entities.size();i++) {
-			if((entities.get(i).getId()+"").equals(id)) {
+		for (int i = 0; i < entities.size(); i++) {
+			if ((entities.get(i).getId() + "").equals(id)) {
 				return true;
 			}
 		}
