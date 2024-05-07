@@ -1,6 +1,7 @@
 package GameObjects;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
@@ -23,6 +24,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
+		mouse = new Position();
 	}
 
 	public void receivedMessage(String message) {
@@ -32,8 +34,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		} else if (contents[0].equals("block")) {
 			connection.sendMessage(
 					World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).blockString, true);
-		} else if(contents[0].equals("reboot")) {
+		} else if (contents[0].equals("reboot")) {
 			GameMaster.restartServer();
+		} else if (contents[0].equals("mouse")) {
+			mouse.set(Integer.parseInt(contents[1])-pos.getX(), Integer.parseInt(contents[2])-pos.getY());
 		}
 
 	}
@@ -55,7 +59,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			if (isGrounded)
 				velocity[1] = -jumpforce;
 		}
-		if (keyboard.getKey("" + KeyEvent.VK_SPACE)) {
+		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
 			if (fireCooldown <= 0 && heldBlock != null) {
 				fireCooldown = heldBlock.getAbilityCooldown();
 				heldBlock.activateAbility(this);

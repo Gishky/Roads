@@ -16,10 +16,17 @@ public class BlockGrass extends Block {
 	}
 
 	public void activateAbility(Entity e) {
-		boolean goLeft = e.velocity[0] < 0;
+		double[] initialVelocity = { e.getMousePosition().getX() ,
+				e.getMousePosition().getY()  };
+		double velocityLength = Math.sqrt(Math.pow(initialVelocity[0], 2) + Math.pow(initialVelocity[1], 2));
+		double[] unitVelocity = { initialVelocity[0] / velocityLength, initialVelocity[1] / velocityLength };
+		initialVelocity[0] = unitVelocity[0] * 20;
+		initialVelocity[1] = unitVelocity[1] * 20;
 
-		new GrassCrawler(new Position(e.getPos().getX() + (e.getHitBox().getRadius() + 10) * (goLeft ? -1 : 1),
-				e.getPos().getY()), goLeft);
+		Position initialPos = new Position();
+		initialPos.set(e.pos.getX() + unitVelocity[0] * (e.hitBox.getRadius() + 10),
+				e.pos.getY() + unitVelocity[1] * (e.hitBox.getRadius() + 10));
+		new GrassCrawler(initialPos, initialVelocity);
 	}
 
 	public int getAbilityCooldown() {

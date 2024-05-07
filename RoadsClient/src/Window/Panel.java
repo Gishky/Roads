@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -20,7 +23,7 @@ import HelperObjects.MessageInterpreter;
 import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
 
-public class Panel extends JPanel implements ActionListener, KeyListener {
+public class Panel extends JPanel implements ActionListener, KeyListener, MouseMotionListener, MouseListener {
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
@@ -34,12 +37,14 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 	public Panel() {
 		this.addKeyListener(this);
 		this.setFocusable(true);
+		addMouseListener(this);
+		addMouseMotionListener(this);
 
 		entities = new LinkedList<Entity>();
 
 		t.start();
 
-		connection = new UDPServerConnection("192.168.1.54", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
 	}
 
 	@Override
@@ -83,7 +88,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		typedString += e.getKeyChar();
-		if(typedString.endsWith("sudo reboot\n")) {
+		if (typedString.endsWith("sudo reboot\n")) {
 			connection.sendMessage("reboot", true);
 		}
 	}
@@ -137,5 +142,51 @@ public class Panel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		int key = e.getButton();
+		if (!pressedKeys.contains(key)) {
+			connection.sendMessage("key;down;" + key, true);
+			pressedKeys.add(key);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int key = e.getButton();
+		connection.sendMessage("key;up;" + key, true);
+		pressedKeys.remove(pressedKeys.indexOf(key));
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		connection.sendMessage("mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
+				+ (e.getY() + World.cameraY - windowHeight / 2), false);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		connection.sendMessage("mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
+				+ (e.getY() + World.cameraY - windowHeight / 2), false);
 	}
 }

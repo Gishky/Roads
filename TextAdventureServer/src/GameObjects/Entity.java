@@ -25,6 +25,7 @@ public class Entity {
 	protected Hitbox hitBox = new Hitbox(false, 0);
 
 	protected boolean isGrounded = false;
+	protected Position mouse;
 
 	public Entity(String identifier) {
 		entityIdentifier = identifier;
@@ -143,5 +144,9 @@ public class Entity {
 		if (heldBlock != null)
 			return heldBlock.getId();
 		return -1;
+	}
+	
+	public Position getMousePosition() {
+		return mouse;
 	}
 }

@@ -10,14 +10,14 @@ public class GrassCrawler extends Entity {
 	private double speed = 2;
 	private boolean goLeft;
 
-	public GrassCrawler(Position initialPosition, boolean goLeft) {
+	public GrassCrawler(Position initialPosition, double[] initialVelocity) {
 		super("firebolt");
 		this.pos = initialPosition;
 		this.heldBlock = new BlockGrass();
 		breakCount = 0;
 		hitBox = new Hitbox(false, 3);
-		velocity = new double[2];
-		this.goLeft = goLeft;
+		velocity = initialVelocity;
+		goLeft = initialVelocity[0] < 0;
 	}
 
 	@Override
