@@ -49,6 +49,9 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		if (!mousePositionUpdate.equals("")) {
+			connection.sendMessage(mousePositionUpdate, false);
+		}
 		repaint();
 	}
 
@@ -178,15 +181,17 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	}
 
+	private String mousePositionUpdate = "";
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		connection.sendMessage("mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
-				+ (e.getY() + World.cameraY - windowHeight / 2), false);
+		mousePositionUpdate = "mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
+				+ (e.getY() + World.cameraY - windowHeight / 2);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		connection.sendMessage("mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
-				+ (e.getY() + World.cameraY - windowHeight / 2), false);
+		mousePositionUpdate = "mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
+				+ (e.getY() + World.cameraY - windowHeight / 2);
 	}
 }
