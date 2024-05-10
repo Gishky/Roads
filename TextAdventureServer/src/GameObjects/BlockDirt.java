@@ -16,8 +16,7 @@ public class BlockDirt extends Block {
 	}
 
 	public void activateAbility(Entity e) {
-		double[] fireboltVelocity = { e.getMousePosition().getX() ,
-				e.getMousePosition().getY() };
+		double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
 		fireboltVelocity[0] = unitVelocity[0] * 20;

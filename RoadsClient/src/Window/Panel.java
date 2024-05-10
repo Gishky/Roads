@@ -44,7 +44,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 		t.start();
 
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 	}
 
 	@Override
@@ -185,13 +185,11 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mousePositionUpdate = "mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
-				+ (e.getY() + World.cameraY - windowHeight / 2);
+		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) + ";" + (e.getY() - windowHeight / 2);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mousePositionUpdate = "mouse;" + (e.getX() + World.cameraX - windowWidth / 2) + ";"
-				+ (e.getY() + World.cameraY - windowHeight / 2);
+		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) + ";" + (e.getY() - windowHeight / 2);
 	}
 }

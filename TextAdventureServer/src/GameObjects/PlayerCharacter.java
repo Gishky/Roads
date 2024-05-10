@@ -37,7 +37,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		} else if (contents[0].equals("reboot")) {
 			GameMaster.restartServer();
 		} else if (contents[0].equals("mouse")) {
-			mouse.set(Integer.parseInt(contents[1])-pos.getX(), Integer.parseInt(contents[2])-pos.getY());
+			mouse.set(Integer.parseInt(contents[1]), Integer.parseInt(contents[2]));
 		}
 
 	}
