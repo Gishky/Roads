@@ -3,6 +3,7 @@ package HelperObjects;
 import GameObjects.Block;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
+import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import UDPClient.UDPMessageListener;
@@ -99,6 +100,9 @@ public class MessageInterpreter implements UDPMessageListener {
 			break;
 		case "firebolt":
 			Panel.getEntities().add(new Firebolt(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
+			break;
+		case "oven":
+			Panel.getEntities().add(new OvenEntity(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
 			break;
 		}
 	}

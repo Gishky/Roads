@@ -5,9 +5,9 @@ import java.awt.Graphics2D;
 
 import Window.Panel;
 
-public class BlockCoal extends Block {
+public class BlockCoalOre extends Block {
 
-	public BlockCoal() {
+	public BlockCoalOre() {
 		breakThreshhold = 25;
 		c = new Color(100, 100, 100);
 	}

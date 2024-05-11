@@ -16,7 +16,6 @@ public class Firebolt extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		super.draw(g, cameraX, cameraY);
 		// System.out.println(id+":
 		// "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
 
@@ -41,5 +40,7 @@ public class Firebolt extends Entity {
 
 		lastx = pos.getX();
 		lasty = pos.getY();
+
+		super.draw(g, cameraX, cameraY);
 	}
 }

@@ -6,7 +6,7 @@ import Server.GameMaster;
 
 public class Entity {
 
-	private static int count = 0;
+	protected static int count = 0;
 	protected int id;
 	protected String entityIdentifier = "entity";
 
@@ -36,6 +36,9 @@ public class Entity {
 		HP = maxHP;
 		GameMaster.addEntity(this);
 	}
+
+	public Entity() {
+	};
 
 	public Position getPos() {
 		return pos;

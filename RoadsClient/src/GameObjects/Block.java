@@ -27,7 +27,11 @@ public class Block {
 		case "4":
 			return new BlockOven();
 		case "5":
-			return new BlockCoal();
+			return new BlockCoalOre();
+		case "6":
+			return new BlockIronOre();
+		case "7":
+			return new BlockIron();
 		default:
 			return null;
 		}

@@ -13,7 +13,6 @@ public class PlayerCharacter extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		super.draw(g, cameraX, cameraY);
 		int breakMaximum = 20;
 		double breakPercentile = (double) breakCount / breakMaximum;
 		if (breakPercentile > 1) {
@@ -58,6 +57,8 @@ public class PlayerCharacter extends Entity {
 		}
 
 		g.fillPolygon(xPoints, yPoints, xPoints.length);
+
+		super.draw(g, cameraX, cameraY);
 	}
 
 }

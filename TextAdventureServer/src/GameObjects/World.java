@@ -49,13 +49,14 @@ public class World {
 				if (y < worldHeight - höhe[x])
 					setBlock(x, y, new BlockAir());
 				else {
-					int material = r.nextInt(worldHeight);
-					if (material < y / 2)
+					if (r.nextInt(worldHeight) < y / 2)
 						setBlock(x, y, new BlockStone());
 					else {
-						material = r.nextInt(worldHeight);
-						if (material < y / 5)
-							setBlock(x, y, new BlockCoal());
+						if (r.nextInt(worldHeight) < y / 5)
+							if (r.nextInt(worldHeight) < y / 2)
+								setBlock(x, y, new BlockIronOre());
+							else
+								setBlock(x, y, new BlockCoalOre());
 						else
 							setBlock(x, y, new BlockDirt());
 					}

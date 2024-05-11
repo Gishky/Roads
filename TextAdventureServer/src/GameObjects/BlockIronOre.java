@@ -1,18 +1,19 @@
 package GameObjects;
 
-import HelperObjects.Position;
-
-public class BlockCoal extends Block {
-	public BlockCoal() {
-		id = 5;
+public class BlockIronOre extends Block {
+	public BlockIronOre() {
+		id = 6;
 		friction = 2;
 
 		breakable = true;
 		breakThreshhold = 25;
+
+		smeltedBlock = new BlockIron();
+		requiredFuelForSmelting = 40;
 	}
 
 	public Block clone() {
-		return new BlockCoal();
+		return new BlockIronOre();
 	}
 
 	public void activateAbility(Entity e) {

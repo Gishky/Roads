@@ -12,12 +12,16 @@ public class Block {
 	protected int breakThreshhold = 1;
 	protected int x, y;
 
+	protected Block smeltedBlock;
+	protected int requiredFuelForSmelting;
+	protected int fuelValue = 0;
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void update() {
-		
+
 	}
 
 	public double getFriction() {
@@ -43,5 +47,25 @@ public class Block {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public Block getSmeltedBlock() {
+		return smeltedBlock;
+	}
+
+	public int getFuelValue() {
+		return fuelValue;
+	}
+
+	public void setFuelValue(int value) {
+		this.fuelValue = value;
+	}
+
+	public int getRequiredFuelForSmelting() {
+		return requiredFuelForSmelting;
+	}
+
+	public void setRequiredFuelForSmelting(int value) {
+		requiredFuelForSmelting = value;
 	}
 }
