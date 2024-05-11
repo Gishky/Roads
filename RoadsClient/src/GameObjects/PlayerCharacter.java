@@ -16,7 +16,7 @@ public class PlayerCharacter extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		g.setColor(Color.black);
+		g.setColor(Color.blue.brighter().brighter());
 		if (heldBlock != null) {
 			g.setColor(heldBlock.getColor().darker());
 		}

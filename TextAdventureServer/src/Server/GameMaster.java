@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -44,7 +43,7 @@ public class GameMaster implements ActionListener {
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
 						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
-						+ ";" + entity.getHeldBlockId(), false);
+						+ ";" + entity.getHeldBlockId() + ";" + entity.getParameters()+";", false);
 		}
 
 		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {

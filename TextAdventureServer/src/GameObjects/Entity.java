@@ -28,6 +28,8 @@ public class Entity {
 	protected boolean isGrounded = false;
 	protected Position mouse;
 
+	protected String parameters = "";
+
 	public Entity(String identifier) {
 		entityIdentifier = identifier;
 		pos = new Position();
@@ -48,6 +50,8 @@ public class Entity {
 	public void setPos(Position pos) {
 		this.pos = pos;
 	}
+
+	private boolean actionUpdateOverride = false;
 
 	public boolean action() {
 		int x = (int) pos.getX();
@@ -92,8 +96,12 @@ public class Entity {
 			pos.set(targetx, targety);
 			return true;
 		}
-		return false;
 
+		if (actionUpdateOverride) {
+			actionUpdateOverride = false;
+			return true;
+		}
+		return false;
 	}
 
 	public void receiveDamage(int damage) {
@@ -102,8 +110,7 @@ public class Entity {
 			GameMaster.removeEntity(this);
 			return;
 		}
-		GameMaster.sendToAll("entity;" + getId() + ";" + (int) getPos().getX() + ";" + (int) getPos().getY() + ";"
-				+ getBreakCount() + ";" + ((int) (getHP() * 100 / getMaxHP()) + ";" + getHeldBlockId()), true);
+		actionUpdateOverride = true;
 	}
 
 	public int getId() {
@@ -164,5 +171,16 @@ public class Entity {
 
 	public void setVelocity(double[] velocity) {
 		this.velocity = velocity;
+	}
+
+	public String getParameters() {
+		if (parameters.equals("")) {
+			return "empty";
+		}
+		return parameters;
+	}
+
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
 	}
 }

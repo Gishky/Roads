@@ -1,6 +1,9 @@
 package GameObjects.Blocks;
 
+import java.util.Random;
+
 import GameObjects.Entity;
+import GameObjects.OvenAbilityJet;
 import GameObjects.OvenEntity;
 import GameObjects.World;
 import Server.GameMaster;
@@ -23,7 +26,7 @@ public class BlockOven extends Block {
 
 	public void activateAbility(Entity e) {
 		if (fuel > 0) {
-			fuel-=3;
+			fuel -= 3;
 			double[] boostVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(boostVelocity[0], 2) + Math.pow(boostVelocity[1], 2));
 			double[] unitVelocity = { boostVelocity[0] / velocityLength, boostVelocity[1] / velocityLength };
@@ -31,6 +34,13 @@ public class BlockOven extends Block {
 			entityVelocity[0] += unitVelocity[0] * boostAccelleration;
 			entityVelocity[1] += unitVelocity[1] * boostAccelleration;
 			e.setVelocity(entityVelocity);
+
+			for (int i = 0; i < 3; i++) {
+				double[] vel = new double[2];
+				vel[0] = -unitVelocity[0] * 3 + (new Random()).nextDouble() * 3;
+				vel[1] = -unitVelocity[1] * 3 + (new Random()).nextDouble() * 3;
+				new OvenAbilityJet(e.getPos().clone(), vel);
+			}
 		}
 	}
 

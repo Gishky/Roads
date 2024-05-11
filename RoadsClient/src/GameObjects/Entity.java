@@ -17,6 +17,16 @@ public class Entity {
 	protected int breakCount;
 	protected int HPPercent = 100;
 
+	protected String parameters;
+	
+	public String getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
+
 	protected boolean delete = false;
 
 	public Entity(String id, String x, String y, String hppercent, String heldBlock) {

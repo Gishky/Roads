@@ -5,6 +5,7 @@ import java.util.Random;
 
 import GameObjects.Entity;
 import GameObjects.Firebolt;
+import GameObjects.OvenAbilityJet;
 import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
@@ -26,6 +27,7 @@ public class MessageInterpreter implements UDPMessageListener {
 			createEntity(messageParts);
 			break;
 		case "entity":
+			System.out.println(message);
 			updateEntity(messageParts);
 			break;
 		case "createWorld":
@@ -86,6 +88,7 @@ public class MessageInterpreter implements UDPMessageListener {
 				e.setBreakCount(Integer.parseInt(messageParts[4]));
 				e.setHPPercent(Integer.parseInt(messageParts[5]));
 				e.setHeldBlock(Block.getBlockFromID(messageParts[6]));
+				e.setParameters(messageParts[7]);
 				if (e.getId() == World.playerid) {
 					World.cameraX = Integer.parseInt(messageParts[2]);
 					World.cameraY = Integer.parseInt(messageParts[3]);
@@ -121,6 +124,10 @@ public class MessageInterpreter implements UDPMessageListener {
 		case "oven":
 			Panel.getEntities().add(new OvenEntity(messageParts[2], messageParts[3], messageParts[4], messageParts[5],
 					messageParts[6]));
+			break;
+		case "ovenAbility":
+			Panel.getEntities()
+					.add(new OvenAbilityJet(messageParts[2], messageParts[3], messageParts[4], messageParts[5], messageParts[6]));
 			break;
 		}
 	}
