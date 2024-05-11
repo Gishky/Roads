@@ -3,6 +3,7 @@ package GameObjects;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.Position;
 import Window.Panel;
 

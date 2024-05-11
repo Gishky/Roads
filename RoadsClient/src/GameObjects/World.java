@@ -2,6 +2,7 @@ package GameObjects;
 
 import java.awt.Graphics2D;
 
+import GameObjects.Blocks.Block;
 import Window.Panel;
 
 public class World {

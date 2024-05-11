@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.Particle;
 import Window.Panel;
 

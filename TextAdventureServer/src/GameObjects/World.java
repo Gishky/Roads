@@ -2,6 +2,13 @@ package GameObjects;
 
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockAir;
+import GameObjects.Blocks.BlockCoalOre;
+import GameObjects.Blocks.BlockDirt;
+import GameObjects.Blocks.BlockGrass;
+import GameObjects.Blocks.BlockIronOre;
+import GameObjects.Blocks.BlockStone;
 import Server.GameMaster;
 
 public class World {
@@ -80,7 +87,7 @@ public class World {
 
 	public static int getHeight(int x) {
 		for (int i = 0; i < world[x].length; i++) {
-			if (world[x][i].id != 0) {
+			if (world[x][i].getId() != 0) {
 				return i;
 			}
 		}
@@ -92,13 +99,13 @@ public class World {
 	public static double[] getCastResult(double xSource, double ySource, double xTarget, double yTarget) {
 		double[] p = { -1, 0 };
 		try {
-			if (world[(int) (xTarget / Block.size)][(int) (yTarget / Block.size)].blocksMovement) {
+			if (world[(int) (xTarget / Block.size)][(int) (yTarget / Block.size)].isBlocksMovement()) {
 				p[0] = xSource;
 				p[1] = ySource;
 				int counter = 100;
 				while (counter-- > 0) {
 					boolean stay = false;
-					if (world[(int) (xSource / Block.size)][(int) (p[1] / Block.size)].blocksMovement == false) {
+					if (world[(int) (xSource / Block.size)][(int) (p[1] / Block.size)].isBlocksMovement() == false) {
 						p[0] = xSource;
 						if (Math.abs(xTarget - xSource) > 1) {
 							xSource += (xTarget > xSource ? 1 : -1);
@@ -108,7 +115,7 @@ public class World {
 							stay = true;
 						}
 					}
-					if (world[(int) (p[0] / Block.size)][(int) (ySource / Block.size)].blocksMovement == false) {
+					if (world[(int) (p[0] / Block.size)][(int) (ySource / Block.size)].isBlocksMovement() == false) {
 						p[1] = ySource;
 						if (Math.abs(yTarget - ySource) > 1) {
 							ySource += (yTarget > ySource ? 1 : -1);

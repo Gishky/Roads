@@ -1,6 +1,6 @@
 package HelperObjects;
 
-import GameObjects.Block;
+import GameObjects.Blocks.Block;
 
 public interface CraftingRecipe {
 

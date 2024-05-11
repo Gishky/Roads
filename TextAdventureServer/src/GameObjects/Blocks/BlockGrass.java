@@ -1,5 +1,7 @@
-package GameObjects;
+package GameObjects.Blocks;
 
+import GameObjects.Entity;
+import GameObjects.GrassCrawler;
 import HelperObjects.Position;
 
 public class BlockGrass extends Block {
@@ -24,8 +26,8 @@ public class BlockGrass extends Block {
 		initialVelocity[1] = unitVelocity[1] * 20;
 
 		Position initialPos = new Position();
-		initialPos.set(e.pos.getX() + unitVelocity[0] * (e.hitBox.getRadius() + 10),
-				e.pos.getY() + unitVelocity[1] * (e.hitBox.getRadius() + 10));
+		initialPos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 10),
+				e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 10));
 		new GrassCrawler(initialPos, initialVelocity);
 	}
 

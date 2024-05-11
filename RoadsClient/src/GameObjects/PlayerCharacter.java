@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -25,7 +26,7 @@ public class PlayerCharacter extends Entity {
 		if (breakCount != 0) {
 			int blockx = (int) pos.getX() / Block.size;
 			int blocky = (int) pos.getY() / Block.size + 1;
-			Color c = World.getWorld()[blockx][blocky].c;
+			Color c = World.getWorld()[blockx][blocky].getC();
 
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {

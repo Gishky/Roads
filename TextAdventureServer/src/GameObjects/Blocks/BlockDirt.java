@@ -1,5 +1,7 @@
-package GameObjects;
+package GameObjects.Blocks;
 
+import GameObjects.Entity;
+import GameObjects.Firebolt;
 import HelperObjects.Position;
 
 public class BlockDirt extends Block {
@@ -23,9 +25,9 @@ public class BlockDirt extends Block {
 		fireboltVelocity[1] = unitVelocity[1] * 20;
 
 		Position fireboltpos = new Position();
-		fireboltpos.set(e.pos.getX() + unitVelocity[0] * (e.hitBox.getRadius() + 3),
-				e.pos.getY() + unitVelocity[1] * (e.hitBox.getRadius() + 3));
-		Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.heldBlock.clone());
+		fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 3),
+				e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 3));
+		Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone());
 		bolt.setFallingAccelleration(0);
 	}
 

@@ -1,8 +1,8 @@
 package HelperObjects;
 
-import GameObjects.Block;
-import GameObjects.BlockOven;
 import GameObjects.World;
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockOven;
 
 public class CraftingOven implements CraftingRecipe {
 

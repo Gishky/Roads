@@ -1,4 +1,4 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,7 +9,7 @@ public class BlockCoalOre extends Block {
 
 	public BlockCoalOre() {
 		breakThreshhold = 20;
-		c = Color.black;
+		setC(Color.black);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class BlockCoalOre extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(c);
+		g.setColor(getC());
 		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);

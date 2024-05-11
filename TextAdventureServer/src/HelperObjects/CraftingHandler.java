@@ -2,9 +2,9 @@ package HelperObjects;
 
 import java.util.LinkedList;
 
-import GameObjects.Block;
-import GameObjects.BlockAir;
 import GameObjects.World;
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockAir;
 
 public class CraftingHandler {
 

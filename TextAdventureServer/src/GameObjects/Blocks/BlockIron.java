@@ -1,15 +1,14 @@
-package GameObjects;
+package GameObjects.Blocks;
 
-public class BlockIronOre extends Block {
-	public BlockIronOre() {
-		id = 6;
+import GameObjects.Entity;
+
+public class BlockIron extends Block {
+	public BlockIron() {
+		id = 7;
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 20;
-
-		smeltedBlock = new BlockIron();
-		requiredFuelForSmelting = 400;
+		breakThreshhold = 100;
 	}
 
 	public Block clone() {

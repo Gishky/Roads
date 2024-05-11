@@ -1,4 +1,6 @@
-package GameObjects;
+package GameObjects.Blocks;
+
+import GameObjects.Entity;
 
 public class Block {
 	public static int size = 20;
@@ -6,11 +8,13 @@ public class Block {
 	protected int id;
 	public String blockString = "";
 
-	protected boolean blocksMovement = true;
+	private boolean blocksMovement = true;
 	protected double friction = 1;
 	protected boolean breakable = false;
 	protected int breakThreshhold = 1;
-	protected int x, y;
+	private int x;
+
+	private int y;
 
 	protected Block smeltedBlock;
 	protected int requiredFuelForSmelting;
@@ -45,8 +49,8 @@ public class Block {
 	}
 
 	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
+		this.setX(x);
+		this.setY(y);
 	}
 
 	public Block getSmeltedBlock() {
@@ -67,5 +71,29 @@ public class Block {
 
 	public void setRequiredFuelForSmelting(int value) {
 		requiredFuelForSmelting = value;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public boolean isBlocksMovement() {
+		return blocksMovement;
+	}
+
+	public void setBlocksMovement(boolean blocksMovement) {
+		this.blocksMovement = blocksMovement;
 	}
 }

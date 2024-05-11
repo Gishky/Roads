@@ -3,13 +3,13 @@ package HelperObjects;
 import java.awt.Color;
 import java.util.Random;
 
-import GameObjects.Block;
-import GameObjects.BlockAir;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockAir;
 import UDPClient.UDPMessageListener;
 import Window.Panel;
 

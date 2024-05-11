@@ -3,6 +3,11 @@ package GameObjects;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.BlockCoalOre;
+import GameObjects.Blocks.BlockDirt;
+import GameObjects.Blocks.BlockGrass;
+import GameObjects.Blocks.BlockIronOre;
+import GameObjects.Blocks.BlockStone;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -29,7 +34,8 @@ public class Firebolt extends Entity {
 
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone)
+			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone || heldBlock instanceof BlockIronOre
+					|| heldBlock instanceof BlockCoalOre)
 				Panel.addParticle(new Particle(pos.getX() + r.nextDouble() * 4 - 2 + stepx * i,
 						pos.getY() + r.nextDouble() * 4 - 2 + stepy * i, 0, 0, r.nextDouble() * 0.5 - 0.3,
 						-r.nextDouble() * 0.5, heldBlock.getColor()));

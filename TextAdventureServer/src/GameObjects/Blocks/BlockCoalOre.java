@@ -1,18 +1,22 @@
-package GameObjects;
+package GameObjects.Blocks;
 
+import GameObjects.Entity;
+import GameObjects.Firebolt;
 import HelperObjects.Position;
 
-public class BlockStone extends Block {
-	public BlockStone() {
-		id = 3;
+public class BlockCoalOre extends Block {
+	public BlockCoalOre() {
+		id = 5;
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 15;
+		breakThreshhold = 20;
+
+		fuelValue = 200;
 	}
 
 	public Block clone() {
-		return new BlockStone();
+		return new BlockCoalOre();
 	}
 
 	public void activateAbility(Entity e) {
@@ -31,13 +35,13 @@ public class BlockStone extends Block {
 			fireboltVelocity[1] = unitVelocity[1] * 20;
 
 			Position fireboltpos = new Position();
-			fireboltpos.set(e.pos.getX() + unitVelocity[0] * (e.hitBox.getRadius() + 3),
-					e.pos.getY() + unitVelocity[1] * (e.hitBox.getRadius() + 3));
-			new Firebolt(fireboltpos, fireboltVelocity, e.heldBlock.clone());
+			fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 3),
+					e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 3));
+			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone());
 		}
 	}
 
 	public int getAbilityCooldown() {
-		return 15;
+		return 20;
 	}
 }

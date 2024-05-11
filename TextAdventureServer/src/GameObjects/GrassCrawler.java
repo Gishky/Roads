@@ -1,5 +1,8 @@
 package GameObjects;
 
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockAir;
+import GameObjects.Blocks.BlockGrass;
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import Server.GameMaster;

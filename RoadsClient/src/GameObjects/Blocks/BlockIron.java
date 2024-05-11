@@ -1,15 +1,15 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 import Window.Panel;
 
-public class BlockOven extends Block {
+public class BlockIron extends Block {
 
-	public BlockOven() {
-		breakThreshhold = 40;
-		c = new Color(80, 80, 80);
+	public BlockIron() {
+		breakThreshhold = 100;
+		setC(new Color(153, 149, 148));
 	}
 
 	@Override
@@ -19,12 +19,10 @@ public class BlockOven extends Block {
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(c);
+		g.setColor(getC());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
-		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
 	}
-
 }

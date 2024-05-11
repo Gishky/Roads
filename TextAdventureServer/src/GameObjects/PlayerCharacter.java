@@ -3,6 +3,8 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockAir;
 import HelperObjects.CraftingHandler;
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
@@ -86,7 +88,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
 					breakCount = 0;
 				} else if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
-						(int) (pos.getY()) / Block.size - 1).blocksMovement) {
+						(int) (pos.getY()) / Block.size - 1).isBlocksMovement()) {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size, heldBlock);
 					heldBlock = null;
 					velocity[1] = -jumpforce;
@@ -97,7 +99,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				}
 			} else {
 				if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
-						(int) (pos.getY()) / Block.size + 1).blocksMovement) {
+						(int) (pos.getY()) / Block.size + 1).isBlocksMovement()) {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, heldBlock);
 					heldBlock = null;
 				}

@@ -1,4 +1,4 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,7 +8,7 @@ public class Block {
 
 	protected int breakThreshhold = 0;
 
-	protected Color c;
+	private Color c;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 
@@ -38,6 +38,14 @@ public class Block {
 	}
 
 	public Color getColor() {
+		return getC();
+	}
+
+	public Color getC() {
 		return c;
+	}
+
+	public void setC(Color c) {
+		this.c = c;
 	}
 }

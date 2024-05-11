@@ -1,5 +1,6 @@
 package GameObjects;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import Server.GameMaster;
@@ -155,5 +156,13 @@ public class Entity {
 
 	public void setFallingAccelleration(double accelleration) {
 		fallingaccelleration = accelleration;
+	}
+
+	public double[] getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(double[] velocity) {
+		this.velocity = velocity;
 	}
 }

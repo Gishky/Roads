@@ -1,9 +1,9 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 public class BlockAir extends Block {
 	public BlockAir() {
 		id = 0;
-		blocksMovement = false;
+		setBlocksMovement(false);
 		friction = 1;
 	}
 

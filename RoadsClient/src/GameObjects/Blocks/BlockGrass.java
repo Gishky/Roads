@@ -1,21 +1,24 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 import Window.Panel;
 
-public class BlockAir extends Block {
+public class BlockGrass extends Block {
 	
-	public BlockAir() {
-		c=new Color(100, 100, 255);
+	public BlockGrass() {
+		breakThreshhold = 5;
+		setC(new Color(34, 139, 34));
 	}
-
+	
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		super.draw(x, y, g, cameraX, cameraY);
-		g.setColor(c);
+		g.setColor(getC());
 		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
-		
+
+		g.setColor(g.getColor().brighter());
+		g.drawRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 	}
 }

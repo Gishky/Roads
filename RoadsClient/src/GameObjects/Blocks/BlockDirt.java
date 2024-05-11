@@ -1,4 +1,4 @@
-package GameObjects;
+package GameObjects.Blocks;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,13 +9,13 @@ public class BlockDirt extends Block {
 
 	public BlockDirt() {
 		breakThreshhold = 5;
-		c=new Color(139, 69, 19);
+		setC(new Color(139, 69, 19));
 	}
 
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		super.draw(x, y, g, cameraX, cameraY);
-		g.setColor(c);
+		g.setColor(getC());
 		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 
 		g.setColor(g.getColor().brighter());
