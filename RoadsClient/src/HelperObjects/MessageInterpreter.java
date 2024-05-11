@@ -49,7 +49,7 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void removeEntity(String id) {
 		for (Entity e : Panel.getEntities()) {
 			if (("" + e.getId()).equals(id)) {
-				Panel.removeEntity(e);
+				e.setDelete(true);
 				return;
 			}
 		}

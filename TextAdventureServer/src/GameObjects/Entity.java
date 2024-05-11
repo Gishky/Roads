@@ -145,8 +145,12 @@ public class Entity {
 			return heldBlock.getId();
 		return -1;
 	}
-	
+
 	public Position getMousePosition() {
 		return mouse;
+	}
+
+	public void setFallingAccelleration(double accelleration) {
+		fallingaccelleration = accelleration;
 	}
 }

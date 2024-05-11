@@ -25,7 +25,8 @@ public class BlockDirt extends Block {
 		Position fireboltpos = new Position();
 		fireboltpos.set(e.pos.getX() + unitVelocity[0] * (e.hitBox.getRadius() + 3),
 				e.pos.getY() + unitVelocity[1] * (e.hitBox.getRadius() + 3));
-		new Firebolt(fireboltpos, fireboltVelocity, e.heldBlock.clone());
+		Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.heldBlock.clone());
+		bolt.setFallingAccelleration(0);
 	}
 
 	public int getAbilityCooldown() {

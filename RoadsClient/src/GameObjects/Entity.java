@@ -16,6 +16,8 @@ public class Entity {
 	protected int breakCount;
 	protected int HPPercent = 100;
 
+	protected boolean delete = false;
+
 	public Entity(String id, String x, String y, String hppercent) {
 		this.id = Integer.parseInt(id);
 		pos = new Position(Integer.parseInt(x), Integer.parseInt(y));
@@ -49,6 +51,10 @@ public class Entity {
 					pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
 					HPBarLength * HPPercent / 100, HPBarHeight);
 		}
+
+		if (delete) {
+			Panel.removeEntity(this);
+		}
 	}
 
 	public int getId() {
@@ -73,5 +79,9 @@ public class Entity {
 
 	public Block getHeldBlock() {
 		return heldBlock;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 }

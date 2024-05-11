@@ -52,8 +52,13 @@ public class World {
 					int material = r.nextInt(worldHeight);
 					if (material < y / 2)
 						setBlock(x, y, new BlockStone());
-					else
-						setBlock(x, y, new BlockDirt());
+					else {
+						material = r.nextInt(worldHeight);
+						if (material < y / 5)
+							setBlock(x, y, new BlockCoal());
+						else
+							setBlock(x, y, new BlockDirt());
+					}
 
 					if (r.nextInt(2) >= Math.abs(worldHeight - höhe[x] - y)) {
 						setBlock(x, y, new BlockGrass());
@@ -123,9 +128,20 @@ public class World {
 	}
 
 	public static void setBlock(int x, int y, Block block) {
+		block.setPosition(x, y);
 		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
 		GameMaster.sendToAll(block.blockString, true);
 		world[x][y] = block;
+
+		world[x][y].update();
+		if (x != 0)
+			world[x - 1][y].update();
+		if (y != 0)
+			world[x][y - 1].update();
+		if (x != world.length - 1 && world[x + 1][y] != null)
+			world[x + 1][y].update();
+		if (y != world[0].length - 1 && world[x][y + 1] != null)
+			world[x][y + 1].update();
 	}
 
 	public static Block getBlock(int x, int y) {

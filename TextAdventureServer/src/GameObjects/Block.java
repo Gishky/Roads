@@ -10,9 +10,14 @@ public class Block {
 	protected double friction = 1;
 	protected boolean breakable = false;
 	protected int breakThreshhold = 1;
+	protected int x, y;
 
 	public int getId() {
 		return id;
+	}
+	
+	public void update() {
+		
 	}
 
 	public double getFriction() {
@@ -33,5 +38,10 @@ public class Block {
 
 	public int getAbilityCooldown() {
 		return 0;
+	}
+
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 }

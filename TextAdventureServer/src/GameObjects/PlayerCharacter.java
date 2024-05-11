@@ -3,6 +3,7 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import HelperObjects.CraftingHandler;
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import HelperObjects.VirtualKeyboard;
@@ -59,10 +60,19 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			if (isGrounded)
 				velocity[1] = -jumpforce;
 		}
+		if (keyboard.getKey("" + KeyEvent.VK_X)) {
+			if (heldBlock != null) {
+				heldBlock = null;
+				update = true;
+			}
+		}
 		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
 			if (fireCooldown <= 0 && heldBlock != null) {
 				fireCooldown = heldBlock.getAbilityCooldown();
 				heldBlock.activateAbility(this);
+			} else if (heldBlock == null) {
+				CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()) / Block.size,
+						(int) (mouse.getY() + pos.getY()) / Block.size);
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
@@ -71,6 +81,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 						&& World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY() + 1) / Block.size)
 								.getBreakThreshhold() <= breakCount) {
 					heldBlock = World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1);
+					heldBlock.setPosition(-id, 0);
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
 					pos.setY(pos.getY() + Block.size / 2);
 					pos.setX((int) (pos.getX() / Block.size) * Block.size + Block.size / 2);

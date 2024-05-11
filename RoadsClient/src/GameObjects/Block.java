@@ -24,6 +24,10 @@ public class Block {
 			return new BlockGrass();
 		case "3":
 			return new BlockStone();
+		case "4":
+			return new BlockOven();
+		case "5":
+			return new BlockCoal();
 		default:
 			return null;
 		}
