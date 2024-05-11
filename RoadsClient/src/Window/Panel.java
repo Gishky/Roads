@@ -72,11 +72,15 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 			e.draw(g, cameraX, cameraY);
 		}
 
+		ArrayList<Particle> toRemove = new ArrayList<Particle>();
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 			if (p.draw(g, cameraX, cameraY)) {
-				particles.remove(p);
+				toRemove.add(p);
 			}
+		}
+		for (Particle p : toRemove) {
+			particles.remove(p);
 		}
 
 		g.setFont(new Font("Arial", Font.PLAIN, 15));

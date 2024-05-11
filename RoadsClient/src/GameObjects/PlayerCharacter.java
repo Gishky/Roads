@@ -28,7 +28,7 @@ public class PlayerCharacter extends Entity {
 			Color c = World.getWorld()[blockx][blocky].c;
 
 			Random r = new Random();
-			for (int i = 0; i < breakCount / 2; i++) {
+			for (int i = 0; i < 3; i++) {
 				Panel.addParticle(new Particle(blockx * Block.size + r.nextDouble() * Block.size,
 						blocky * Block.size + r.nextDouble() * Block.size, 0, -r.nextDouble() * 5 - 3,
 						r.nextDouble() * 0.5 - 0.3, r.nextDouble() * 1 + 0.5, c.brighter()));
