@@ -8,8 +8,8 @@ import Window.Panel;
 
 public class Firebolt extends Entity {
 
-	public Firebolt(String id, String x, String y, String hppercent) {
-		super(id, x, y, hppercent);
+	public Firebolt(String id, String x, String y, String hppercent, String heldBlock) {
+		super(id, x, y, hppercent, heldBlock);
 	}
 
 	private int lastx, lasty;

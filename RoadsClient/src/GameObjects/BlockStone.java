@@ -8,7 +8,7 @@ import Window.Panel;
 public class BlockStone extends Block {
 
 	public BlockStone() {
-		breakThreshhold = 100;
+		breakThreshhold = 15;
 		c = new Color(100, 100, 100);
 	}
 

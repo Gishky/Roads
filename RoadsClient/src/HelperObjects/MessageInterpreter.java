@@ -95,14 +95,16 @@ public class MessageInterpreter implements UDPMessageListener {
 
 		switch (messageParts[1]) {
 		case "player":
-			Panel.getEntities()
-					.add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
+			Panel.getEntities().add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4],
+					messageParts[5], messageParts[6]));
 			break;
 		case "firebolt":
-			Panel.getEntities().add(new Firebolt(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
+			Panel.getEntities().add(
+					new Firebolt(messageParts[2], messageParts[3], messageParts[4], messageParts[5], messageParts[6]));
 			break;
 		case "oven":
-			Panel.getEntities().add(new OvenEntity(messageParts[2], messageParts[3], messageParts[4], messageParts[5]));
+			Panel.getEntities().add(new OvenEntity(messageParts[2], messageParts[3], messageParts[4], messageParts[5],
+					messageParts[6]));
 			break;
 		}
 	}

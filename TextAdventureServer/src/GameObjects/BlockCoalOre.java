@@ -6,9 +6,9 @@ public class BlockCoalOre extends Block {
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 25;
+		breakThreshhold = 20;
 
-		fuelValue = 20;
+		fuelValue = 200;
 	}
 
 	public Block clone() {

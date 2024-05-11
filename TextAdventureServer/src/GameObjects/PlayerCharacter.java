@@ -25,6 +25,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
+		this.accelleration = 1.5;
 		mouse = new Position();
 	}
 
@@ -83,8 +84,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 					heldBlock = World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1);
 					heldBlock.setPosition(-id, 0);
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
-					pos.setY(pos.getY() + Block.size / 2);
-					pos.setX((int) (pos.getX() / Block.size) * Block.size + Block.size / 2);
 					breakCount = 0;
 				} else if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
 						(int) (pos.getY()) / Block.size - 1).blocksMovement) {
@@ -136,8 +135,11 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		connection.sendMessage("id;" + id, true);
 		for (Entity e : GameMaster.getEntities()) {
 			if (!e.equals(this))
-				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
-						+ (int) e.getPos().getX() + ";" + (int) e.getPos().getY() + ";" + e.getHPPercentile(), true);
+				connection.sendMessage(
+						"createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX()
+								+ ";" + (int) e.getPos().getY() + ";" + e.getHPPercentile() + ";" + e.getHeldBlockId(),
+						true);
+
 		}
 		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
 	}

@@ -8,7 +8,7 @@ import Window.Panel;
 public class BlockDirt extends Block {
 
 	public BlockDirt() {
-		breakThreshhold = 25;
+		breakThreshhold = 5;
 		c=new Color(139, 69, 19);
 	}
 

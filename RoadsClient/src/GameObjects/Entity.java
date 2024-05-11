@@ -18,10 +18,11 @@ public class Entity {
 
 	protected boolean delete = false;
 
-	public Entity(String id, String x, String y, String hppercent) {
+	public Entity(String id, String x, String y, String hppercent, String heldBlock) {
 		this.id = Integer.parseInt(id);
 		pos = new Position(Integer.parseInt(x), Integer.parseInt(y));
 		HPPercent = Integer.parseInt(hppercent);
+		this.heldBlock = Block.getBlockFromID(heldBlock);
 	}
 
 	public Position getPos() {

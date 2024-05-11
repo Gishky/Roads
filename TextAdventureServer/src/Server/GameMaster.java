@@ -22,11 +22,12 @@ public class GameMaster implements ActionListener {
 	private ArrayList<Entity> entities;
 
 	private LocalDate currentDate;
+
 	public GameMaster(UDPServer server) {
 		if (master == null) {
 			master = this;
 		}
-		
+
 		currentDate = LocalDate.now();
 
 		this.server = server;
@@ -45,8 +46,8 @@ public class GameMaster implements ActionListener {
 						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
 						+ ";" + entity.getHeldBlockId(), false);
 		}
-		
-		if(!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
+
+		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
 			restartServer();
 		}
 	}
@@ -54,7 +55,7 @@ public class GameMaster implements ActionListener {
 	public static void addEntity(Entity e) {
 		master.entities.add(e);
 		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX() + ";"
-				+ (int) e.getPos().getY() + ";" + e.getHPPercentile(), true);
+				+ (int) e.getPos().getY() + ";" + e.getHPPercentile() + ";" + e.getHeldBlockId(), true);
 	}
 
 	public static void removeEntity(Entity e) {

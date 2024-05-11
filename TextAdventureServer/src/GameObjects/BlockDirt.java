@@ -8,7 +8,7 @@ public class BlockDirt extends Block {
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 25;
+		breakThreshhold = 5;
 	}
 
 	public Block clone() {
@@ -30,6 +30,6 @@ public class BlockDirt extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 20;
+		return 15;
 	}
 }

@@ -6,7 +6,7 @@ import Server.GameMaster;
 
 public class Firebolt extends Entity {
 
-	private int damage = 10;
+	private int damage = 2;
 
 	public Firebolt(Position initialPosition, double[] initialVelocity, Block heldBlock) {
 		super("firebolt");

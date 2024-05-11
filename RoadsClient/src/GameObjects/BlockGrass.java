@@ -8,7 +8,7 @@ import Window.Panel;
 public class BlockGrass extends Block {
 	
 	public BlockGrass() {
-		breakThreshhold = 25;
+		breakThreshhold = 5;
 		c=new Color(34, 139, 34);
 	}
 	

@@ -8,7 +8,7 @@ import Window.Panel;
 public class BlockCoalOre extends Block {
 
 	public BlockCoalOre() {
-		breakThreshhold = 25;
+		breakThreshhold = 20;
 		c = new Color(100, 100, 100);
 	}
 

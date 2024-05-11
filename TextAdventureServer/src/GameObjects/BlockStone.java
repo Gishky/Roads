@@ -8,7 +8,7 @@ public class BlockStone extends Block {
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 100;
+		breakThreshhold = 15;
 	}
 
 	public Block clone() {
@@ -16,14 +16,14 @@ public class BlockStone extends Block {
 	}
 
 	public void activateAbility(Entity e) {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 			double angle = Math.atan(fireboltVelocity[1] / fireboltVelocity[0]);
 			if (fireboltVelocity[0] < 0) {
 				angle += Math.PI;
 			}
-			angle = angle - (double) i / 6 + 0.5;
+			angle = angle - (double) i / 4 + 0.25;
 			fireboltVelocity[0] = Math.cos(angle) * velocityLength;
 			fireboltVelocity[1] = Math.sin(angle) * velocityLength;
 			double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
@@ -38,6 +38,6 @@ public class BlockStone extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 25;
+		return 15;
 	}
 }

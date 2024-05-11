@@ -8,7 +8,7 @@ public class BlockGrass extends Block {
 		friction = 1.5;
 
 		breakable = true;
-		breakThreshhold = 25;
+		breakThreshhold = 5;
 	}
 
 	public Block clone() {

@@ -7,8 +7,8 @@ import Window.Panel;
 
 public class OvenEntity extends Entity {
 
-	public OvenEntity(String id, String x, String y, String hppercent) {
-		super(id, x, y, hppercent);
+	public OvenEntity(String id, String x, String y, String hppercent,String heldBlock) {
+		super(id, x, y, hppercent,heldBlock);
 	}
 
 	public void draw(Graphics2D g, int cameraX, int cameraY) {

@@ -3,10 +3,10 @@ package GameObjects;
 public class BlockIron extends Block {
 	public BlockIron() {
 		id = 7;
-		friction = 1;
+		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 40;
+		breakThreshhold = 100;
 	}
 
 	public Block clone() {

@@ -6,10 +6,10 @@ public class BlockIronOre extends Block {
 		friction = 2;
 
 		breakable = true;
-		breakThreshhold = 25;
+		breakThreshhold = 20;
 
 		smeltedBlock = new BlockIron();
-		requiredFuelForSmelting = 40;
+		requiredFuelForSmelting = 400;
 	}
 
 	public Block clone() {

@@ -6,7 +6,7 @@ import Server.GameMaster;
 
 public class GrassCrawler extends Entity {
 
-	private int damage = 10;
+	private int damage = 1;
 	private double speed = 2;
 	private boolean goLeft;
 
