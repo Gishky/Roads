@@ -1,6 +1,10 @@
 package HelperObjects;
 
+import java.awt.Color;
+import java.util.Random;
+
 import GameObjects.Block;
+import GameObjects.BlockAir;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.OvenEntity;
@@ -59,6 +63,18 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void updateWorld(String[] messageParts) {
 		int x = Integer.parseInt(messageParts[1]);
 		int y = Integer.parseInt(messageParts[2]);
+
+		if (World.getWorld()[x][y] != null && !(World.getWorld()[x][y] instanceof BlockAir)) {
+			Random r = new Random();
+			Color c = World.getWorld()[x][y].getColor().brighter();
+			for (int i = 0; i < 50; i++) {
+				Particle p = new Particle(x * Block.size + r.nextDouble() * Block.size,
+						y * Block.size + r.nextDouble() * Block.size, 0, 0, r.nextDouble() * 0.5 - 0.3,
+						r.nextDouble() * 0.5, c);
+				p.setLifetime(r.nextInt(10) + 3);
+				Panel.addParticle(p);
+			}
+		}
 
 		World.setBlock(x, y, Block.getBlockFromID(messageParts[3]));
 	}

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Block {
-	protected static int size = 20;
+	public static int size = 20;
 
 	protected int breakThreshhold = 0;
 

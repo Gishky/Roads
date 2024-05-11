@@ -49,4 +49,8 @@ public class Particle {
 
 		return false;
 	}
+
+	public void setLifetime(int time) {
+		lifetime = time;
+	}
 }

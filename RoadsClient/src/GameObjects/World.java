@@ -58,16 +58,4 @@ public class World {
 			world[x][y] = block;
 	}
 
-	public static double getBlockBreakCount(int x, int y) {
-		int biggestCount = 0;
-		for (int i = 0; i < Panel.getEntities().size(); i++) {
-			Entity e = Panel.getEntities().get(i);
-			if (e.getBreakCount() > biggestCount && (int) (e.getPos().getX() / Block.size) == x
-					&& (int) (e.getPos().getY() / Block.size) == y - 1) {
-				biggestCount = e.getBreakCount();
-			}
-		}
-		return biggestCount;
-	}
-
 }
