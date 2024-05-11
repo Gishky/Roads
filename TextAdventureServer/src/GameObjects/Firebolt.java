@@ -22,7 +22,8 @@ public class Firebolt extends Entity {
 
 	@Override
 	public boolean action() {
-		if (isGrounded) {
+		if (isGrounded || pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length * Block.size
+				|| pos.getY() > World.getWorld()[0].length * Block.size) {
 			GameMaster.removeEntity(this);
 			return false;
 		}
