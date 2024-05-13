@@ -1,8 +1,11 @@
 package GameObjects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 import GameObjects.Blocks.Block;
+import HelperObjects.Particle;
 import Window.Panel;
 
 public class World {
@@ -55,8 +58,22 @@ public class World {
 	}
 
 	public static void setBlock(int x, int y, Block block) {
-		if (world != null)
-			world[x][y] = block;
+		if (world == null)
+			return;
+
+		if (World.getWorld()[x][y] != null && !block.getClass().equals(world[x][y].getClass())) {
+			Random r = new Random();
+			Color c = World.getWorld()[x][y].getColor().brighter();
+			for (int i = 0; i < 50; i++) {
+				Particle p = new Particle(x * Block.size + r.nextDouble() * Block.size,
+						y * Block.size + r.nextDouble() * Block.size, 0, 0, r.nextDouble() * 0.5 - 0.3,
+						r.nextDouble() * 0.5, c);
+				p.setLifetime(r.nextInt(10) + 3);
+				Panel.addParticle(p);
+			}
+		}
+
+		world[x][y] = block;
 	}
 
 }

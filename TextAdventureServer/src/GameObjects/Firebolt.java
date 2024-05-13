@@ -34,11 +34,10 @@ public class Firebolt extends Entity {
 		velocity[1] += fallingaccelleration;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
-		double[] p = World.getCastResult(pos.getX(), pos.getY(), targetx, targety);
-		if (p[0] != -1) {
-			pos.set(p[0], p[1]);
-			World.setBlock((int) (targetx) / Block.size,
-					(int) (targety) / Block.size, new BlockAir());
+		double[] castResult = World.getCastResultFirst(pos.getX(), pos.getY(), targetx, targety);
+		if (castResult[0] != -1) {
+			pos.set(castResult[0], castResult[1]);
+			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
 			isGrounded = true;
 		} else {
 			pos.set(targetx, targety);

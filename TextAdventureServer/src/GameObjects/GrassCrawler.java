@@ -1,6 +1,5 @@
 package GameObjects;
 
-import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockGrass;
 import HelperObjects.Hitbox;
@@ -37,19 +36,21 @@ public class GrassCrawler extends Entity {
 
 		super.action();
 
-		double[] p;
-		double[] target = new double[2];
-
-		target[0] = pos.getX() + speed * (goLeft ? -1 : 1);
-		p = World.getCastResult(pos.getX(), pos.getY(), target[0], pos.getY());
-		if (p[0] == -1) {
-			pos.setX(target[0]);
-			return true;
-		} else {
-			World.setBlock((int) (pos.getX() + speed * (goLeft ? -1 : 1)) / Block.size, (int) pos.getY() / Block.size,
-					new BlockAir());
-			GameMaster.removeEntity(this);
-			return false;
+		if (isGrounded) {
+			double target = pos.getX() + speed * (goLeft ? -1 : 1);
+			double[] castResult;
+			System.out.println(pos.getX()+"/"+pos.getY()+">"+target+"/"+pos.getY());
+			castResult = World.getCastResultFirst(pos.getX(), pos.getY(), target, pos.getY());
+			System.out.println(castResult[0]+"/"+castResult[1]+" "+castResult[2]+"/"+castResult[3]);
+			if (castResult[0] == -1) {
+				pos.setX(target);
+				return true;
+			} else {
+				World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
+				GameMaster.removeEntity(this);
+				return false;
+			}
 		}
+		return true;
 	}
 }

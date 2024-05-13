@@ -55,6 +55,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		repaint();
 	}
 
+	long timestamp = 0;
 	@Override
 	public void paintComponent(Graphics gr) {
 		windowWidth = getWidth();

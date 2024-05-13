@@ -66,26 +66,20 @@ public class Entity {
 		velocity[1] += fallingaccelleration;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
-		double[] p = World.getCastResult(pos.getX(), pos.getY(), targetx, targety);
-		if (p[0] != -1) {
-			if (p[0] == pos.getX() && p[1] == pos.getY()) {
-				isGrounded = true;
+		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
+		if (castResult[0] != -1) {
+			isGrounded = castResult[1] < targety;
+			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
 				velocity[0] = 0;
 				velocity[1] = 0;
 			} else {
-				if ((int) (pos.getX() / Block.size) != (int) (p[0] / Block.size)) {
+				if ((int) (pos.getX() / Block.size) != (int) (castResult[0] / Block.size)) {
 					breakCount = 0;
 				}
-				pos.set(p[0], p[1]);
+				pos.set(castResult[0], castResult[1]);
 
-				velocity[0] -= targetx - p[0];
-				velocity[1] -= targety - p[1];
-
-				if (p[1] < targety) {
-					isGrounded = true;
-				} else {
-					isGrounded = false;
-				}
+				velocity[0] -= targetx - castResult[0];
+				velocity[1] -= targety - castResult[1];
 
 				if (x != (int) pos.getX() || y != (int) pos.getY())
 					return true;
