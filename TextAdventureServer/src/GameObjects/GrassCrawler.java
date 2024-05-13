@@ -1,5 +1,6 @@
 package GameObjects;
 
+import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockGrass;
 import HelperObjects.Hitbox;
@@ -34,14 +35,45 @@ public class GrassCrawler extends Entity {
 			}
 		}
 
-		super.action();
+		int x = (int) pos.getX();
+		int y = (int) pos.getY();
+
+		velocity[0] /= drag;
+		if (isGrounded) {
+			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
+					.getFriction();
+		}
+		velocity[1] /= drag;
+		velocity[1] += fallingaccelleration;
+		double targety = pos.getY() + velocity[1];
+		double targetx = pos.getX() + velocity[0];
+		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
+		if (castResult[0] != -1) {
+			isGrounded = castResult[1] < targety;
+			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
+				velocity[0] = 0;
+				velocity[1] = 0;
+			} else {
+				if ((int) (pos.getX() / Block.size) != (int) (castResult[0] / Block.size)) {
+					breakCount = 0;
+				}
+				pos.set(castResult[0], castResult[1]);
+
+				velocity[0] -= targetx - castResult[0];
+				velocity[1] *= -1.1;
+
+				if (Math.abs(velocity[1]) < 0.1)
+					velocity[1] = 0;
+			}
+		} else {
+			isGrounded = false;
+			breakCount = 0;
+			pos.set(targetx, targety);
+		}
 
 		if (isGrounded) {
 			double target = pos.getX() + speed * (goLeft ? -1 : 1);
-			double[] castResult;
-			System.out.println(pos.getX()+"/"+pos.getY()+">"+target+"/"+pos.getY());
 			castResult = World.getCastResultFirst(pos.getX(), pos.getY(), target, pos.getY());
-			System.out.println(castResult[0]+"/"+castResult[1]+" "+castResult[2]+"/"+castResult[3]);
 			if (castResult[0] == -1) {
 				pos.setX(target);
 				return true;

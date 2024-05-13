@@ -23,6 +23,7 @@ public class BlockOven extends Block {
 	}
 
 	private double boostAccelleration = 4;
+	private OvenAbilityJet jet = null;
 
 	public void activateAbility(Entity e) {
 		if (fuel > 0) {
@@ -35,11 +36,12 @@ public class BlockOven extends Block {
 			entityVelocity[1] += unitVelocity[1] * boostAccelleration;
 			e.setVelocity(entityVelocity);
 
-			for (int i = 0; i < 3; i++) {
-				double[] vel = new double[2];
-				vel[0] = -unitVelocity[0] * 3 + (new Random()).nextDouble() * 3;
-				vel[1] = -unitVelocity[1] * 3 + (new Random()).nextDouble() * 3;
-				new OvenAbilityJet(e.getPos().clone(), vel);
+			if (jet == null) {
+				jet = new OvenAbilityJet(e.getPos(), unitVelocity[0] * boostAccelleration,
+						unitVelocity[1] * boostAccelleration, this);
+			} else {
+				jet.setVelocity(unitVelocity[0] * boostAccelleration, unitVelocity[1] * boostAccelleration);
+				jet.reactivate();
 			}
 		}
 	}
@@ -73,6 +75,14 @@ public class BlockOven extends Block {
 		}
 	}
 
+	@Override
+	public void breakBlock() {
+		if (entity != null) {
+			GameMaster.removeEntity(entity);
+			entity = null;
+		}
+	}
+
 	public int getFuel() {
 		return fuel;
 	}
@@ -87,6 +97,10 @@ public class BlockOven extends Block {
 
 	public void setMaxfuel(int maxfuel) {
 		this.maxfuel = maxfuel;
+	}
+
+	public void setJet(OvenAbilityJet object) {
+		jet = object;
 	}
 
 }

@@ -24,12 +24,10 @@ public class OvenAbilityJet extends Entity {
 		stepy /= 5;
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			Panel.addParticle(
-					new Particle(pos.getX() + stepx * i + r.nextDouble(), pos.getY() + stepy * i + r.nextDouble(),
-							Double.parseDouble(parameters.split("/")[0]) + r.nextDouble(),
-							Double.parseDouble(parameters.split("/")[1]) + r.nextDouble(),
-							Double.parseDouble(parameters.split("/")[0]), Double.parseDouble(parameters.split("/")[1]),
-							Color.red));
+			Panel.addParticle(new Particle(pos.getX() + stepx * i + r.nextDouble(),
+					pos.getY() + stepy * i + r.nextDouble(),
+					Double.parseDouble(parameters.split("/")[0]) / 5 + r.nextDouble() * 2,
+					Double.parseDouble(parameters.split("/")[1]) / 5 + r.nextDouble() * 2, 0, 0, Color.red, 10));
 		}
 		lastx = pos.getX();
 		lasty = pos.getY();

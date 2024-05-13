@@ -27,7 +27,6 @@ public class MessageInterpreter implements UDPMessageListener {
 			createEntity(messageParts);
 			break;
 		case "entity":
-			System.out.println(message);
 			updateEntity(messageParts);
 			break;
 		case "createWorld":
@@ -41,6 +40,9 @@ public class MessageInterpreter implements UDPMessageListener {
 			break;
 		case "id":
 			World.playerid = Integer.parseInt(messageParts[1]);
+			break;
+		case "serverTickRate":
+			Panel.setServerTickRate(Integer.parseInt(messageParts[1]));
 			break;
 		default:
 			System.out.println("unknown command: " + message);
@@ -70,7 +72,8 @@ public class MessageInterpreter implements UDPMessageListener {
 	}
 
 	private static void updateEntity(String[] messageParts) {
-		for (Entity e : Panel.getEntities()) {
+		for (int i = 0; i < Panel.getEntities().size(); i++) {
+			Entity e = Panel.getEntities().get(i);
 			if (("" + e.getId()).equals(messageParts[1])) {
 				e.setPos(new Position(messageParts[2], messageParts[3]));
 				e.setBreakCount(Integer.parseInt(messageParts[4]));
@@ -114,8 +117,8 @@ public class MessageInterpreter implements UDPMessageListener {
 					messageParts[6]));
 			break;
 		case "ovenAbility":
-			Panel.getEntities()
-					.add(new OvenAbilityJet(messageParts[2], messageParts[3], messageParts[4], messageParts[5], messageParts[6]));
+			Panel.getEntities().add(new OvenAbilityJet(messageParts[2], messageParts[3], messageParts[4],
+					messageParts[5], messageParts[6]));
 			break;
 		}
 	}

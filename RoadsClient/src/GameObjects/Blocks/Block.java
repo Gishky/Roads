@@ -14,7 +14,7 @@ public class Block {
 	private Color c;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
-		if (x % 40 == 0 && y % 10 == 0) {
+		/*if (x % 40 == 0 && y % 10 == 0) {
 
 			g.setColor(Color.black);
 			g.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -23,7 +23,7 @@ public class Block {
 
 			g.drawString((y * size - 100) + "", x * size - cameraX + Panel.windowWidth / 2 - 100,
 					y * size - cameraY + Panel.windowHeight / 2 - 100 + 15);
-		}
+		}*/
 	}
 
 	public static Block getBlockFromID(String id) {

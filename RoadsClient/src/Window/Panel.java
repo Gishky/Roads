@@ -30,9 +30,9 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	public static int windowWidth, windowHeight;
 
-	private static LinkedList<Entity> entities;
-	private static LinkedList<Integer> removedEntityIDs = new LinkedList<Integer>();
-	private static LinkedList<Particle> particles = new LinkedList<Particle>();
+	private static ArrayList<Entity> entities;
+	private static ArrayList<Integer> removedEntityIDs = new ArrayList<Integer>();
+	private static ArrayList<Particle> particles = new ArrayList<Particle>();
 
 	public Panel() {
 		this.addKeyListener(this);
@@ -40,7 +40,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		entities = new LinkedList<Entity>();
+		entities = new ArrayList<Entity>();
 
 		t.start();
 
@@ -55,7 +55,8 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		repaint();
 	}
 
-	long timestamp = 0;
+	private long timestamp = 0;
+
 	@Override
 	public void paintComponent(Graphics gr) {
 		windowWidth = getWidth();
@@ -89,6 +90,10 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		g.drawString("" + connection.getPing(), 2, 15);
 		g.setColor(Color.orange);
 		g.drawString(connection.getPackagePercentile() + "%", 2, 30);
+		g.setColor(Color.orange);
+		g.drawString((1000 / (System.currentTimeMillis() - timestamp)) + " FPS", 2, getHeight() - 7);
+		g.drawString(serverTickRate + "ms", 2, getHeight() - 22);
+		timestamp = System.currentTimeMillis();
 	}
 
 	private String typedString = "";
@@ -119,7 +124,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		pressedKeys.remove(pressedKeys.indexOf(key));
 	}
 
-	public static LinkedList<Entity> getEntities() {
+	public static ArrayList<Entity> getEntities() {
 		return entities;
 	}
 
@@ -139,7 +144,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		}
 	}
 
-	public static LinkedList<Integer> getRemovedEntityIDs() {
+	public static ArrayList<Integer> getRemovedEntityIDs() {
 		return removedEntityIDs;
 	}
 
@@ -150,6 +155,12 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 			}
 		}
 		return false;
+	}
+
+	private static int serverTickRate = 0;
+
+	public static void setServerTickRate(int tickrate) {
+		serverTickRate = tickrate;
 	}
 
 	@Override

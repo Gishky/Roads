@@ -36,6 +36,9 @@ public class GameMaster implements ActionListener {
 		World.generateWorld();
 	}
 
+	private long timestamp = 0;
+	private ArrayList<Integer> serverTickRate = new ArrayList<Integer>();
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < entities.size(); i++) {
@@ -43,12 +46,23 @@ public class GameMaster implements ActionListener {
 			if (entity.action())
 				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
 						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
-						+ ";" + entity.getHeldBlockId() + ";" + entity.getParameters()+";", false);
+						+ ";" + entity.getHeldBlockId() + ";" + entity.getParameters() + ";", false);
 		}
 
 		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
 			restartServer();
 		}
+
+		serverTickRate.add((int) (System.currentTimeMillis() - timestamp));
+		int avg = 0;
+		for (int i : serverTickRate) {
+			avg += i;
+		}
+		avg /= serverTickRate.size();
+		serverTickRate.remove(0);
+		timestamp = System.currentTimeMillis();
+		if (timestamp % 10 == 0)
+			sendToAll("serverTickRate;" + avg, false);
 	}
 
 	public static void addEntity(Entity e) {

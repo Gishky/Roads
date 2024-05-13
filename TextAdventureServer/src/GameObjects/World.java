@@ -273,6 +273,8 @@ public class World {
 	}
 
 	public static void setBlock(int x, int y, Block block) {
+		world[x][y].breakBlock();
+		
 		block.setPosition(x, y);
 		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
 		GameMaster.sendToAll(block.blockString, true);

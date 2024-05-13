@@ -1,26 +1,41 @@
 package GameObjects;
 
 import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockOven;
 import HelperObjects.Position;
 import Server.GameMaster;
 
 public class OvenAbilityJet extends Entity {
 
-	public OvenAbilityJet(Position initialPosition, double[] initialVelocity) {
+	private BlockOven oven;
+
+	public OvenAbilityJet(Position initialPosition, double initialVelocityx, double initialVelocityy, BlockOven oven) {
 		super("ovenAbility");
 		this.pos = initialPosition;
 		this.heldBlock = new Block();
-		velocity = initialVelocity;
+		parameters = -initialVelocityx + "/" + -initialVelocityy;
 		breakCount = 0;
-		parameters = velocity[0] + "/" + velocity[1];
+
+		this.oven = oven;
 	}
 
+	private int lifetime = 5;
 
 	@Override
 	public boolean action() {
-		pos.setX(pos.getX() + velocity[0]);
-		pos.setY(pos.getY() + velocity[1]);
-		GameMaster.removeEntity(this);
+		lifetime--;
+		if (lifetime < 0) {
+			GameMaster.removeEntity(this);
+			oven.setJet(null);
+		}
 		return true;
+	}
+
+	public void setVelocity(double velocityx, double velocityy) {
+		parameters = -velocityx + "/" + -velocityy;
+	}
+
+	public void reactivate() {
+		lifetime = 5;
 	}
 }

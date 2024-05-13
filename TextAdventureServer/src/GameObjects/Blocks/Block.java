@@ -27,6 +27,10 @@ public class Block {
 	public void update() {
 
 	}
+	
+	public void breakBlock() {
+		
+	}
 
 	public double getFriction() {
 		return friction;

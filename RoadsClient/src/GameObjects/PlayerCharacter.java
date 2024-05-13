@@ -16,10 +16,16 @@ public class PlayerCharacter extends Entity {
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
+		if (id == World.playerid) {
+			cameraX += World.cameraX - cameraX;
+			cameraY += World.cameraY - cameraY;
+		}
+
 		g.setColor(Color.blue.brighter().brighter());
 		if (heldBlock != null) {
 			g.setColor(heldBlock.getColor().darker());
 		}
+
 		g.fillOval(pos.getX() - 5 - cameraX + Panel.windowWidth / 2, pos.getY() - 5 - cameraY + Panel.windowHeight / 2,
 				10, 10);
 

@@ -47,6 +47,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private int fireCooldown = 0;
+	private boolean placing = false;
 
 	@Override
 	public boolean action() {
@@ -87,10 +88,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 					heldBlock.setPosition(-id, 0);
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
 					breakCount = 0;
-				} else if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
-						(int) (pos.getY()) / Block.size - 1).isBlocksMovement()) {
-					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size, heldBlock);
-					heldBlock = null;
+				} else if (heldBlock != null && placeFlag
+						&& !World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size - 1)
+								.isBlocksMovement()) {
+					placing = true;
 					velocity[1] = -jumpforce;
 				}
 				if (heldBlock == null) {
@@ -98,8 +99,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 					breakCount++;
 				}
 			} else {
-				if (heldBlock != null && placeFlag && !World.getBlock((int) pos.getX() / Block.size,
-						(int) (pos.getY()) / Block.size + 1).isBlocksMovement()) {
+				if (heldBlock != null && placeFlag
+						&& !World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1)
+								.isBlocksMovement()) {
 					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, heldBlock);
 					heldBlock = null;
 				}
@@ -112,6 +114,14 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			placeFlag = true;
 			breakCount = 0;
 		}
+
+		if (placing && !World.getBlock((int) pos.getX() / Block.size, (int) pos.getY() / Block.size + 1)
+				.isBlocksMovement()) {
+			World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size+1, heldBlock);
+			heldBlock = null;
+			placing = false;
+		}
+
 		if (super.action() || update) {
 			return true;
 		}

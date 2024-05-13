@@ -33,6 +33,19 @@ public class Particle {
 		lifetime = new Random().nextInt(15) + 5;
 	}
 
+	public Particle(double x, double y, double velocityx, double velocityy, double accellerationx,
+			double accellerationy, Color c, int lifetime) {
+		this.x = x;
+		this.y = y;
+		this.velocityx = velocityx;
+		this.velocityy = velocityy;
+		this.accellerationx = accellerationx;
+		this.accellerationy = accellerationy;
+		this.c = c;
+
+		this.lifetime = lifetime;
+	}
+
 	public boolean draw(Graphics2D g, int cameraX, int cameraY) {
 		lifetime--;
 		if (lifetime <= 0) {
