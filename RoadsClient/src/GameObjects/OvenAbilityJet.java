@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -13,21 +14,21 @@ public class OvenAbilityJet extends Entity {
 		super(id, x, y, hppercent, heldBlock);
 	}
 
-	private int lastx, lasty;
+	private double lastx, lasty;
 
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (this.parameters == null)
 			return;
-		int stepx = lastx - pos.getX();
+		double stepx = lastx - pos.getX();
 		stepx /= 5;
-		int stepy = lasty - pos.getY();
+		double stepy = lasty - pos.getY();
 		stepy /= 5;
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			Panel.addParticle(new Particle(pos.getX() + stepx * i + r.nextDouble(),
-					pos.getY() + stepy * i + r.nextDouble(),
-					Double.parseDouble(parameters.split("/")[0]) / 5 + r.nextDouble() * 2,
-					Double.parseDouble(parameters.split("/")[1]) / 5 + r.nextDouble() * 2, 0, 0, Color.red, 10));
+			Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size + r.nextDouble(),
+					(pos.getY() + stepy * i) / Block.size + r.nextDouble(),
+					Double.parseDouble(parameters.split("/")[0]) / 0.25 + r.nextDouble() * 0.1,
+					Double.parseDouble(parameters.split("/")[1]) / 0.25 + r.nextDouble() * 0.1, 0, 0, Color.red, 10));
 		}
 		lastx = pos.getX();
 		lasty = pos.getY();

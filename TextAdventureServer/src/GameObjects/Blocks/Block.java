@@ -3,7 +3,6 @@ package GameObjects.Blocks;
 import GameObjects.Entity;
 
 public class Block {
-	public static int size = 20;
 
 	protected int id;
 	public String blockString = "";

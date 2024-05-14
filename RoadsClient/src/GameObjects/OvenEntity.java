@@ -15,15 +15,15 @@ public class OvenEntity extends Entity {
 	}
 
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		int x = pos.getX() * Block.size - cameraX + Panel.windowWidth / 2;
-		int y = pos.getY() * Block.size - cameraY + Panel.windowHeight / 2;
+		double x = pos.getX() - cameraX + Panel.windowWidth / 2;
+		double y = pos.getY() - cameraY + Panel.windowHeight / 2;
 
 		g.setColor(Color.red);
-		g.fillRect(x + Block.size / 4, y + Block.size / 4, Block.size / 2, Block.size / 5);
+		g.fillRect((int) x + Block.size / 4, (int) y + Block.size / 4, Block.size / 2, Block.size / 5);
 		Random r = new Random();
-		Panel.addParticle(new Particle(pos.getX() * Block.size + Block.size / 4 + r.nextDouble() * Block.size / 2,
-				pos.getY() * Block.size + Block.size / 4 + r.nextDouble() * Block.size / 5, 0, 0,
-				r.nextDouble() * 0.2 - 0.05, -r.nextDouble() * 0.5, Color.red));
+		Panel.addParticle(
+				new Particle(pos.getX() + 1 / 4 + r.nextDouble() / 2, pos.getY() + Block.size / 4 + r.nextDouble() / 5,
+						0, 0, r.nextDouble() * 0.01 - 0.0025, -r.nextDouble() * 0.025, Color.red));
 
 		super.draw(g, cameraX, cameraY);
 	}

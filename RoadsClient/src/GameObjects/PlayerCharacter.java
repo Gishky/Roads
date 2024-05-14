@@ -17,8 +17,8 @@ public class PlayerCharacter extends Entity {
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (id == World.playerid) {
-			cameraX += World.cameraX - cameraX;
-			cameraY += World.cameraY - cameraY;
+			cameraX += World.cameraX * Block.size - cameraX;
+			cameraY += World.cameraY * Block.size - cameraY;
 		}
 
 		g.setColor(Color.blue.brighter().brighter());
@@ -26,8 +26,8 @@ public class PlayerCharacter extends Entity {
 			g.setColor(heldBlock.getColor().darker());
 		}
 
-		g.fillOval(pos.getX() - 5 - cameraX + Panel.windowWidth / 2, pos.getY() - 5 - cameraY + Panel.windowHeight / 2,
-				10, 10);
+		g.fillOval((int) pos.getX() - 5 - cameraX + Panel.windowWidth / 2,
+				(int) pos.getY() - 5 - cameraY + Panel.windowHeight / 2, 10, 10);
 
 		if (breakCount != 0) {
 			int blockx = (int) pos.getX() / Block.size;
@@ -36,9 +36,9 @@ public class PlayerCharacter extends Entity {
 
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {
-				Panel.addParticle(new Particle(blockx * Block.size + r.nextDouble() * Block.size,
-						blocky * Block.size + r.nextDouble() * Block.size, 0, -r.nextDouble() * 5 - 3,
-						r.nextDouble() * 0.5 - 0.3, r.nextDouble() * 1 + 0.5, c.brighter()));
+				Panel.addParticle(new Particle(blockx + r.nextDouble(), blocky + r.nextDouble(),
+						r.nextDouble() * 0.25 - 0.125, -r.nextDouble() * 0.25 - 0.45, r.nextDouble() * 0.25 - 0.15,
+						r.nextDouble() * 0.25 + 0.15, c.brighter()));
 			}
 		}
 

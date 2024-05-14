@@ -81,8 +81,8 @@ public class MessageInterpreter implements UDPMessageListener {
 				e.setHeldBlock(Block.getBlockFromID(messageParts[6]));
 				e.setParameters(messageParts[7]);
 				if (e.getId() == World.playerid) {
-					World.cameraX = Integer.parseInt(messageParts[2]);
-					World.cameraY = Integer.parseInt(messageParts[3]);
+					World.cameraX = Double.parseDouble(messageParts[2]);
+					World.cameraY = Double.parseDouble(messageParts[3]);
 				}
 				return;
 			}

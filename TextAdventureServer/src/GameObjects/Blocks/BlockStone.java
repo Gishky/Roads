@@ -29,12 +29,12 @@ public class BlockStone extends Block {
 			fireboltVelocity[0] = Math.cos(angle) * velocityLength;
 			fireboltVelocity[1] = Math.sin(angle) * velocityLength;
 			double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
-			fireboltVelocity[0] = unitVelocity[0] * 20;
-			fireboltVelocity[1] = unitVelocity[1] * 20;
+			fireboltVelocity[0] = unitVelocity[0];
+			fireboltVelocity[1] = unitVelocity[1];
 
 			Position fireboltpos = new Position();
-			fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 3),
-					e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 3));
+			fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 0.15),
+					e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 0.15));
 			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone());
 		}
 	}

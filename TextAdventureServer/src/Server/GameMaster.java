@@ -3,6 +3,7 @@ package Server;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -39,14 +40,17 @@ public class GameMaster implements ActionListener {
 	private long timestamp = 0;
 	private ArrayList<Integer> serverTickRate = new ArrayList<Integer>();
 
+	public static DecimalFormat decimalFormat = new DecimalFormat("#.####");
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			if (entity.action())
-				sendToAll("entity;" + entity.getId() + ";" + (int) entity.getPos().getX() + ";"
-						+ (int) entity.getPos().getY() + ";" + entity.getBreakCount() + ";" + entity.getHPPercentile()
-						+ ";" + entity.getHeldBlockId() + ";" + entity.getParameters() + ";", false);
+				sendToAll("entity;" + entity.getId() + ";" + decimalFormat.format(entity.getPos().getX()) + ";"
+						+ decimalFormat.format(entity.getPos().getY()) + ";" + entity.getBreakCount() + ";"
+						+ entity.getHPPercentile() + ";" + entity.getHeldBlockId() + ";" + entity.getParameters() + ";",
+						false);
 		}
 
 		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
@@ -67,8 +71,9 @@ public class GameMaster implements ActionListener {
 
 	public static void addEntity(Entity e) {
 		master.entities.add(e);
-		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX() + ";"
-				+ (int) e.getPos().getY() + ";" + e.getHPPercentile() + ";" + e.getHeldBlockId(), true);
+		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
+				+ decimalFormat.format(e.getPos().getX()) + ";" + decimalFormat.format(e.getPos().getY()) + ";"
+				+ e.getHPPercentile() + ";" + e.getHeldBlockId(), true);
 	}
 
 	public static void removeEntity(Entity e) {

@@ -23,11 +23,11 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	public PlayerCharacter() {
 		super("player");
-		hitBox = new Hitbox(false, 5);
+		hitBox = new Hitbox(false, 0.25);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
-		this.accelleration = 1.5;
+		this.accelleration = 0.075;
 		mouse = new Position();
 	}
 
@@ -75,22 +75,19 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				fireCooldown = heldBlock.getAbilityCooldown();
 				heldBlock.activateAbility(this);
 			} else if (heldBlock == null) {
-				CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()) / Block.size,
-						(int) (mouse.getY() + pos.getY()) / Block.size);
+				CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()), (int) (mouse.getY() + pos.getY()));
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
 			if (isGrounded) {
-				if (heldBlock == null
-						&& World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY() + 1) / Block.size)
-								.getBreakThreshhold() <= breakCount) {
-					heldBlock = World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1);
+				if (heldBlock == null && World.getBlock((int) pos.getX(), (int) (pos.getY() + 1))
+						.getBreakThreshhold() <= breakCount) {
+					heldBlock = World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1);
 					heldBlock.setPosition(-id, 0);
-					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, new BlockAir());
+					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, new BlockAir());
 					breakCount = 0;
 				} else if (heldBlock != null && placeFlag
-						&& !World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size - 1)
-								.isBlocksMovement()) {
+						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) - 1).isBlocksMovement()) {
 					placing = true;
 					velocity[1] = -jumpforce;
 				}
@@ -100,9 +97,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				}
 			} else {
 				if (heldBlock != null && placeFlag
-						&& !World.getBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1)
-								.isBlocksMovement()) {
-					World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size + 1, heldBlock);
+						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1).isBlocksMovement()) {
+					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, heldBlock);
 					heldBlock = null;
 				}
 			}
@@ -115,9 +111,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			breakCount = 0;
 		}
 
-		if (placing && !World.getBlock((int) pos.getX() / Block.size, (int) pos.getY() / Block.size + 1)
-				.isBlocksMovement()) {
-			World.setBlock((int) pos.getX() / Block.size, (int) (pos.getY()) / Block.size+1, heldBlock);
+		if (placing && !World.getBlock((int) pos.getX(), (int) pos.getY() + 1).isBlocksMovement()) {
+			World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, heldBlock);
 			heldBlock = null;
 			placing = false;
 		}
@@ -147,10 +142,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		connection.sendMessage("id;" + id, true);
 		for (Entity e : GameMaster.getEntities()) {
 			if (!e.equals(this))
-				connection.sendMessage(
-						"createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";" + (int) e.getPos().getX()
-								+ ";" + (int) e.getPos().getY() + ";" + e.getHPPercentile() + ";" + e.getHeldBlockId(),
-						true);
+				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
+						+ GameMaster.decimalFormat.format(e.getPos().getX()) + ";"
+						+ GameMaster.decimalFormat.format(e.getPos().getY()) + ";" + e.getHPPercentile() + ";"
+						+ e.getHeldBlockId(), true);
 
 		}
 		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
@@ -159,7 +154,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	@Override
 	public void disconnected() {
 		if (heldBlock != null)
-			World.setBlock((int) pos.getX() / Block.size, (int) pos.getY() / Block.size, heldBlock);
+			World.setBlock((int) pos.getX(), (int) pos.getY(), heldBlock);
 		GameMaster.removeEntity(this);
 	}
 

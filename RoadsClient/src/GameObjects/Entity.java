@@ -18,7 +18,7 @@ public class Entity {
 	protected int HPPercent = 100;
 
 	protected String parameters;
-	
+
 	public String getParameters() {
 		return parameters;
 	}
@@ -31,7 +31,7 @@ public class Entity {
 
 	public Entity(String id, String x, String y, String hppercent, String heldBlock) {
 		this.id = Integer.parseInt(id);
-		pos = new Position(Integer.parseInt(x), Integer.parseInt(y));
+		pos = new Position(Double.parseDouble(x), Double.parseDouble(y));
 		HPPercent = Integer.parseInt(hppercent);
 		this.heldBlock = Block.getBlockFromID(heldBlock);
 	}
@@ -55,12 +55,12 @@ public class Entity {
 			int HPBarOffset = -10;
 
 			g.setColor(Color.gray);
-			g.fillRect(pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2, HPBarLength,
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2, HPBarLength,
 					HPBarHeight);
 			g.setColor(Color.green);
-			g.fillRect(pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
 					HPBarLength * HPPercent / 100, HPBarHeight);
 		}
 

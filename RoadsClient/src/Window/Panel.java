@@ -19,6 +19,7 @@ import javax.swing.Timer;
 
 import GameObjects.Entity;
 import GameObjects.World;
+import GameObjects.Blocks.Block;
 import HelperObjects.MessageInterpreter;
 import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
@@ -64,10 +65,10 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		Graphics2D g = (Graphics2D) gr;
 		g.clearRect(0, 0, getWidth(), getHeight());
 
-		int cameraX = World.cameraX;
-		int cameraY = World.cameraY;
+		int cameraX = (int) (World.cameraX * Block.size);
+		int cameraY = (int) (World.cameraY * Block.size);
 
-		World.draw(g, cameraX, cameraY);
+		World.draw(g, cameraX , cameraY );
 
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);

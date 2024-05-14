@@ -14,9 +14,9 @@ public class Entity {
 	protected Position pos;
 	protected double[] velocity = { 0.0, 0.0 };
 
-	protected double accelleration = 2;
-	protected double fallingaccelleration = 2.5;
-	protected double jumpforce = 25;
+	protected double accelleration = 0.1;
+	protected double fallingaccelleration = 0.125;
+	protected double jumpforce = 1.15;
 	protected double drag = 1.1;
 
 	protected Block heldBlock = null;
@@ -33,8 +33,8 @@ public class Entity {
 	public Entity(String identifier) {
 		entityIdentifier = identifier;
 		pos = new Position();
-		pos.setX(World.getWorld().length * Block.size / 2 + Block.size / 2);
-		pos.setY(World.getHeight((int) (pos.getX() / Block.size)) * Block.size - Block.size / 2);
+		pos.setX(World.getWorld().length / 2 + 0.5);
+		pos.setY(World.getHeight((int) pos.getX()) - 0.5);
 		id = count++;
 		HP = maxHP;
 		GameMaster.addEntity(this);
@@ -54,13 +54,9 @@ public class Entity {
 	private boolean actionUpdateOverride = false;
 
 	public boolean action() {
-		int x = (int) pos.getX();
-		int y = (int) pos.getY();
-
 		velocity[0] /= drag;
 		if (isGrounded) {
-			velocity[0] /= World.getWorld()[(int) pos.getX() / Block.size][(int) pos.getY() / Block.size + 1]
-					.getFriction();
+			velocity[0] /= World.getWorld()[(int) pos.getX()][(int) pos.getY() + 1].getFriction();
 		}
 		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;
@@ -73,7 +69,7 @@ public class Entity {
 				velocity[0] = 0;
 				velocity[1] = 0;
 			} else {
-				if ((int) (pos.getX() / Block.size) != (int) (castResult[0] / Block.size)) {
+				if ((int) (pos.getX()) != (int) (castResult[0])) {
 					breakCount = 0;
 				}
 				pos.set(castResult[0], castResult[1]);
@@ -81,8 +77,7 @@ public class Entity {
 				velocity[0] -= targetx - castResult[0];
 				velocity[1] -= targety - castResult[1];
 
-				if (x != (int) pos.getX() || y != (int) pos.getY())
-					return true;
+				return true;
 			}
 		} else {
 			isGrounded = false;

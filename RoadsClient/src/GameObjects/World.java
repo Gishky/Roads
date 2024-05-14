@@ -12,8 +12,8 @@ public class World {
 
 	private static Block[][] world;
 
-	public static int cameraX, cameraY;
-	public static int playerid = -1;
+	public static double cameraX, cameraY;
+	public static double playerid = -1;
 
 	public static Block[][] getWorld() {
 		return world;
@@ -65,9 +65,8 @@ public class World {
 			Random r = new Random();
 			Color c = World.getWorld()[x][y].getColor().brighter();
 			for (int i = 0; i < 50; i++) {
-				Particle p = new Particle(x * Block.size + r.nextDouble() * Block.size,
-						y * Block.size + r.nextDouble() * Block.size, 0, 0, r.nextDouble() * 0.5 - 0.3,
-						r.nextDouble() * 0.5, c);
+				Particle p = new Particle(x + r.nextDouble(), y + r.nextDouble(), 0, 0, r.nextDouble() * 0.025 - 0.015,
+						r.nextDouble() * 0.025, c);
 				p.setLifetime(r.nextInt(10) + 3);
 				Panel.addParticle(p);
 			}

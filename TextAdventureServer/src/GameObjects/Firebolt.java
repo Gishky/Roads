@@ -15,17 +15,17 @@ public class Firebolt extends Entity {
 		this.velocity = initialVelocity;
 		this.pos = initialPosition;
 		this.heldBlock = heldBlock;
-		fallingaccelleration = 0.5;
+		fallingaccelleration = 0.025;
 		isGrounded = false;
 		breakCount = 0;
-		drag = 1.0001;
-		hitBox = new Hitbox(false, 5);
+		drag = 1.000005;
+		hitBox = new Hitbox(false, 0.25);
 	}
 
 	@Override
 	public boolean action() {
-		if (isGrounded || pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length * Block.size
-				|| pos.getY() > World.getWorld()[0].length * Block.size) {
+		if (isGrounded || pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length 
+				|| pos.getY() > World.getWorld()[0].length ) {
 			GameMaster.removeEntity(this);
 			return false;
 		}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
 import Window.Panel;
 
 public class Particle {
@@ -22,8 +23,8 @@ public class Particle {
 
 	public Particle(double x, double y, double velocityx, double velocityy, double accellerationx,
 			double accellerationy, Color c) {
-		this.x = x;
-		this.y = y;
+		this.x = x * Block.size;
+		this.y = y * Block.size;
 		this.velocityx = velocityx;
 		this.velocityy = velocityy;
 		this.accellerationx = accellerationx;
@@ -35,8 +36,8 @@ public class Particle {
 
 	public Particle(double x, double y, double velocityx, double velocityy, double accellerationx,
 			double accellerationy, Color c, int lifetime) {
-		this.x = x;
-		this.y = y;
+		this.x = x * Block.size;
+		this.y = y * Block.size;
 		this.velocityx = velocityx;
 		this.velocityy = velocityy;
 		this.accellerationx = accellerationx;

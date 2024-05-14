@@ -3,6 +3,7 @@ package GameObjects;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockCoalOre;
 import GameObjects.Blocks.BlockDirt;
 import GameObjects.Blocks.BlockGrass;
@@ -17,16 +18,16 @@ public class Firebolt extends Entity {
 		super(id, x, y, hppercent, heldBlock);
 	}
 
-	private int lastx, lasty;
+	private double lastx, lasty;
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		// System.out.println(id+":
 		// "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
 
-		int stepx = lastx - pos.getX();
+		double stepx = lastx - pos.getX();
 		stepx /= 5;
-		int stepy = lasty - pos.getY();
+		double stepy = lasty - pos.getY();
 		stepy /= 5;
 
 		if (heldBlock == null)
@@ -36,12 +37,13 @@ public class Firebolt extends Entity {
 		for (int i = 0; i < 5; i++) {
 			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone || heldBlock instanceof BlockIronOre
 					|| heldBlock instanceof BlockCoalOre)
-				Panel.addParticle(new Particle(pos.getX() + r.nextDouble() * 4 - 2 + stepx * i,
-						pos.getY() + r.nextDouble() * 4 - 2 + stepy * i, 0, 0, r.nextDouble() * 0.5 - 0.3,
-						-r.nextDouble() * 0.5, heldBlock.getColor()));
+				Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size + r.nextDouble() * 0.2 - 0.1,
+						(pos.getY() + stepy * i) / Block.size + r.nextDouble() * 0.2 - 0.1, 0, 0,
+						r.nextDouble() * 0.025 - 0.015, -r.nextDouble() * 0.025, heldBlock.getColor()));
 			else if (heldBlock instanceof BlockGrass)
-				Panel.addParticle(new Particle(pos.getX() + stepx * i, pos.getY() + stepy * i, r.nextDouble() * 2 - 1,
-						-1 * r.nextDouble(), 0, r.nextDouble() * 0.1, heldBlock.getColor()));
+				Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size,
+						(pos.getY() + stepy * i) / Block.size, r.nextDouble() * 0.1 - 0.05, -0.05 * r.nextDouble(), 0,
+						r.nextDouble() * 0.005, heldBlock.getColor()));
 		}
 
 		lastx = pos.getX();

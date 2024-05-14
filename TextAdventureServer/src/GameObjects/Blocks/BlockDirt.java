@@ -21,12 +21,12 @@ public class BlockDirt extends Block {
 		double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
-		fireboltVelocity[0] = unitVelocity[0] * 20;
-		fireboltVelocity[1] = unitVelocity[1] * 20;
+		fireboltVelocity[0] = unitVelocity[0];
+		fireboltVelocity[1] = unitVelocity[1];
 
 		Position fireboltpos = new Position();
-		fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 3),
-				e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 3));
+		fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 0.55),
+				e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 0.55));
 		Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone());
 		bolt.setFallingAccelleration(0);
 	}

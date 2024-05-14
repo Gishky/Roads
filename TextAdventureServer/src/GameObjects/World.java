@@ -125,10 +125,10 @@ public class World {
 
 		double[] castResult = { -1, -1, -1, -1, -1, -1 };
 
-		int sourceBlockX = (int) sourceX / Block.size;
-		int targetBlockX = (int) targetX / Block.size;
-		int sourceBlockY = (int) sourceY / Block.size;
-		int targetBlockY = (int) targetY / Block.size;
+		int sourceBlockX = (int) sourceX;
+		int targetBlockX = (int) targetX;
+		int sourceBlockY = (int) sourceY;
+		int targetBlockY = (int) targetY;
 
 		if (world[sourceBlockX][sourceBlockY].isBlocksMovement()) {
 			// target started in block. collide immediately.
@@ -164,8 +164,8 @@ public class World {
 			int castModifierX = 0;
 			int castModifierY = 0;
 
-			int cornerModX = velX > 0 ? Block.size : 0;
-			int cornerModY = velY > 0 ? Block.size : 0;
+			int cornerModX = velX > 0 ? 1 : 0;
+			int cornerModY = velY > 0 ? 1 : 0;
 
 			while (true) {
 
@@ -174,8 +174,8 @@ public class World {
 					return castResult;
 				}
 
-				int cornerX = (sourceBlockX + castModifierX) * Block.size + cornerModX;
-				int cornerY = (sourceBlockY + castModifierY) * Block.size + cornerModY;
+				int cornerX = sourceBlockX + castModifierX + cornerModX;
+				int cornerY = sourceBlockY + castModifierY + cornerModY;
 
 				double castCornerY = slope * cornerX + offset;
 				boolean isHitFloor = velY > 0 == castCornerY >= cornerY;
@@ -188,7 +188,7 @@ public class World {
 				if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
 					// hit a block
 					if (isHitFloor) {
-						castResult[1] = (sourceBlockY + castModifierY) * Block.size + (velY > 0 ? -0.0001 : Block.size);
+						castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1);
 						castResult[0] = (castResult[1] - offset) / slope;
 
 						if (castSliding) {
@@ -198,7 +198,7 @@ public class World {
 							castResult[3] = straightCast[1];
 						}
 					} else {
-						castResult[0] = (sourceBlockX + castModifierX) * Block.size + (velX > 0 ? -0.0001 : Block.size);
+						castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1);
 						castResult[1] = slope * castResult[0] + offset;
 
 						if (castSliding) {
@@ -223,10 +223,10 @@ public class World {
 		int unitVelX = velX == 0 ? 0 : velX < 0 ? -1 : 1;
 		int unitVelY = velY == 0 ? 0 : velY < 0 ? -1 : 1;
 
-		int sourceBlockX = (int) sourceX / Block.size;
-		int targetBlockX = (int) targetX / Block.size;
-		int sourceBlockY = (int) sourceY / Block.size;
-		int targetBlockY = (int) targetY / Block.size;
+		int sourceBlockX = (int) sourceX;
+		int targetBlockX = (int) targetX;
+		int sourceBlockY = (int) sourceY;
+		int targetBlockY = (int) targetY;
 
 		double[] castResult = { targetX, targetY, targetBlockX, targetBlockY };
 
@@ -245,10 +245,10 @@ public class World {
 			if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
 				// hit a block
 				if (unitVelX == 0) {
-					castResult[1] = (sourceBlockY + castModifierY) * Block.size + (velY > 0 ? -0.0001 : Block.size);
+					castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1);
 					castResult[0] = targetX;
 				} else {
-					castResult[0] = (sourceBlockX + castModifierX) * Block.size + (velX > 0 ? -0.0001 : Block.size);
+					castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1);
 					castResult[1] = targetY;
 				}
 				castResult[2] = sourceBlockX + castModifierX;
@@ -261,7 +261,8 @@ public class World {
 	}
 
 	public static void setBlock(int x, int y, Block block) {
-		world[x][y].breakBlock();
+		if (world[x][y] != null)
+			world[x][y].breakBlock();
 
 		block.setPosition(x, y);
 		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
