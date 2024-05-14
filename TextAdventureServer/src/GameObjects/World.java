@@ -122,6 +122,7 @@ public class World {
 	// -1 if nothing hit
 	private static double[] getCastResult(double sourceX, double sourceY, double targetX, double targetY,
 			boolean castSliding) {
+
 		double[] castResult = { -1, -1, -1, -1, -1, -1 };
 
 		int sourceBlockX = (int) sourceX / Block.size;
@@ -130,6 +131,7 @@ public class World {
 		int targetBlockY = (int) targetY / Block.size;
 
 		if (world[sourceBlockX][sourceBlockY].isBlocksMovement()) {
+			// target started in block. collide immediately.
 			castResult[0] = sourceX;
 			castResult[1] = sourceY;
 			castResult[2] = sourceX;
@@ -155,6 +157,7 @@ public class World {
 			}
 			return castResult;
 		} else {
+
 			double slope = velY / velX;
 			double offset = sourceY - slope * sourceX;
 
@@ -165,6 +168,7 @@ public class World {
 			int cornerModY = velY > 0 ? Block.size : 0;
 
 			while (true) {
+
 				if (sourceBlockX + castModifierX == targetBlockX && sourceBlockY + castModifierY == targetBlockY) {
 					// arrived at target without hitting a block
 					return castResult;
@@ -172,40 +176,27 @@ public class World {
 
 				int cornerX = (sourceBlockX + castModifierX) * Block.size + cornerModX;
 				int cornerY = (sourceBlockY + castModifierY) * Block.size + cornerModY;
-				double castCornerY = slope * cornerX + offset;
 
-				boolean isLastHitFloor = false;
-				if (velY > 0) {
-					if (castCornerY >= cornerY) {
-						isLastHitFloor = true;
-						castModifierY += unitVelY;
-					} else {
-						castModifierX += unitVelX;
-					}
-				} else {
-					if (castCornerY >= cornerY) {
-						castModifierX += unitVelX;
-					} else {
-						isLastHitFloor = true;
-						castModifierY += unitVelY;
-					}
-				}
+				double castCornerY = slope * cornerX + offset;
+				boolean isHitFloor = velY > 0 == castCornerY >= cornerY;
+
+				if (isHitFloor)
+					castModifierY += unitVelY;
+				else
+					castModifierX += unitVelX;
 
 				if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
 					// hit a block
-					if (isLastHitFloor) {
+					if (isHitFloor) {
 						castResult[1] = (sourceBlockY + castModifierY) * Block.size + (velY > 0 ? -0.0001 : Block.size);
 						castResult[0] = (castResult[1] - offset) / slope;
 
-						double[] straightCast = getStraightCastResult(castResult[0], castResult[1], targetX,
-								castResult[1]);
-
 						if (castSliding) {
+							double[] straightCast = getStraightCastResult(castResult[0], castResult[1], targetX,
+									castResult[1]);
 							castResult[2] = straightCast[0];
 							castResult[3] = straightCast[1];
 						}
-						castResult[4] = sourceBlockX + castModifierX;
-						castResult[5] = sourceBlockY + castModifierY;
 					} else {
 						castResult[0] = (sourceBlockX + castModifierX) * Block.size + (velX > 0 ? -0.0001 : Block.size);
 						castResult[1] = slope * castResult[0] + offset;
@@ -216,10 +207,9 @@ public class World {
 							castResult[2] = straightCast[0];
 							castResult[3] = straightCast[1];
 						}
-						castResult[4] = sourceBlockX + castModifierX;
-						castResult[5] = sourceBlockY + castModifierY;
 					}
-
+					castResult[4] = sourceBlockX + castModifierX;
+					castResult[5] = sourceBlockY + castModifierY;
 					return castResult;
 				}
 			}
@@ -257,14 +247,12 @@ public class World {
 				if (unitVelX == 0) {
 					castResult[1] = (sourceBlockY + castModifierY) * Block.size + (velY > 0 ? -0.0001 : Block.size);
 					castResult[0] = targetX;
-					castResult[2] = sourceBlockX + castModifierX;
-					castResult[3] = sourceBlockY + castModifierY;
 				} else {
 					castResult[0] = (sourceBlockX + castModifierX) * Block.size + (velX > 0 ? -0.0001 : Block.size);
 					castResult[1] = targetY;
-					castResult[2] = sourceBlockX + castModifierX;
-					castResult[3] = sourceBlockY + castModifierY;
 				}
+				castResult[2] = sourceBlockX + castModifierX;
+				castResult[3] = sourceBlockY + castModifierY;
 
 				return castResult;
 			}
@@ -274,7 +262,7 @@ public class World {
 
 	public static void setBlock(int x, int y, Block block) {
 		world[x][y].breakBlock();
-		
+
 		block.setPosition(x, y);
 		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
 		GameMaster.sendToAll(block.blockString, true);
