@@ -25,10 +25,10 @@ public class Particle {
 			double accellerationy, Color c) {
 		this.x = x * Block.size;
 		this.y = y * Block.size;
-		this.velocityx = velocityx;
-		this.velocityy = velocityy;
-		this.accellerationx = accellerationx;
-		this.accellerationy = accellerationy;
+		this.velocityx = velocityx*Block.size;
+		this.velocityy = velocityy*Block.size;
+		this.accellerationx = accellerationx*Block.size;
+		this.accellerationy = accellerationy*Block.size;
 		this.c = c;
 
 		lifetime = new Random().nextInt(15) + 5;
@@ -38,10 +38,10 @@ public class Particle {
 			double accellerationy, Color c, int lifetime) {
 		this.x = x * Block.size;
 		this.y = y * Block.size;
-		this.velocityx = velocityx;
-		this.velocityy = velocityy;
-		this.accellerationx = accellerationx;
-		this.accellerationy = accellerationy;
+		this.velocityx = velocityx*Block.size;
+		this.velocityy = velocityy*Block.size;
+		this.accellerationx = accellerationx*Block.size;
+		this.accellerationy = accellerationy*Block.size;
 		this.c = c;
 
 		this.lifetime = lifetime;

@@ -95,25 +95,35 @@ public class World {
 	}
 
 	public static double[] getCastResultFirst(double sourceX, double sourceY, double targetX, double targetY) {
-		double[] castResult = new double[4];
-		double[] result = getCastResult(sourceX, sourceY, targetX, targetY, false);
-
-		castResult[0] = result[0];
-		castResult[1] = result[1];
-		castResult[2] = result[4];
-		castResult[3] = result[5];
+		double[] castResult = { -1, -1, -1, -1 };
+		double[] result;
+		try {
+			result = getCastResult(sourceX, sourceY, targetX, targetY, false);
+			castResult[0] = result[0];
+			castResult[1] = result[1];
+			castResult[2] = result[4];
+			castResult[3] = result[5];
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return castResult;
 	}
 
 	public static double[] getCastResultSlide(double sourceX, double sourceY, double targetX, double targetY) {
-		double[] castResult = new double[4];
-		double[] result = getCastResult(sourceX, sourceY, targetX, targetY, true);
-
-		castResult[0] = result[2];
-		castResult[1] = result[3];
-		castResult[2] = result[4];
-		castResult[3] = result[5];
+		double[] castResult = { -1, -1, -1, -1 };
+		double[] result;
+		try {
+			result = getCastResult(sourceX, sourceY, targetX, targetY, true);
+			castResult[0] = result[2];
+			castResult[1] = result[3];
+			castResult[2] = result[4];
+			castResult[3] = result[5];
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return castResult;
 	}
@@ -121,7 +131,7 @@ public class World {
 	// casts a ray from source to target and returns hit coordinates if hit, returns
 	// -1 if nothing hit
 	private static double[] getCastResult(double sourceX, double sourceY, double targetX, double targetY,
-			boolean castSliding) {
+			boolean castSliding) throws Exception {
 
 		double[] castResult = { -1, -1, -1, -1, -1, -1 };
 

@@ -68,7 +68,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		int cameraX = (int) (World.cameraX * Block.size);
 		int cameraY = (int) (World.cameraY * Block.size);
 
-		World.draw(g, cameraX , cameraY );
+		World.draw(g, cameraX, cameraY);
 
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
@@ -202,11 +202,13 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) + ";" + (e.getY() - windowHeight / 2);
+		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) / Block.size + ";"
+				+ (e.getY() - windowHeight / 2) / Block.size;
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) + ";" + (e.getY() - windowHeight / 2);
+		mousePositionUpdate = "mouse;" + (e.getX() - (double) windowWidth / 2) / Block.size + ";"
+				+ (e.getY() - (double) windowHeight / 2) / Block.size;
 	}
 }

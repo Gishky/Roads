@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import Window.Panel;
 
 public class Block {
-	public static int size = 20;
+	public static int size = 30;
 
 	protected int breakThreshhold = 0;
 

@@ -22,7 +22,7 @@ public class BlockOven extends Block {
 		return new BlockOven();
 	}
 
-	private double boostAccelleration = 4;
+	private double boostAccelleration = 0.2;
 	private OvenAbilityJet jet = null;
 
 	public void activateAbility(Entity e) {

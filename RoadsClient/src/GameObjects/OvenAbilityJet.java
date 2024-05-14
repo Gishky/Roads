@@ -12,6 +12,8 @@ public class OvenAbilityJet extends Entity {
 
 	public OvenAbilityJet(String id, String x, String y, String hppercent, String heldBlock) {
 		super(id, x, y, hppercent, heldBlock);
+		lastx = this.pos.getX() / Block.size;
+		lasty = this.pos.getY() / Block.size;
 	}
 
 	private double lastx, lasty;
@@ -19,19 +21,21 @@ public class OvenAbilityJet extends Entity {
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (this.parameters == null)
 			return;
-		double stepx = lastx - pos.getX();
+		double stepx = lastx - pos.getX() / Block.size;
 		stepx /= 5;
-		double stepy = lasty - pos.getY();
+		double stepy = lasty - pos.getY() / Block.size;
 		stepy /= 5;
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size + r.nextDouble(),
-					(pos.getY() + stepy * i) / Block.size + r.nextDouble(),
-					Double.parseDouble(parameters.split("/")[0]) / 0.25 + r.nextDouble() * 0.1,
-					Double.parseDouble(parameters.split("/")[1]) / 0.25 + r.nextDouble() * 0.1, 0, 0, Color.red, 10));
+			Panel.addParticle(
+					new Particle(pos.getX() / Block.size + stepx  * i + r.nextDouble() * 0.2 - 0.1,
+							pos.getY() / Block.size + stepy * i + r.nextDouble() * 0.2 - 0.1,
+							Double.parseDouble(parameters.split("/")[0]) * 0.15 + r.nextDouble() * 0.01 - 0.005,
+							Double.parseDouble(parameters.split("/")[1]) * 0.15 + r.nextDouble() * 0.01 - 0.005, 0, 0,
+							Color.red, 10));
 		}
-		lastx = pos.getX();
-		lasty = pos.getY();
+		lastx = pos.getX() / Block.size;
+		lasty = pos.getY() / Block.size;
 
 		super.draw(g, cameraX, cameraY);
 	}
