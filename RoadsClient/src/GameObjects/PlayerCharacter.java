@@ -17,8 +17,8 @@ public class PlayerCharacter extends Entity {
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (id == World.playerid) {
-			cameraX += World.cameraX*Block.size - cameraX;
-			cameraY += World.cameraY*Block.size - cameraY;
+			cameraX += World.cameraX * Block.size - cameraX;
+			cameraY += World.cameraY * Block.size - cameraY;
 		}
 
 		g.setColor(Color.blue.brighter().brighter());
@@ -36,8 +36,11 @@ public class PlayerCharacter extends Entity {
 
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {
-				Panel.addParticle(new Particle(blockx + r.nextDouble(), blocky + r.nextDouble(), 0,
-						-r.nextDouble() * 0.25 - 0.15, r.nextDouble() * 0.025 - 0.015, r.nextDouble()*0.15 + 0.025, c.brighter()));
+				Panel.addParticle(new Particle(blockx * Block.size + r.nextDouble() * Block.size,
+						blocky * Block.size + r.nextDouble() * Block.size, 0,
+						-r.nextDouble() * 0.25 * Block.size - 0.15 * Block.size,
+						r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
+						r.nextDouble() * 0.15 * Block.size + 0.025 * Block.size, c.brighter()));
 			}
 		}
 

@@ -21,9 +21,10 @@ public class OvenEntity extends Entity {
 		g.setColor(Color.red);
 		g.fillRect((int) x + Block.size / 4, (int) y + Block.size / 4, Block.size / 2, Block.size / 5);
 		Random r = new Random();
-		Panel.addParticle(
-				new Particle(pos.getX()/Block.size + 0.25 + r.nextDouble() / 2, pos.getY()/Block.size + 0.25 + r.nextDouble() / 5,
-						0, 0, r.nextDouble() * 0.01 - 0.0025, -r.nextDouble() * 0.025, Color.red));
+		Panel.addParticle(new Particle(pos.getX() + Block.size / 4 + r.nextDouble() * Block.size / 2,
+				pos.getY() + Block.size / 4 + r.nextDouble() * Block.size / 5, 0, 0,
+				r.nextDouble() * 0.01 * Block.size - 0.0025 * Block.size, -r.nextDouble() * 0.025 * Block.size,
+				Color.red));
 
 		super.draw(g, cameraX, cameraY);
 	}

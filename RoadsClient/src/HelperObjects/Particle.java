@@ -10,6 +10,7 @@ import Window.Panel;
 public class Particle {
 	private double x;
 	private double y;
+	private double size;
 
 	private double velocityx;
 	private double velocityy;
@@ -23,26 +24,28 @@ public class Particle {
 
 	public Particle(double x, double y, double velocityx, double velocityy, double accellerationx,
 			double accellerationy, Color c) {
-		this.x = x * Block.size;
-		this.y = y * Block.size;
-		this.velocityx = velocityx*Block.size;
-		this.velocityy = velocityy*Block.size;
-		this.accellerationx = accellerationx*Block.size;
-		this.accellerationy = accellerationy*Block.size;
+		this.x = x;
+		this.y = y;
+		this.velocityx = velocityx;
+		this.velocityy = velocityy;
+		this.accellerationx = accellerationx;
+		this.accellerationy = accellerationy;
 		this.c = c;
+		size = 0.1 * Block.size;
 
 		lifetime = new Random().nextInt(15) + 5;
 	}
 
 	public Particle(double x, double y, double velocityx, double velocityy, double accellerationx,
 			double accellerationy, Color c, int lifetime) {
-		this.x = x * Block.size;
-		this.y = y * Block.size;
-		this.velocityx = velocityx*Block.size;
-		this.velocityy = velocityy*Block.size;
-		this.accellerationx = accellerationx*Block.size;
-		this.accellerationy = accellerationy*Block.size;
+		this.x = x;
+		this.y = y;
+		this.velocityx = velocityx;
+		this.velocityy = velocityy;
+		this.accellerationx = accellerationx;
+		this.accellerationy = accellerationy;
 		this.c = c;
+		size = 0.1 * Block.size;
 
 		this.lifetime = lifetime;
 	}
@@ -57,9 +60,11 @@ public class Particle {
 		velocityy += accellerationy;
 		x += velocityx;
 		y += velocityy;
+		System.out.println(x + "/" + y);
 
 		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), (lifetime < 10 ? lifetime * 25 : 255)));
-		g.drawOval((int) x - 1 - cameraX + Panel.windowWidth / 2, (int) y - 1 - cameraY + Panel.windowHeight / 2, 2, 2);
+		g.drawOval((int) x - (int) size / 2 - cameraX + Panel.windowWidth / 2,
+				(int) y - (int) size / 2 - cameraY + Panel.windowHeight / 2, (int) size, (int) size);
 
 		return false;
 	}

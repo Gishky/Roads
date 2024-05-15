@@ -37,13 +37,15 @@ public class Firebolt extends Entity {
 		for (int i = 0; i < 5; i++) {
 			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone || heldBlock instanceof BlockIronOre
 					|| heldBlock instanceof BlockCoalOre)
-				Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size + r.nextDouble() * 0.2 - 0.1,
-						(pos.getY() + stepy * i) / Block.size + r.nextDouble() * 0.2 - 0.1, 0, 0,
-						r.nextDouble() * 0.025 - 0.015, -r.nextDouble() * 0.025, heldBlock.getColor()));
+				Panel.addParticle(
+						new Particle(pos.getX() + stepx * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
+								pos.getY() + stepy * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size, 0, 0,
+								r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
+								-r.nextDouble() * 0.025 * Block.size, heldBlock.getColor()));
 			else if (heldBlock instanceof BlockGrass)
-				Panel.addParticle(new Particle((pos.getX() + stepx * i) / Block.size,
-						(pos.getY() + stepy * i) / Block.size, r.nextDouble() * 0.1 - 0.05, -0.05 * r.nextDouble(), 0,
-						r.nextDouble() * 0.005, heldBlock.getColor()));
+				Panel.addParticle(new Particle(pos.getX() + stepx * i, pos.getY() + stepy * i,
+						r.nextDouble() * 0.1 * Block.size - 0.05 * Block.size, -0.05 * Block.size * r.nextDouble(), 0,
+						r.nextDouble() * 0.005 * Block.size, heldBlock.getColor()));
 		}
 
 		lastx = pos.getX();

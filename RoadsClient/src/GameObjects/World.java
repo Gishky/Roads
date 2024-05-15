@@ -65,8 +65,10 @@ public class World {
 			Random r = new Random();
 			Color c = World.getWorld()[x][y].getColor().brighter();
 			for (int i = 0; i < 50; i++) {
-				Particle p = new Particle(x + r.nextDouble(), y + r.nextDouble(), 0, 0, r.nextDouble() * 0.025 - 0.015,
-						r.nextDouble() * 0.025, c);
+				Particle p = new Particle(x * Block.size + r.nextDouble() * Block.size,
+						y * Block.size + r.nextDouble() * Block.size, 0, 0,
+						r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size, r.nextDouble() * 0.025 * Block.size,
+						c);
 				p.setLifetime(r.nextInt(10) + 3);
 				Panel.addParticle(p);
 			}

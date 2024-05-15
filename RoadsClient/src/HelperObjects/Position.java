@@ -19,6 +19,11 @@ public class Position {
 		this.x = Double.parseDouble(x) * Block.size;
 		this.y = Double.parseDouble(y) * Block.size;
 	}
+	
+	public void set(String x, String y) {
+		this.x = Double.parseDouble(x) * Block.size;
+		this.y = Double.parseDouble(y) * Block.size;
+	}
 
 	public void set(double x, double y) {
 		this.x = x * Block.size;
