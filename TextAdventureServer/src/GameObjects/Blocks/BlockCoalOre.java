@@ -35,9 +35,8 @@ public class BlockCoalOre extends Block {
 			fireboltVelocity[1] = unitVelocity[1];
 
 			Position fireboltpos = new Position();
-			fireboltpos.set(e.getPos().getX() + unitVelocity[0] * (e.getHitBox().getRadius() + 0.15),
-					e.getPos().getY() + unitVelocity[1] * (e.getHitBox().getRadius() + 0.15));
-			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone());
+			fireboltpos.set(e.getPos().getX(), e.getPos().getY());
+			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone(),e);
 		}
 	}
 

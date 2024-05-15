@@ -67,11 +67,17 @@ public class BlockOven extends Block {
 			smelting = World.getBlock(getX(), getY() - 1);
 		}
 
-		if (entity == null && (fuel != null || smelting != null)) {
+		if (entity == null && (fuel != null || (smelting != null && (fuel != null || this.fuel > 0)))) {
 			entity = new OvenEntity(getX(), getY(), this, smelting, fuel);
-		} else if (entity != null && (smelting == null || this.fuel <= 0) && fuel == null) {
-			GameMaster.removeEntity(entity);
-			entity = null;
+		} else if (entity != null) {
+			if ((smelting == null || this.fuel <= 0) && (fuel == null || this.fuel >= this.maxfuel)) {
+				GameMaster.removeEntity(entity);
+				entity = null;
+			} else if (fuel != null && entity.getFuel() == null) {
+				entity.setFuel(fuel);
+			} else if (smelting != null && entity.getSmelting() == null) {
+				entity.setSmelting(smelting);
+			}
 		}
 	}
 

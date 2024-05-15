@@ -3,7 +3,6 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.CraftingHandler;
 import HelperObjects.Hitbox;
@@ -22,7 +21,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private boolean placeFlag = false;
 
 	public PlayerCharacter() {
-		super("player");
+		super("player", new Position(World.getWorld().length / 2 + 0.5,
+				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
 		hitBox = new Hitbox(false, 0.25);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;

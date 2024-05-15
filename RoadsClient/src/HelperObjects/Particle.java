@@ -60,7 +60,6 @@ public class Particle {
 		velocityy += accellerationy;
 		x += velocityx;
 		y += velocityy;
-		System.out.println(x + "/" + y);
 
 		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), (lifetime < 10 ? lifetime * 25 : 255)));
 		g.drawOval((int) x - (int) size / 2 - cameraX + Panel.windowWidth / 2,

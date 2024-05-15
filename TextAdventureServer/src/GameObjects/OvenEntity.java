@@ -4,7 +4,6 @@ import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockOven;
 import HelperObjects.Position;
-import Server.GameMaster;
 
 public class OvenEntity extends Entity {
 
@@ -13,17 +12,11 @@ public class OvenEntity extends Entity {
 	private Block fuel;
 
 	public OvenEntity(int x, int y, BlockOven oven, Block smelting, Block fuel) {
-		entityIdentifier = "oven";
-		pos = new Position();
-		pos.set(x, y);
-		id = count++;
-		HP = maxHP;
+		super("oven", new Position(x, y));
 
 		this.oven = oven;
 		this.smelting = smelting;
 		this.fuel = fuel;
-
-		GameMaster.addEntity(this);
 	}
 
 	public boolean action() {
@@ -47,5 +40,21 @@ public class OvenEntity extends Entity {
 			}
 		}
 		return false;
+	}
+
+	public Block getSmelting() {
+		return smelting;
+	}
+
+	public void setSmelting(Block smelting) {
+		this.smelting = smelting;
+	}
+
+	public Block getFuel() {
+		return fuel;
+	}
+
+	public void setFuel(Block fuel) {
+		this.fuel = fuel;
 	}
 }

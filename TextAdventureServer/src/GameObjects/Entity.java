@@ -30,11 +30,9 @@ public class Entity {
 
 	protected String parameters = "";
 
-	public Entity(String identifier) {
+	public Entity(String identifier, Position pos) {
 		entityIdentifier = identifier;
-		pos = new Position();
-		pos.setX(World.getWorld().length / 2 + 0.5);
-		pos.setY(World.getHeight((int) pos.getX()) - 0.5);
+		this.pos = pos;
 		id = count++;
 		HP = maxHP;
 		GameMaster.addEntity(this);

@@ -11,33 +11,39 @@ public class GrassCrawler extends Entity {
 	private int damage = 1;
 	private double speed = 0.1;
 	private boolean goLeft;
+	private Entity owner = null;
 
-	public GrassCrawler(Position initialPosition, double[] initialVelocity) {
-		super("firebolt");
-		this.pos = initialPosition;
+	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner) {
+		super("firebolt", initialPosition);
 		this.heldBlock = new BlockGrass();
 		breakCount = 0;
 		hitBox = new Hitbox(false, 0.15);
 		velocity = initialVelocity;
 		goLeft = initialVelocity[0] < 0;
+		this.owner = owner;
 	}
 
 	@Override
 	public boolean action() {
 		for (Entity e : GameMaster.getEntities()) {
-			if (e.getHP() > 0
-					&& hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
-				e.receiveDamage(damage);
+			if (e.equals(owner)) {
+				if (!hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
+					owner = null;
+				}
+			} else {
+				if (e.getHP() > 0 && hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(),
+						e.getPos().getY() - pos.getY())) {
+					e.receiveDamage(damage);
 
-				GameMaster.removeEntity(this);
-				return false;
+					GameMaster.removeEntity(this);
+					return false;
+				}
 			}
 		}
 
 		velocity[0] /= drag;
 		if (isGrounded) {
-			velocity[0] /= World.getWorld()[(int) pos.getX() ][(int) pos.getY() + 1]
-					.getFriction();
+			velocity[0] /= World.getWorld()[(int) pos.getX()][(int) pos.getY() + 1].getFriction();
 		}
 		velocity[1] /= drag;
 		velocity[1] += fallingaccelleration;

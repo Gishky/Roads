@@ -10,8 +10,7 @@ public class OvenAbilityJet extends Entity {
 	private BlockOven oven;
 
 	public OvenAbilityJet(Position initialPosition, double initialVelocityx, double initialVelocityy, BlockOven oven) {
-		super("ovenAbility");
-		this.pos = initialPosition;
+		super("ovenAbility", initialPosition);
 		this.heldBlock = new Block();
 		parameters = -initialVelocityx + "/" + -initialVelocityy;
 		breakCount = 0;
