@@ -94,6 +94,10 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		g.setColor(Color.orange);
 		g.drawString((1000 / (System.currentTimeMillis() - timestamp)) + " FPS", 2, getHeight() - 7);
 		g.drawString(serverTickRate + "ms", 2, getHeight() - 22);
+		g.setColor(Color.black);
+		g.drawString(cameraX / Block.size + "/" + cameraY / Block.size,
+				windowWidth - 2 - (g.getFontMetrics().stringWidth(cameraX / Block.size + "/" + cameraY / Block.size)),
+				15);
 		timestamp = System.currentTimeMillis();
 	}
 

@@ -19,6 +19,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private UDPClientConnection connection;
 
 	private boolean placeFlag = false;
+	private double craftingRange = 4;
 
 	public PlayerCharacter() {
 		super("player", new Position(World.getWorld().length / 2 + 0.5,
@@ -75,7 +76,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				fireCooldown = heldBlock.getAbilityCooldown();
 				heldBlock.activateAbility(this);
 			} else if (heldBlock == null) {
-				CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()), (int) (mouse.getY() + pos.getY()));
+				if (Math.sqrt(Math.pow(mouse.getX(), 2) + Math.pow(mouse.getY(), 2)) <= craftingRange) {
+					CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()), (int) (mouse.getY() + pos.getY()));
+				}
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {

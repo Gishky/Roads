@@ -9,11 +9,12 @@ import GameObjects.Blocks.BlockDirt;
 import GameObjects.Blocks.BlockGrass;
 import GameObjects.Blocks.BlockIronOre;
 import GameObjects.Blocks.BlockStone;
+import HelperObjects.OpenSimplex2S;
 import Server.GameMaster;
 
 public class World {
 
-	private static Block[][] world = new Block[10000][300];
+	private static Block[][] world = new Block[100000][300];
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
@@ -25,64 +26,89 @@ public class World {
 		double[] altitudes = new double[functions];
 
 		for (int i = 0; i < functions; i++) {
-			frequencies[i] = r.nextDouble() * world.length / 100;
-			altitudes[i] = r.nextDouble() * frequencies[i] / (world[0].length / 40);
+			frequencies[i] = r.nextDouble() * 10000 / 100;
+			altitudes[i] = r.nextDouble() * frequencies[i] / (300 / 40);
 		}
 
 		// höhengeneration
-		int[] höhe = new int[world.length];
+		int[] terrainBegin = new int[world.length];
+		int[] terrainHoehe = new int[world.length];
 		for (int i = 0; i < world.length; i++) {
 			int delta = 0;
 			for (int m = 0; m < functions; m++) {
 				delta += Math.sin((double) i / frequencies[m]) * altitudes[m];
 			}
-			höhe[i] = worldHeight / 2 + delta;
-			if (höhe[i] >= worldHeight)
-				höhe[i] = worldHeight - 1;
-			if (höhe[i] <= 0) {
-				höhe[i] = 1;
+			terrainBegin[i] = worldHeight / 2 + delta;
+			if (terrainBegin[i] >= worldHeight)
+				terrainBegin[i] = worldHeight - 1;
+			if (terrainBegin[i] <= 0) {
+				terrainBegin[i] = 1;
 			}
 		}
 
 		// glätten
 		for (int i = 1; i < world.length - 1; i++) {
-			if (höhe[i - 1] - höhe[i] == -(höhe[i] - höhe[i + 1])) {
-				höhe[i] = höhe[i - 1];
+			if (terrainBegin[i - 1] - terrainBegin[i] == -(terrainBegin[i] - terrainBegin[i + 1])) {
+				terrainBegin[i] = terrainBegin[i - 1];
 			}
+			terrainHoehe[i] = worldHeight - terrainBegin[i];
 		}
 
+		// fill in blocks
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < worldHeight; y++) {
-				if (y < worldHeight - höhe[x])
+				if (y < terrainBegin[x])
 					setBlock(x, y, new BlockAir());
 				else {
-					if (r.nextInt(worldHeight) < y / 2)
-						setBlock(x, y, new BlockStone());
-					else {
-						if (r.nextInt(worldHeight) < y / 5)
-							if (r.nextInt(worldHeight) < y / 2)
-								setBlock(x, y, new BlockIronOre());
-							else
-								setBlock(x, y, new BlockCoalOre());
-						else
-							setBlock(x, y, new BlockDirt());
-					}
-
-					if (r.nextInt(2) >= Math.abs(worldHeight - höhe[x] - y)) {
+					if (r.nextInt(2) >= Math.abs(terrainBegin[x] - y)) {
 						setBlock(x, y, new BlockGrass());
+					} else {
+						setBlock(x, y, new BlockDirt());
 					}
 				}
 			}
-			if (x != 0 && höhe[x] - höhe[x - 1] >= 3) {
-				for (int y = worldHeight - höhe[x]; y <= worldHeight - höhe[x - 1]; y++) {
+			if (x != 0 && terrainBegin[x - 1] - terrainBegin[x] >= 3) {
+				for (int y = terrainBegin[x]; y <= terrainBegin[x - 1]; y++) {
 					setBlock(x, y, new BlockStone());
 				}
-			} else if (x != 0 && höhe[x - 1] - höhe[x] >= 3) {
-				for (int y = worldHeight - höhe[x - 1]; y <= worldHeight - höhe[x]; y++) {
+			} else if (x != 0 && terrainBegin[x] - terrainBegin[x - 1] >= 3) {
+				for (int y = terrainBegin[x - 1]; y <= terrainBegin[x]; y++) {
 					setBlock(x - 1, y, new BlockStone());
 				}
 			}
 		}
+		// generate stone
+		generateNoiseBlocks(worldHeight, worldHeight *3/ 5, 0.6, 1, new BlockStone());
+
+		// generate CoalOre
+		generateNoiseBlocks(worldHeight * 5 / 8, worldHeight * 3 / 10, 0.25, 4, new BlockCoalOre());
+
+		// generate IronOre
+		generateNoiseBlocks(worldHeight * 3 / 4, worldHeight / 2, 0.2, 2.5, new BlockIronOre());
+
+		System.out.println("done");
+	}
+
+	private static void generateNoiseBlocks(double medianHeight, double standardHeightDeviation, double veinDensity,
+			double veinSize, Block generatedBlock) {
+		long seed = new Random().nextLong();
+		for (int x = 0; x < world.length; x++) {
+			for (int y = 0; y < world[0].length; y++) {
+				double normalDistribution = normalDistribution(y, medianHeight, standardHeightDeviation, veinDensity);
+				if (world[x][y].getId() == 0 || world[x][y].getId() == 2)
+					continue;
+				if (normalDistribution >= (OpenSimplex2S.noise2(seed, (double) x / veinSize, (double) y / veinSize) + 1)
+						/ 2) {
+					setBlock(x, y, generatedBlock.clone());
+				}
+			}
+		}
+	}
+
+	private static double normalDistribution(int x, double mediam, double sd, double maximum) {
+		double max = (Math.exp(-((mediam - mediam) / sd) * ((mediam - mediam) / sd) / 2) / Math.sqrt(2 * Math.PI)) / sd;
+		return ((Math.exp(-((x - mediam) / sd) * ((x - mediam) / sd) / 2) / Math.sqrt(2 * Math.PI)) / sd) * maximum
+				/ max;
 	}
 
 	public static int getHeight(int x) {

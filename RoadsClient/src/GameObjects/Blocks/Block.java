@@ -1,29 +1,26 @@
 package GameObjects.Blocks;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
-import Window.Panel;
-
 public class Block {
-	public static int size = 40;
+	public static int size = 30;
 
 	protected int breakThreshhold = 0;
 
 	private Color c;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
-		/*if (x % 40 == 0 && y % 10 == 0) {
-
-			g.setColor(Color.black);
-			g.setFont(new Font("Arial", Font.PLAIN, 20));
-			g.drawString((x * size - 100) + "", x * size - cameraX + Panel.windowWidth / 2 - 100,
-					y * size - cameraY + Panel.windowHeight / 2 - 100);
-
-			g.drawString((y * size - 100) + "", x * size - cameraX + Panel.windowWidth / 2 - 100,
-					y * size - cameraY + Panel.windowHeight / 2 - 100 + 15);
-		}*/
+		/*
+		 * if (x % 40 == 0 && y % 10 == 0) {
+		 * 
+		 * g.setColor(Color.black); g.setFont(new Font("Arial", Font.PLAIN, 20));
+		 * g.drawString((x * size - 100) + "", x * size - cameraX + Panel.windowWidth /
+		 * 2 - 100, y * size - cameraY + Panel.windowHeight / 2 - 100);
+		 * 
+		 * g.drawString((y * size - 100) + "", x * size - cameraX + Panel.windowWidth /
+		 * 2 - 100, y * size - cameraY + Panel.windowHeight / 2 - 100 + 15); }
+		 */
 	}
 
 	public static Block getBlockFromID(String id) {
