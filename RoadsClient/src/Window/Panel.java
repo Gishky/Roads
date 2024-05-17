@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -28,6 +27,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
+	private String version = "1.0";
 
 	public static int windowWidth, windowHeight;
 
@@ -43,9 +43,10 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 		entities = new ArrayList<Entity>();
 
-		t.start();
-
 		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+		if (connection.startConnection(version)) {
+			t.start();
+		}
 	}
 
 	@Override
@@ -92,7 +93,8 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		g.setColor(Color.orange);
 		g.drawString(connection.getPackagePercentile() + "%", 2, 30);
 		g.setColor(Color.orange);
-		g.drawString((1000 / (System.currentTimeMillis() - timestamp)) + " FPS", 2, getHeight() - 7);
+		if ((System.currentTimeMillis() - timestamp) > 0)
+			g.drawString((1000 / (System.currentTimeMillis() - timestamp)) + " FPS", 2, getHeight() - 7);
 		g.drawString(serverTickRate + "ms", 2, getHeight() - 22);
 		g.setColor(Color.black);
 		g.drawString(cameraX / Block.size + "/" + cameraY / Block.size,

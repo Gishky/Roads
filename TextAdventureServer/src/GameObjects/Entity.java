@@ -40,6 +40,12 @@ public class Entity {
 	public Entity() {
 	};
 
+	public void createEntity() {
+		id = count++;
+		HP = maxHP;
+		GameMaster.addEntity(this);
+	}
+
 	public Position getPos() {
 		return pos;
 	}

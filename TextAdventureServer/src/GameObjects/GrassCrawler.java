@@ -15,13 +15,14 @@ public class GrassCrawler extends Entity {
 	private Entity owner = null;
 
 	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner) {
-		super( initialPosition);
+		pos = initialPosition;
 		this.heldBlock = new BlockGrass();
 		breakCount = 0;
 		hitBox = new Hitbox(false, 0.15);
 		velocity = initialVelocity;
 		goLeft = initialVelocity[0] < 0;
 		this.owner = owner;
+		createEntity();
 	}
 
 	@Override
@@ -88,14 +89,14 @@ public class GrassCrawler extends Entity {
 			return false;
 		}
 	}
-	
+
 	public String toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("type", "firebolt");
 		json.put("id", "" + id);
 		json.put("x", String.format("%.4f", pos.getX()));
 		json.put("y", String.format("%.4f", pos.getY()));
-		json.put("heldBlock",  getHeldBlock().toJSON());
+		json.put("heldBlock", getHeldBlock().toJSON());
 		return json.getJSON();
 	}
 }

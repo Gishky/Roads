@@ -19,7 +19,6 @@ public class BlockGrass extends Block {
 
 	public void activateAbility(Entity e) {
 		double[] initialVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
-		System.out.println(initialVelocity[0] + "/" + initialVelocity[1]);
 		double velocityLength = Math.sqrt(Math.pow(initialVelocity[0], 2) + Math.pow(initialVelocity[1], 2));
 		double[] unitVelocity = { initialVelocity[0] / velocityLength, initialVelocity[1] / velocityLength };
 		initialVelocity[0] = unitVelocity[0];

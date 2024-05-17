@@ -1,11 +1,8 @@
 package GameObjects.Blocks;
 
-import java.util.Random;
-
 import GameObjects.Entity;
 import GameObjects.OvenAbilityJet;
 import GameObjects.OvenEntity;
-import GameObjects.World;
 import Server.GameMaster;
 
 public class BlockOven extends Block {
@@ -55,30 +52,8 @@ public class BlockOven extends Block {
 	private OvenEntity entity = null;
 
 	public void update() {
-		Block fuel = null;
-		if (World.getBlock(getX() - 1, getY()).getFuelValue() > 0) {
-			fuel = World.getBlock(getX() - 1, getY());
-		} else if (World.getBlock(getX() + 1, getY()).getFuelValue() > 0) {
-			fuel = World.getBlock(getX() + 1, getY());
-		}
-
-		Block smelting = null;
-		if (World.getBlock(getX(), getY() - 1).getSmeltedBlock() != null) {
-			smelting = World.getBlock(getX(), getY() - 1);
-		}
-
-		if (entity == null && (fuel != null || (smelting != null && (fuel != null || this.fuel > 0)))) {
-			entity = new OvenEntity(getX(), getY(), this, smelting, fuel);
-		} else if (entity != null) {
-			if ((smelting == null || this.fuel <= 0) && (fuel == null || this.fuel >= this.maxfuel)) {
-				GameMaster.removeEntity(entity);
-				entity = null;
-			} else if (fuel != null && entity.getFuel() == null) {
-				entity.setFuel(fuel);
-			} else if (smelting != null && entity.getSmelting() == null) {
-				entity.setSmelting(smelting);
-			}
-		}
+		if (entity == null)
+			entity = new OvenEntity(getX(), getY(), this);
 	}
 
 	@Override
@@ -109,4 +84,7 @@ public class BlockOven extends Block {
 		jet = object;
 	}
 
+	public void removeEntity() {
+		entity = null;
+	}
 }

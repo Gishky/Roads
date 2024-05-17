@@ -27,7 +27,7 @@ public class Entity {
 		this.heldBlock = Block.getBlockFromID(heldBlock);
 	}
 
-	public void setParameters(JSONObject json) {
+	public void updateEntity(JSONObject entity) {
 
 	}
 

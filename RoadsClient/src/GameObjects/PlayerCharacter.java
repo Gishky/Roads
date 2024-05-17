@@ -17,7 +17,7 @@ public class PlayerCharacter extends Entity {
 		breakCount = Integer.parseInt(entity.get("breakCount"));
 	}
 
-	public void setParameters(JSONObject json) {
+	public void updateEntity(JSONObject json) {
 		pos.setX(json.get("x"));
 		pos.setY(json.get("y"));
 		HPPercent = Integer.parseInt(json.get("hp%"));

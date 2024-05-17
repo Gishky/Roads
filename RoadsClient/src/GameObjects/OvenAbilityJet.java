@@ -24,7 +24,7 @@ public class OvenAbilityJet extends Entity {
 		vely = Double.parseDouble(entity.get("vely"));
 	}
 	
-	public void setParameters(JSONObject json) {
+	public void updateEntity(JSONObject json) {
 		pos.setX(json.get("x"));
 		pos.setY(json.get("y"));
 		velx = Double.parseDouble(json.get("velx"));

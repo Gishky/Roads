@@ -15,6 +15,9 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	private int port;
 	private InetAddress address;
 	private DatagramSocket socket;
+	private String serverAddress;
+
+	private boolean running;
 
 	private UDPConnectionEvaluator eval;
 	private UDPMessageListener listener;
@@ -25,34 +28,55 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	private final String PRIORITY_RESPONSE = "RECEIVEDPRIORITY;";
 
 	private ArrayList<String> priorityMessages = new ArrayList<String>();
+	private Timer requiredPackageTimer;
 
 	public UDPServerConnection(String serverAddress, int serverPort, UDPMessageListener listener) {
 		this.port = serverPort;
 		this.listener = listener;
+		this.serverAddress = serverAddress;
+
+		requiredPackageTimer = new Timer(100, this);
+		requiredPackageTimer.start();
+	}
+
+	public boolean startConnection(String controlString) {
 		try {
 			socket = new DatagramSocket();
 			address = InetAddress.getByName(serverAddress);
 
-			byte[] buf = new byte[256];
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-			socket.send(packet);
+			sendMessage(controlString, true);
 
-			this.start();
+			byte[] buf = new byte[256];
+			DatagramPacket packet = new DatagramPacket(buf, buf.length);
+			socket.receive(packet);
+
+			receivedString = new String(packet.getData(), 0, packet.getLength());
+			if (receivedString.equals(PRIORITY_MARK + "Connection Approved")) {
+				System.out.println("receiving: " + receivedString);
+				receivedString = receivedString.substring(PRIORITY_MARK.length());
+				sendMessage(PRIORITY_RESPONSE + receivedString, false);
+
+				eval = new UDPConnectionEvaluator(this);
+				System.out.println("approved");
+				running = true;
+				this.start();
+				return true;
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		eval = new UDPConnectionEvaluator(this);
-
-		Timer requiredPackageTimer = new Timer(100, this);
-		requiredPackageTimer.start();
+		System.out.println("not approved");
+		requiredPackageTimer.stop();
+		running = false;
+		return false;
 	}
 
 	public void run() {
 		try {
 			byte[] buf = new byte[256];
 
-			while (true) {
+			while (running) {
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				socket.receive(packet);
 
@@ -68,7 +92,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 					}
 				} else {
 					if (receivedString.startsWith(PRIORITY_MARK)) {
-						System.out.println("receiving: "+receivedString);
+						System.out.println("receiving: " + receivedString);
 						receivedString = receivedString.substring(PRIORITY_MARK.length());
 						sendMessage(PRIORITY_RESPONSE + receivedString, false);
 					}
@@ -84,11 +108,11 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			if(i>10) 
+			if (i > 10)
 				return;
 			try {
 				if (priorityMessages.get(i) != null) {
-					System.out.println("sending: "+priorityMessages.get(i));
+					System.out.println("sending: " + priorityMessages.get(i));
 					sendMessage(priorityMessages.get(i), false);
 				} else {
 					priorityMessages.remove(i);
@@ -103,7 +127,7 @@ public class UDPServerConnection extends Thread implements ActionListener {
 	public void sendMessage(String message, boolean priority) {
 		if (priority) {
 			message = PRIORITY_MARK + message;
-			System.out.println("sending: "+message);
+			System.out.println("sending: " + message);
 			priorityMessages.add(message);
 		}
 		byte[] buf = message.getBytes();

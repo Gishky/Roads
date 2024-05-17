@@ -22,6 +22,8 @@ public class UDPClientConnection implements ActionListener {
 	private ArrayList<String> priorityMessages = new ArrayList<String>();
 	private Timer requiredPackageTimer;
 
+	private boolean connectionApproved = false;
+
 	public UDPClientConnection(InetAddress address, int port, UDPServer server) {
 		this.server = server;
 		this.address = address;
@@ -40,6 +42,8 @@ public class UDPClientConnection implements ActionListener {
 	}
 
 	public void sendMessage(String message, boolean priority) {
+		if (!connectionApproved)
+			return;
 		if (priority) {
 			message = PRIORITY_MARK + message;
 			priorityMessages.add(message);
@@ -53,6 +57,8 @@ public class UDPClientConnection implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (!connectionApproved)
+			return;
 		connectionTimeoutCounter--;
 		if (connectionTimeoutCounter <= 0) {
 			server.removeClient(this);
@@ -63,7 +69,7 @@ public class UDPClientConnection implements ActionListener {
 		if (priorityMessages.size() < 1)
 			return;
 		for (int i = 0; i < priorityMessages.size(); i++) {
-			if(i>10)
+			if (i > 10)
 				return;
 			try {
 				if (priorityMessages.get(i) != null) {
@@ -87,6 +93,8 @@ public class UDPClientConnection implements ActionListener {
 	}
 
 	public void receivedString(String receivedString) {
+		if (!connectionApproved)
+			return;
 		connectionTimeoutCounter = 10;
 		if (receivedString.startsWith("NetworkPingRequest")) {
 			sendMessage(receivedString, false);
@@ -109,5 +117,25 @@ public class UDPClientConnection implements ActionListener {
 
 	public void disconnect() {
 		server.removeClient(this);
+	}
+
+	public boolean checkConnection(String received, String controlString) {
+		if (!received.equals(PRIORITY_MARK + controlString)) {
+			String message = "Connection Denied";
+			byte[] buf = message.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			server.sendMessage(packet);
+			disconnect();
+			return false;
+		} else {
+			String message = "Connection Approved";
+			message = PRIORITY_MARK + message;
+			priorityMessages.add(message);
+			byte[] buf = message.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			server.sendMessage(packet);
+			connectionApproved = true;
+			return true;
+		}
 	}
 }

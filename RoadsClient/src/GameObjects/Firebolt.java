@@ -24,7 +24,7 @@ public class Firebolt extends Entity {
 				new JSONObject(entity.get("heldBlock")).get("id"));
 	}
 
-	public void setParameters(JSONObject json) {
+	public void updateEntity(JSONObject json) {
 		pos.setX(json.get("x"));
 		pos.setY(json.get("y"));
 		heldBlock=Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"));

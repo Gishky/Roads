@@ -18,8 +18,6 @@ public class MessageInterpreter implements UDPMessageListener {
 		}
 		JSONObject message = new JSONObject(receivedMessage);
 
-		String[] messageParts = receivedMessage.split(";");
-
 		switch (message.get("action")) {
 		case "createEntity":
 			createEntity(new JSONObject(message.get("entity")));
@@ -73,7 +71,7 @@ public class MessageInterpreter implements UDPMessageListener {
 		for (int i = 0; i < Panel.getEntities().size(); i++) {
 			Entity e = Panel.getEntities().get(i);
 			if (("" + e.getId()).equals(entity.get("id"))) {
-				e.setParameters(entity);
+				e.updateEntity(entity);
 				return;
 			}
 		}

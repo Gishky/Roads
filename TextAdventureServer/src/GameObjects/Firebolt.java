@@ -13,7 +13,7 @@ public class Firebolt extends Entity {
 	private Entity owner = null;
 
 	public Firebolt(Position initialPosition, double[] initialVelocity, Block heldBlock, Entity owner) {
-		super(initialPosition);
+		pos = initialPosition;
 		this.velocity = initialVelocity;
 		this.heldBlock = heldBlock;
 		fallingaccelleration = 0.025;
@@ -22,6 +22,7 @@ public class Firebolt extends Entity {
 		drag = 1.000005;
 		hitBox = new Hitbox(false, 0.25);
 		this.owner = owner;
+		createEntity();
 	}
 
 	@Override

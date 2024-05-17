@@ -19,10 +19,12 @@ public class UDPServer extends Thread {
 	private int port;
 	private UDPClientObjectCreator creator;
 	private ArrayList<UDPClientConnection> clients;
+	private ArrayList<UDPClientConnection> deniedClients;
 	private DatagramSocket socket;
 	private boolean running;
+	private String controlString;
 
-	public UDPServer(String name, int port, UDPClientObjectCreator creator) throws Exception {
+	public UDPServer(String name, int port, UDPClientObjectCreator creator, String controlString) throws Exception {
 		for (UDPServer server : instances) {
 			if (server.getName() == name) {
 				throw new Exception("Cannot start UDPServer; Server with given name already exists");
@@ -31,8 +33,10 @@ public class UDPServer extends Thread {
 
 		this.creator = creator;
 		this.port = port;
+		this.controlString = controlString;
 		setName(name);
 		clients = new ArrayList<UDPClientConnection>();
+		deniedClients = new ArrayList<UDPClientConnection>();
 		socket = new DatagramSocket(port);
 
 		instances.add(this);
@@ -64,10 +68,12 @@ public class UDPServer extends Thread {
 		InetAddress address = packet.getAddress();
 		int port = packet.getPort();
 		UDPClientConnection client = new UDPClientConnection(address, port, this);
-		addClient(client);
+		if (client.checkConnection(new String(packet.getData(), 0, packet.getLength()), controlString)) {
+			addClient(client);
 
-		UDPClientObject clientObject = creator.newClientObject();
-		client.setClientObject(clientObject);
+			UDPClientObject clientObject = creator.newClientObject();
+			client.setClientObject(clientObject);
+		}
 	}
 
 	public void addClient(UDPClientConnection clientConnection) {
