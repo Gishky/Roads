@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import GameObjects.Entity;
+import GameObjects.Firebolt;
 import GameObjects.World;
 import UDPServer.UDPServer;
 
@@ -46,11 +47,9 @@ public class GameMaster implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
-			if (entity.action())
-				sendToAll("entity;" + entity.getId() + ";" + decimalFormat.format(entity.getPos().getX()) + ";"
-						+ decimalFormat.format(entity.getPos().getY()) + ";" + entity.getBreakCount() + ";"
-						+ entity.getHPPercentile() + ";" + entity.getHeldBlockId() + ";" + entity.getParameters() + ";",
-						false);
+			if (entity.action()) {
+				sendToAll("{action:updateEntity,entity:" + entity.toJSON() + "}", false);
+			}
 		}
 
 		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
@@ -66,20 +65,18 @@ public class GameMaster implements ActionListener {
 		serverTickRate.remove(0);
 		timestamp = System.currentTimeMillis();
 		if (timestamp % 10 == 0)
-			sendToAll("serverTickRate;" + avg, false);
+			sendToAll("{action:serverTickRate,serverTickRate:" + avg + "}", false);
 	}
 
 	public static void addEntity(Entity e) {
 		master.entities.add(e);
-		sendToAll("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
-				+ decimalFormat.format(e.getPos().getX()) + ";" + decimalFormat.format(e.getPos().getY()) + ";"
-				+ e.getHPPercentile() + ";" + e.getHeldBlockId(), true);
+		sendToAll("{action:createEntity,entity:" + e.toJSON() + "}", true);
 	}
 
 	public static void removeEntity(Entity e) {
 		master.entities.remove(e);
 		// System.out.println("removing: " + e.getId());
-		sendToAll("removeEntity;" + e.getId(), true);
+		sendToAll("{action:removeEntity,entity:{id:" + e.getId() + "}}", true);
 	}
 
 	public static ArrayList<Entity> getEntities() {

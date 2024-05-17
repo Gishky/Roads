@@ -1,11 +1,11 @@
 package GameObjects.Blocks;
 
 import GameObjects.Entity;
+import HelperObjects.JSONObject;
 
 public class Block {
 
 	protected int id;
-	public String blockString = "";
 
 	private boolean blocksMovement = true;
 	protected double friction = 1;
@@ -19,6 +19,10 @@ public class Block {
 	protected int requiredFuelForSmelting;
 	protected int fuelValue = 0;
 
+	public Block() {
+		id = -1;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -26,9 +30,9 @@ public class Block {
 	public void update() {
 
 	}
-	
+
 	public void breakBlock() {
-		
+
 	}
 
 	public double getFriction() {
@@ -98,5 +102,13 @@ public class Block {
 
 	public void setBlocksMovement(boolean blocksMovement) {
 		this.blocksMovement = blocksMovement;
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", "" + id);
+		json.put("x", "" + getX());
+		json.put("y", "" + getY());
+		return json.getJSON();
 	}
 }

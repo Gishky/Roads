@@ -45,5 +45,13 @@ public class Position {
 	public void setY(double y) {
 		this.y = y * Block.size;
 	}
+	
+	public void setX(String x) {
+		this.x = Double.parseDouble(x) * Block.size;
+	}
+
+	public void setY(String y) {
+		this.y = Double.parseDouble(y) * Block.size;
+	}
 
 }

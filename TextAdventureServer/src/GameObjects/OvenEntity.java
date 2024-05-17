@@ -3,6 +3,7 @@ package GameObjects;
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockOven;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class OvenEntity extends Entity {
@@ -12,7 +13,7 @@ public class OvenEntity extends Entity {
 	private Block fuel;
 
 	public OvenEntity(int x, int y, BlockOven oven, Block smelting, Block fuel) {
-		super("oven", new Position(x, y));
+		super( new Position(x, y));
 
 		this.oven = oven;
 		this.smelting = smelting;
@@ -56,5 +57,14 @@ public class OvenEntity extends Entity {
 
 	public void setFuel(Block fuel) {
 		this.fuel = fuel;
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", "oven");
+		json.put("id", "" + id);
+		json.put("x", "" + pos.getX());
+		json.put("y", "" + pos.getY());
+		return json.getJSON();
 	}
 }

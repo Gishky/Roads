@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import GameObjects.Blocks.Block;
+import HelperObjects.JSONObject;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -12,6 +13,10 @@ public class OvenEntity extends Entity {
 
 	public OvenEntity(String id, String x, String y, String hppercent, String heldBlock) {
 		super(id, x, y, hppercent, heldBlock);
+	}
+
+	public OvenEntity(JSONObject entity) {
+		super(entity.get("id"), entity.get("x"), entity.get("y"), "100", "0");
 	}
 
 	public void draw(Graphics2D g, int cameraX, int cameraY) {

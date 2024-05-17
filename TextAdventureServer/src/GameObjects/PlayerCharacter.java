@@ -3,9 +3,11 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.CraftingHandler;
 import HelperObjects.Hitbox;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import HelperObjects.VirtualKeyboard;
 import Server.GameMaster;
@@ -22,7 +24,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private double craftingRange = 4;
 
 	public PlayerCharacter() {
-		super("player", new Position(World.getWorld().length / 2 + 0.5,
+		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
 		hitBox = new Hitbox(false, 0.25);
 		keyboard = new VirtualKeyboard();
@@ -37,8 +39,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (contents[0].equals("key")) {
 			keyboard.inputReceived(message);
 		} else if (contents[0].equals("block")) {
-			connection.sendMessage(
-					World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).blockString, true);
+			connection.sendMessage("{action:setBlock,block:"
+					+ World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).toJSON() + "}",
+					true);
 		} else if (contents[0].equals("reboot")) {
 			GameMaster.restartServer();
 		} else if (contents[0].equals("mouse")) {
@@ -52,6 +55,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public boolean action() {
+		if (keyboard == null)
+			return false;
+
 		fireCooldown--;
 		boolean update = false;
 
@@ -142,16 +148,15 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void sendInitialData() {
-		connection.sendMessage("id;" + id, true);
+		connection.sendMessage("{action:playerID,playerID:" + id + "}", true);
 		for (Entity e : GameMaster.getEntities()) {
 			if (!e.equals(this))
-				connection.sendMessage("createEntity;" + e.getEntityIdentifier() + ";" + e.getId() + ";"
-						+ GameMaster.decimalFormat.format(e.getPos().getX()) + ";"
-						+ GameMaster.decimalFormat.format(e.getPos().getY()) + ";" + e.getHPPercentile() + ";"
-						+ e.getHeldBlockId(), true);
+				connection.sendMessage("{action:createEntity,entity:" + e.toJSON() + "}", true);
 
 		}
-		connection.sendMessage("createWorld;" + World.getWorld().length + ";" + World.getWorld()[0].length, true);
+		connection.sendMessage(
+				"{action:createWorld,length:" + World.getWorld().length + ",height:" + World.getWorld()[0].length + "}",
+				true);
 	}
 
 	@Override
@@ -159,6 +164,18 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (heldBlock != null)
 			World.setBlock((int) pos.getX(), (int) pos.getY(), heldBlock);
 		GameMaster.removeEntity(this);
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", "player");
+		json.put("id", "" + id);
+		json.put("x", String.format("%.4f", pos.getX()));
+		json.put("y", String.format("%.4f", pos.getY()));
+		json.put("heldBlock", getHeldBlock().toJSON());
+		json.put("breakCount", "" + breakCount);
+		json.put("hp%", "" + getHPPercentile());
+		return json.getJSON();
 	}
 
 }

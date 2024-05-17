@@ -14,7 +14,7 @@ import Server.GameMaster;
 
 public class World {
 
-	private static Block[][] world = new Block[100000][300];
+	private static Block[][] world = new Block[1000][300];
 
 	public static void generateWorld() {
 		int worldHeight = world[0].length;
@@ -78,7 +78,7 @@ public class World {
 			}
 		}
 		// generate stone
-		generateNoiseBlocks(worldHeight, worldHeight *3/ 5, 0.6, 1, new BlockStone());
+		generateNoiseBlocks(worldHeight, worldHeight * 3 / 5, 0.6, 1, new BlockStone());
 
 		// generate CoalOre
 		generateNoiseBlocks(worldHeight * 5 / 8, worldHeight * 3 / 10, 0.25, 4, new BlockCoalOre());
@@ -130,8 +130,6 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		return castResult;
@@ -147,8 +145,6 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		return castResult;
@@ -301,8 +297,7 @@ public class World {
 			world[x][y].breakBlock();
 
 		block.setPosition(x, y);
-		block.blockString = "block;" + x + ";" + y + ";" + block.getId();
-		GameMaster.sendToAll(block.blockString, true);
+		GameMaster.sendToAll("{action:setBlock,block:" + block.toJSON() + "}", true);
 		world[x][y] = block;
 
 		world[x][y].update();

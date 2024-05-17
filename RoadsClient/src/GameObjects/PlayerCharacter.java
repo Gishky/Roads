@@ -5,13 +5,29 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import GameObjects.Blocks.Block;
+import HelperObjects.JSONObject;
 import HelperObjects.Particle;
 import Window.Panel;
 
 public class PlayerCharacter extends Entity {
 
-	public PlayerCharacter(String id, String x, String y, String hppercent, String heldblock) {
-		super(id, x, y, hppercent, heldblock);
+	public PlayerCharacter(JSONObject entity) {
+		super(entity.get("id"), entity.get("x"), entity.get("y"), entity.get("hp%"),
+				new JSONObject(entity.get("heldBlock")).get("id"));
+		breakCount = Integer.parseInt(entity.get("breakCount"));
+	}
+
+	public void setParameters(JSONObject json) {
+		pos.setX(json.get("x"));
+		pos.setY(json.get("y"));
+		HPPercent = Integer.parseInt(json.get("hp%"));
+		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"));
+		breakCount = Integer.parseInt(json.get("breakCount"));
+
+		if (id == World.playerid) {
+			World.cameraX = Double.parseDouble(json.get("x"));
+			World.cameraY = Double.parseDouble(json.get("y"));
+		}
 	}
 
 	@Override

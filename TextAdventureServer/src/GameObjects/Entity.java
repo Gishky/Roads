@@ -2,6 +2,7 @@ package GameObjects;
 
 import GameObjects.Blocks.Block;
 import HelperObjects.Hitbox;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 
@@ -9,7 +10,6 @@ public class Entity {
 
 	protected static int count = 0;
 	protected int id;
-	protected String entityIdentifier = "entity";
 
 	protected Position pos;
 	protected double[] velocity = { 0.0, 0.0 };
@@ -30,8 +30,7 @@ public class Entity {
 
 	protected String parameters = "";
 
-	public Entity(String identifier, Position pos) {
-		entityIdentifier = identifier;
+	public Entity(Position pos) {
 		this.pos = pos;
 		id = count++;
 		HP = maxHP;
@@ -108,10 +107,6 @@ public class Entity {
 		return count;
 	}
 
-	public String getEntityIdentifier() {
-		return entityIdentifier;
-	}
-
 	public int getBreakCount() {
 		return breakCount;
 	}
@@ -135,7 +130,9 @@ public class Entity {
 	}
 
 	public Block getHeldBlock() {
-		return heldBlock;
+		if (heldBlock != null)
+			return heldBlock;
+		return new Block();
 	}
 
 	public int getHeldBlockId() {
@@ -169,5 +166,9 @@ public class Entity {
 
 	public void setParameters(String parameters) {
 		this.parameters = parameters;
+	}
+
+	public String toJSON() {
+		return "";
 	}
 }

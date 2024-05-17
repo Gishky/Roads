@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import GameObjects.Blocks.Block;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Window.Panel;
 
@@ -17,16 +18,6 @@ public class Entity {
 	protected int breakCount;
 	protected int HPPercent = 100;
 
-	protected String parameters;
-
-	public String getParameters() {
-		return parameters;
-	}
-
-	public void setParameters(String parameters) {
-		this.parameters = parameters;
-	}
-
 	protected boolean delete = false;
 
 	public Entity(String id, String x, String y, String hppercent, String heldBlock) {
@@ -34,6 +25,10 @@ public class Entity {
 		pos = new Position(Double.parseDouble(x), Double.parseDouble(y));
 		HPPercent = Integer.parseInt(hppercent);
 		this.heldBlock = Block.getBlockFromID(heldBlock);
+	}
+
+	public void setParameters(JSONObject json) {
+
 	}
 
 	public Position getPos() {
@@ -87,10 +82,6 @@ public class Entity {
 
 	public void setHeldBlock(Block b) {
 		heldBlock = b;
-	}
-
-	public Block getHeldBlock() {
-		return heldBlock;
 	}
 
 	public void setDelete(boolean delete) {

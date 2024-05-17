@@ -9,6 +9,7 @@ import GameObjects.Blocks.BlockDirt;
 import GameObjects.Blocks.BlockGrass;
 import GameObjects.Blocks.BlockIronOre;
 import GameObjects.Blocks.BlockStone;
+import HelperObjects.JSONObject;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -18,6 +19,17 @@ public class Firebolt extends Entity {
 		super(id, x, y, hppercent, heldBlock);
 	}
 
+	public Firebolt(JSONObject entity) {
+		super(entity.get("id"), entity.get("x"), entity.get("y"), "" + 100,
+				new JSONObject(entity.get("heldBlock")).get("id"));
+	}
+
+	public void setParameters(JSONObject json) {
+		pos.setX(json.get("x"));
+		pos.setY(json.get("y"));
+		heldBlock=Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"));
+	}
+
 	private double lastx, lasty;
 
 	@Override
@@ -25,6 +37,7 @@ public class Firebolt extends Entity {
 		// System.out.println(id+":
 		// "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
 
+		//System.out.println(id+ ": "+pos.getX()+"/"+pos.getY()+" ("+heldBlock.getColor()+")");
 		double stepx = lastx - pos.getX();
 		stepx /= 5;
 		double stepy = lasty - pos.getY();

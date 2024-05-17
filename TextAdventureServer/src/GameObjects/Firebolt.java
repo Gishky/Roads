@@ -3,6 +3,7 @@ package GameObjects;
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 
@@ -12,7 +13,7 @@ public class Firebolt extends Entity {
 	private Entity owner = null;
 
 	public Firebolt(Position initialPosition, double[] initialVelocity, Block heldBlock, Entity owner) {
-		super("firebolt", initialPosition);
+		super(initialPosition);
 		this.velocity = initialVelocity;
 		this.heldBlock = heldBlock;
 		fallingaccelleration = 0.025;
@@ -59,5 +60,15 @@ public class Firebolt extends Entity {
 			}
 		}
 		return true;
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", "firebolt");
+		json.put("id", "" + id);
+		json.put("x", String.format("%.4f", pos.getX()));
+		json.put("y", String.format("%.4f", pos.getY()));
+		json.put("heldBlock", getHeldBlock().toJSON());
+		return json.getJSON();
 	}
 }

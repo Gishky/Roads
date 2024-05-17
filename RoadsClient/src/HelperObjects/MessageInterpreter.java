@@ -1,8 +1,5 @@
 package HelperObjects;
 
-import java.awt.Color;
-import java.util.Random;
-
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.OvenAbilityJet;
@@ -10,48 +7,49 @@ import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
-import GameObjects.Blocks.BlockAir;
 import UDPClient.UDPMessageListener;
 import Window.Panel;
 
 public class MessageInterpreter implements UDPMessageListener {
 
-	public void receivedMessage(String message) {
-		String[] messageParts = message.split(";");
-		if (messageParts.length == 0) {
+	public void receivedMessage(String receivedMessage) {
+		if (!receivedMessage.contains("}")) {
 			return;
 		}
+		JSONObject message = new JSONObject(receivedMessage);
 
-		switch (messageParts[0]) {
+		String[] messageParts = receivedMessage.split(";");
+
+		switch (message.get("action")) {
 		case "createEntity":
-			createEntity(messageParts);
+			createEntity(new JSONObject(message.get("entity")));
 			break;
-		case "entity":
-			updateEntity(messageParts);
+		case "updateEntity":
+			updateEntity(new JSONObject(message.get("entity")));
 			break;
 		case "createWorld":
-			createWorld(messageParts);
+			createWorld(message);
 			break;
-		case "block":
-			updateWorld(messageParts);
+		case "setBlock":
+			updateWorld(new JSONObject(message.get("block")));
 			break;
 		case "removeEntity":
-			removeEntity(messageParts[1]);
+			removeEntity(new JSONObject(message.get("entity")).get("id"));
 			break;
-		case "id":
-			World.playerid = Integer.parseInt(messageParts[1]);
+		case "playerID":
+			World.playerid = (int) Integer.parseInt(message.get("playerID"));
 			break;
 		case "serverTickRate":
-			Panel.setServerTickRate(Integer.parseInt(messageParts[1]));
+			Panel.setServerTickRate(Integer.parseInt(message.get("serverTickRate")));
 			break;
 		default:
-			System.out.println("unknown command: " + message);
+			System.out.println("unknown command: " + receivedMessage);
 		}
 	}
 
-	private void createWorld(String[] messageParts) {
-		int columns = Integer.parseInt(messageParts[1]);
-		int rows = Integer.parseInt(messageParts[2]);
+	private void createWorld(JSONObject world) {
+		int columns = Integer.parseInt(world.get("length"));
+		int rows = Integer.parseInt(world.get("height"));
 		World.createWorld(columns, rows);
 	}
 
@@ -64,61 +62,49 @@ public class MessageInterpreter implements UDPMessageListener {
 		}
 	}
 
-	private static void updateWorld(String[] messageParts) {
-		int x = Integer.parseInt(messageParts[1]);
-		int y = Integer.parseInt(messageParts[2]);
+	private static void updateWorld(JSONObject block) {
+		int x = Integer.parseInt(block.get("x"));
+		int y = Integer.parseInt(block.get("y"));
 
-		World.setBlock(x, y, Block.getBlockFromID(messageParts[3]));
+		World.setBlock(x, y, Block.getBlockFromID(block.get("id")));
 	}
 
-	private static void updateEntity(String[] messageParts) {
+	private static void updateEntity(JSONObject entity) {
 		for (int i = 0; i < Panel.getEntities().size(); i++) {
 			Entity e = Panel.getEntities().get(i);
-			if (("" + e.getId()).equals(messageParts[1])) {
-				e.getPos().set(messageParts[2], messageParts[3]);
-				e.setBreakCount(Integer.parseInt(messageParts[4]));
-				e.setHPPercent(Integer.parseInt(messageParts[5]));
-				e.setHeldBlock(Block.getBlockFromID(messageParts[6]));
-				e.setParameters(messageParts[7]);
-				if (e.getId() == World.playerid) {
-					World.cameraX = Double.parseDouble(messageParts[2]);
-					World.cameraY = Double.parseDouble(messageParts[3]);
-				}
+			if (("" + e.getId()).equals(entity.get("id"))) {
+				e.setParameters(entity);
 				return;
 			}
 		}
 
 	}
 
-	private static void createEntity(String[] messageParts) {
+	private static void createEntity(JSONObject entity) {
 
-		if (Panel.existsEntityID(messageParts[2])) {
+		if (Panel.existsEntityID(entity.get("id"))) {
 			return;
 		}
 		for (int index = 0; index < Panel.getRemovedEntityIDs().size(); index++) {
-			if ((Panel.getRemovedEntityIDs().get(index) + "").equals(messageParts[2])) {
+			if ((Panel.getRemovedEntityIDs().get(index) + "").equals(entity.get("id"))) {
 				System.out.println("Removed Entity before adding");
 				Panel.getRemovedEntityIDs().remove(index);
 				return;
 			}
 		}
 
-		switch (messageParts[1]) {
+		switch (entity.get("type")) {
 		case "player":
-			Panel.getEntities().add(new PlayerCharacter(messageParts[2], messageParts[3], messageParts[4],
-					messageParts[5], messageParts[6]));
+			Panel.getEntities().add(new PlayerCharacter(entity));
 			break;
 		case "firebolt":
-			Panel.getEntities().add(
-					new Firebolt(messageParts[2], messageParts[3], messageParts[4], messageParts[5], messageParts[6]));
+			Panel.getEntities().add(new Firebolt(entity));
 			break;
 		case "oven":
-			Panel.getEntities().add(new OvenEntity(messageParts[2], messageParts[3], messageParts[4], messageParts[5],
-					messageParts[6]));
+			Panel.getEntities().add(new OvenEntity(entity));
 			break;
 		case "ovenAbility":
-			Panel.getEntities().add(new OvenAbilityJet(messageParts[2], messageParts[3], messageParts[4],
-					messageParts[5], messageParts[6]));
+			Panel.getEntities().add(new OvenAbilityJet(entity));
 			break;
 		}
 	}

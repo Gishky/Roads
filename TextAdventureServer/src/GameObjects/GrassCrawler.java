@@ -3,6 +3,7 @@ package GameObjects;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockGrass;
 import HelperObjects.Hitbox;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 
@@ -14,7 +15,7 @@ public class GrassCrawler extends Entity {
 	private Entity owner = null;
 
 	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner) {
-		super("firebolt", initialPosition);
+		super( initialPosition);
 		this.heldBlock = new BlockGrass();
 		breakCount = 0;
 		hitBox = new Hitbox(false, 0.15);
@@ -86,5 +87,15 @@ public class GrassCrawler extends Entity {
 			GameMaster.removeEntity(this);
 			return false;
 		}
+	}
+	
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", "firebolt");
+		json.put("id", "" + id);
+		json.put("x", String.format("%.4f", pos.getX()));
+		json.put("y", String.format("%.4f", pos.getY()));
+		json.put("heldBlock",  getHeldBlock().toJSON());
+		return json.getJSON();
 	}
 }

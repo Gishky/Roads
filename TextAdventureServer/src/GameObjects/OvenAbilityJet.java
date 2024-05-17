@@ -2,6 +2,7 @@ package GameObjects;
 
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockOven;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 
@@ -10,7 +11,7 @@ public class OvenAbilityJet extends Entity {
 	private BlockOven oven;
 
 	public OvenAbilityJet(Position initialPosition, double initialVelocityx, double initialVelocityy, BlockOven oven) {
-		super("ovenAbility", initialPosition);
+		super( initialPosition);
 		this.heldBlock = new Block();
 		parameters = -initialVelocityx + "/" + -initialVelocityy;
 		breakCount = 0;
@@ -36,5 +37,16 @@ public class OvenAbilityJet extends Entity {
 
 	public void reactivate() {
 		lifetime = 5;
+	}
+	
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", "ovenAbility");
+		json.put("id", "" + id);
+		json.put("x", String.format("%.4f", pos.getX()));
+		json.put("y", String.format("%.4f", pos.getY()));
+		json.put("velx", String.format("%.4f", velocity[0]));
+		json.put("vely", String.format("%.4f", velocity[1]));
+		return json.getJSON();
 	}
 }
