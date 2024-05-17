@@ -206,8 +206,8 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mousePositionUpdate = "mouse;" + (e.getX() - windowWidth / 2) / Block.size + ";"
-				+ (e.getY() - windowHeight / 2) / Block.size;
+		mousePositionUpdate = "mouse;" + (e.getX() - (double) windowWidth / 2) / Block.size + ";"
+				+ (e.getY() - (double) windowHeight / 2) / Block.size;
 	}
 
 	@Override
