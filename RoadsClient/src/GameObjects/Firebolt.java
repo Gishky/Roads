@@ -15,19 +15,17 @@ import Window.Panel;
 
 public class Firebolt extends Entity {
 
-	public Firebolt(String id, String x, String y, String hppercent, String heldBlock) {
-		super(id, x, y, hppercent, heldBlock);
-	}
+	private Block colourBlock;
 
 	public Firebolt(JSONObject entity) {
-		super(entity.get("id"), entity.get("x"), entity.get("y"), "" + 100,
-				new JSONObject(entity.get("heldBlock")).get("id"));
+		super(entity.get("id"), entity.get("x"), entity.get("y"));
+		colourBlock = Block.getBlockFromID(entity.get("colourBlock"));
 	}
 
-	public void updateEntity(JSONObject json) {
-		pos.setX(json.get("x"));
-		pos.setY(json.get("y"));
-		heldBlock=Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"));
+	public void updateEntity(JSONObject entity) {
+		pos.setX(entity.get("x"));
+		pos.setY(entity.get("y"));
+		colourBlock = Block.getBlockFromID(entity.get("colourBlock"));
 	}
 
 	private double lastx, lasty;
@@ -37,28 +35,29 @@ public class Firebolt extends Entity {
 		// System.out.println(id+":
 		// "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
 
-		//System.out.println(id+ ": "+pos.getX()+"/"+pos.getY()+" ("+heldBlock.getColor()+")");
+		// System.out.println(id+ ": "+pos.getX()+"/"+pos.getY()+"
+		// ("+heldBlock.getColor()+")");
 		double stepx = lastx - pos.getX();
 		stepx /= 5;
 		double stepy = lasty - pos.getY();
 		stepy /= 5;
 
-		if (heldBlock == null)
+		if (colourBlock == null)
 			return;
 
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			if (heldBlock instanceof BlockDirt || heldBlock instanceof BlockStone || heldBlock instanceof BlockIronOre
-					|| heldBlock instanceof BlockCoalOre)
+			if (colourBlock instanceof BlockDirt || colourBlock instanceof BlockStone
+					|| colourBlock instanceof BlockIronOre || colourBlock instanceof BlockCoalOre)
 				Panel.addParticle(
 						new Particle(pos.getX() + stepx * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
 								pos.getY() + stepy * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size, 0, 0,
 								r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
-								-r.nextDouble() * 0.025 * Block.size, heldBlock.getColor()));
-			else if (heldBlock instanceof BlockGrass)
+								-r.nextDouble() * 0.025 * Block.size, colourBlock.getColor()));
+			else if (colourBlock instanceof BlockGrass)
 				Panel.addParticle(new Particle(pos.getX() + stepx * i, pos.getY() + stepy * i,
 						r.nextDouble() * 0.1 * Block.size - 0.05 * Block.size, -0.05 * Block.size * r.nextDouble(), 0,
-						r.nextDouble() * 0.005 * Block.size, heldBlock.getColor()));
+						r.nextDouble() * 0.005 * Block.size, colourBlock.getColor()));
 		}
 
 		lastx = pos.getX();

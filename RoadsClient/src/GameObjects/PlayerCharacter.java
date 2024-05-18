@@ -11,10 +11,15 @@ import Window.Panel;
 
 public class PlayerCharacter extends Entity {
 
+	protected Block heldBlock;
+	protected int breakCount;
+	protected int HPPercent = 100;
+
 	public PlayerCharacter(JSONObject entity) {
-		super(entity.get("id"), entity.get("x"), entity.get("y"), entity.get("hp%"),
-				new JSONObject(entity.get("heldBlock")).get("id"));
+		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		breakCount = Integer.parseInt(entity.get("breakCount"));
+		HPPercent = Integer.parseInt(entity.get("hp%"));
+		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"));
 	}
 
 	public void updateEntity(JSONObject json) {
@@ -35,6 +40,21 @@ public class PlayerCharacter extends Entity {
 		if (id == World.playerid) {
 			cameraX += World.cameraX * Block.size - cameraX;
 			cameraY += World.cameraY * Block.size - cameraY;
+		}
+
+		if (HPPercent != 100) {
+			int HPBarLength = 20;
+			int HPBarHeight = 5;
+			int HPBarOffset = -10;
+
+			g.setColor(Color.gray);
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2, HPBarLength,
+					HPBarHeight);
+			g.setColor(Color.green);
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
+					HPBarLength * HPPercent / 100, HPBarHeight);
 		}
 
 		g.setColor(Color.blue.brighter().brighter());

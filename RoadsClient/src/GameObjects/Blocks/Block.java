@@ -23,6 +23,11 @@ public class Block {
 		 */
 	}
 
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		g.setColor(Color.pink);
+		g.fillRect(x, y, size, size);
+	}
+
 	public static Block getBlockFromID(String id) {
 		switch (id) {
 		case "0":

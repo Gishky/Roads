@@ -13,15 +13,15 @@ public class GrassCrawler extends Entity {
 	private double speed = 0.1;
 	private boolean goLeft;
 	private Entity owner = null;
+	private int colourBlockID;
 
-	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner) {
+	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner, int colourBlockID) {
 		pos = initialPosition;
-		this.heldBlock = new BlockGrass();
-		breakCount = 0;
 		hitBox = new Hitbox(false, 0.15);
 		velocity = initialVelocity;
 		goLeft = initialVelocity[0] < 0;
 		this.owner = owner;
+		this.colourBlockID = colourBlockID;
 		createEntity();
 	}
 
@@ -39,12 +39,15 @@ public class GrassCrawler extends Entity {
 					owner = null;
 				}
 			} else {
-				if (e.getHP() > 0 && hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(),
-						e.getPos().getY() - pos.getY())) {
-					e.receiveDamage(damage);
+				if (e instanceof PlayerCharacter) {
+					PlayerCharacter p = (PlayerCharacter) e;
+					if (p.getHP() > 0 && hitBox.isHit(p.getHitBox(), p.getPos().getX() - pos.getX(),
+							p.getPos().getY() - pos.getY())) {
+						p.receiveDamage(damage);
 
-					GameMaster.removeEntity(this);
-					return false;
+						GameMaster.removeEntity(this);
+						return false;
+					}
 				}
 			}
 		}
@@ -62,7 +65,6 @@ public class GrassCrawler extends Entity {
 				velocity[1] = 0;
 			} else {
 				if ((int) pos.getX() != (int) castResult[0]) {
-					breakCount = 0;
 				}
 				pos.set(castResult[0], castResult[1]);
 
@@ -74,7 +76,6 @@ public class GrassCrawler extends Entity {
 			}
 		} else {
 			isGrounded = false;
-			breakCount = 0;
 			pos.set(targetx, targety);
 		}
 
@@ -96,7 +97,7 @@ public class GrassCrawler extends Entity {
 		json.put("id", "" + id);
 		json.put("x", String.format("%.4f", pos.getX()));
 		json.put("y", String.format("%.4f", pos.getY()));
-		json.put("heldBlock", getHeldBlock().toJSON());
+		json.put("colourBlock", "" + colourBlockID);
 		return json.getJSON();
 	}
 }

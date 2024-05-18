@@ -14,21 +14,17 @@ public class OvenAbilityJet extends Entity {
 	private double velx;
 	private double vely;
 
-	public OvenAbilityJet(String id, String x, String y, String hppercent, String heldBlock) {
-		super(id, x, y, hppercent, heldBlock);
-	}
-
 	public OvenAbilityJet(JSONObject entity) {
-		super(entity.get("id"), entity.get("x"), entity.get("y"), "100", "0");
+		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		velx = Double.parseDouble(entity.get("velx"));
 		vely = Double.parseDouble(entity.get("vely"));
 	}
 	
-	public void updateEntity(JSONObject json) {
-		pos.setX(json.get("x"));
-		pos.setY(json.get("y"));
-		velx = Double.parseDouble(json.get("velx"));
-		vely = Double.parseDouble(json.get("vely"));
+	public void updateEntity(JSONObject entity) {
+		pos.setX(entity.get("x"));
+		pos.setY(entity.get("y"));
+		velx = Double.parseDouble(entity.get("velx"));
+		vely = Double.parseDouble(entity.get("vely"));
 	}
 
 	private double lastx, lasty;

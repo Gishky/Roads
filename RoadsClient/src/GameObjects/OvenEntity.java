@@ -23,7 +23,7 @@ public class OvenEntity extends Entity {
 	private double rightY = 0;
 
 	public OvenEntity(JSONObject entity) {
-		super(entity.get("id"), entity.get("x"), entity.get("y"), "100", "0");
+		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		burningL = entity.get("burningL").equals("true");
 		burningR = entity.get("burningR").equals("true");
 		smelting = entity.get("smelting").equals("true");

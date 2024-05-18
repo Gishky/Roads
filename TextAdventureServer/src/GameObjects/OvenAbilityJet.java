@@ -1,6 +1,5 @@
 package GameObjects;
 
-import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockOven;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
@@ -12,9 +11,7 @@ public class OvenAbilityJet extends Entity {
 
 	public OvenAbilityJet(Position initialPosition, double initialVelocityx, double initialVelocityy, BlockOven oven) {
 		super( initialPosition);
-		this.heldBlock = new Block();
 		parameters = -initialVelocityx + "/" + -initialVelocityy;
-		breakCount = 0;
 
 		this.oven = oven;
 	}

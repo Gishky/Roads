@@ -1,9 +1,12 @@
 package Window;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -23,7 +28,8 @@ import HelperObjects.MessageInterpreter;
 import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
 
-public class Panel extends JPanel implements ActionListener, KeyListener, MouseMotionListener, MouseListener {
+public class Panel extends JPanel
+		implements ActionListener, KeyListener, MouseMotionListener, MouseListener, MouseWheelListener {
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
@@ -40,6 +46,7 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 		this.setFocusable(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 
 		entities = new ArrayList<Entity>();
 
@@ -87,6 +94,8 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 			particles.remove(p);
 		}
 
+		paintInventory(g);
+
 		g.setFont(new Font("Arial", Font.PLAIN, 15));
 		g.setColor(Color.green);
 		g.drawString("" + connection.getPing(), 2, 15);
@@ -101,6 +110,41 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 				windowWidth - 2 - (g.getFontMetrics().stringWidth(cameraX / Block.size + "/" + cameraY / Block.size)),
 				15);
 		timestamp = System.currentTimeMillis();
+	}
+
+	private void paintInventory(Graphics2D g) {
+		g.setColor(Color.gray.brighter());
+		g.fillRect((int) (windowWidth - Block.size * 2.4), (int) (windowHeight / 2 - Block.size * 5.6),
+				(int) (Block.size * 2.4), (int) (Block.size * 11.2));
+
+		g.setColor(Color.gray.brighter().brighter());
+		g.drawRect((int) (windowWidth - Block.size * 2.4), (int) (windowHeight / 2 - Block.size * 5.6),
+				(int) (Block.size * 2.4), (int) (Block.size * 11.2));
+
+		for (int i = 0; i < World.playerInventory.length; i++) {
+			g.setColor(Color.gray);
+			g.fillRect((int) (windowWidth - Block.size * 2.2),
+					(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2, Block.size * 2);
+			g.setColor(Color.gray.brighter().brighter());
+			g.drawRect((int) (windowWidth - Block.size * 2.2),
+					(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2, Block.size * 2);
+
+			Block b = World.playerInventory[i];
+			if (b != null) {
+				b.drawInventory(g, (int) (windowWidth - Block.size * 2.2),
+						(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2,
+						i == World.selectedInventory);
+			}
+
+			if (World.selectedInventory == i) {
+				g.setColor(Color.yellow.brighter());
+				g.setStroke(new BasicStroke(3));
+				g.drawRect((int) (windowWidth - Block.size * 2.2),
+						(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2,
+						Block.size * 2);
+				g.setStroke(new BasicStroke(1));
+			}
+		}
 	}
 
 	private String typedString = "";
@@ -216,5 +260,14 @@ public class Panel extends JPanel implements ActionListener, KeyListener, MouseM
 	public void mouseMoved(MouseEvent e) {
 		mousePositionUpdate = "mouse;" + (e.getX() - (double) windowWidth / 2) / Block.size + ";"
 				+ (e.getY() - (double) windowHeight / 2) / Block.size;
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.getWheelRotation() > 0)
+			connection.sendMessage("scroll;down", true);
+		else {
+			connection.sendMessage("scroll;up", true);
+		}
 	}
 }

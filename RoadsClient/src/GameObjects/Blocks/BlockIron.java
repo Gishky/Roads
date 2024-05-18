@@ -25,4 +25,12 @@ public class BlockIron extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
+	
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		g.setColor(getC());
+		g.fillRect(x, y, size, size);
+
+		g.setColor(Color.black);
+		g.drawRect(x, y, size, size);
+	}
 }

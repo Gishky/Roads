@@ -1,6 +1,6 @@
 package GameObjects.Blocks;
 
-import GameObjects.Entity;
+import GameObjects.PlayerCharacter;
 import HelperObjects.JSONObject;
 
 public class Block {
@@ -47,7 +47,7 @@ public class Block {
 		return null;
 	}
 
-	public void activateAbility(Entity e) {
+	public void activateAbility(PlayerCharacter e) {
 
 	}
 

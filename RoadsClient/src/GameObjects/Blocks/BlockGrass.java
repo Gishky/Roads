@@ -21,4 +21,12 @@ public class BlockGrass extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 	}
+	
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		g.setColor(getC());
+		g.fillRect(x, y, size, size);
+
+		g.setColor(Color.black);
+		g.drawRect(x, y, size, size);
+	}
 }

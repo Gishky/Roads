@@ -19,10 +19,6 @@ public class Entity {
 	protected double jumpforce = 1.15;
 	protected double drag = 1.1;
 
-	protected Block heldBlock = null;
-	protected int breakCount = 0;
-	protected int maxHP = 0;
-	protected int HP;
 	protected Hitbox hitBox = new Hitbox(false, 0);
 
 	protected boolean isGrounded = false;
@@ -33,7 +29,6 @@ public class Entity {
 	public Entity(Position pos) {
 		this.pos = pos;
 		id = count++;
-		HP = maxHP;
 		GameMaster.addEntity(this);
 	}
 
@@ -42,7 +37,6 @@ public class Entity {
 
 	public void createEntity() {
 		id = count++;
-		HP = maxHP;
 		GameMaster.addEntity(this);
 	}
 
@@ -54,7 +48,7 @@ public class Entity {
 		this.pos = pos;
 	}
 
-	private boolean actionUpdateOverride = false;
+	protected boolean actionUpdateOverride = false;
 
 	public boolean action() {
 		velocity[0] /= drag;
@@ -73,7 +67,6 @@ public class Entity {
 				velocity[1] = 0;
 			} else {
 				if ((int) (pos.getX()) != (int) (castResult[0])) {
-					breakCount = 0;
 				}
 				pos.set(castResult[0], castResult[1]);
 
@@ -84,7 +77,6 @@ public class Entity {
 			}
 		} else {
 			isGrounded = false;
-			breakCount = 0;
 			pos.set(targetx, targety);
 			return true;
 		}
@@ -96,14 +88,7 @@ public class Entity {
 		return false;
 	}
 
-	public void receiveDamage(int damage) {
-		HP -= damage;
-		if (HP <= 0) {
-			GameMaster.removeEntity(this);
-			return;
-		}
-		actionUpdateOverride = true;
-	}
+	
 
 	public int getId() {
 		return id;
@@ -113,38 +98,9 @@ public class Entity {
 		return count;
 	}
 
-	public int getBreakCount() {
-		return breakCount;
-	}
 
 	public Hitbox getHitBox() {
 		return hitBox;
-	}
-
-	public int getHP() {
-		return HP;
-	}
-
-	public int getMaxHP() {
-		return maxHP;
-	}
-
-	public int getHPPercentile() {
-		if (maxHP == 0)
-			return 100;
-		return (int) (HP * 100 / maxHP);
-	}
-
-	public Block getHeldBlock() {
-		if (heldBlock != null)
-			return heldBlock;
-		return new Block();
-	}
-
-	public int getHeldBlockId() {
-		if (heldBlock != null)
-			return heldBlock.getId();
-		return -1;
 	}
 
 	public Position getMousePosition() {

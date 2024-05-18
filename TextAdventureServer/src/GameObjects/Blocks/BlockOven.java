@@ -1,8 +1,8 @@
 package GameObjects.Blocks;
 
-import GameObjects.Entity;
 import GameObjects.OvenAbilityJet;
 import GameObjects.OvenEntity;
+import GameObjects.PlayerCharacter;
 import Server.GameMaster;
 
 public class BlockOven extends Block {
@@ -22,7 +22,7 @@ public class BlockOven extends Block {
 	private double boostAccelleration = 0.2;
 	private OvenAbilityJet jet = null;
 
-	public void activateAbility(Entity e) {
+	public void activateAbility(PlayerCharacter e) {
 		if (fuel > 0) {
 			fuel -= 3;
 			double[] boostVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };

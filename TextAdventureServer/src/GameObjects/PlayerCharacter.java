@@ -23,9 +23,16 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private boolean placeFlag = false;
 	private double craftingRange = 4;
 
+	private int heldBlock = 0;
+	private Block[] inventory;
+	private int breakCount = 0;
+	private int maxHP = 0;
+	private int HP;
+
 	public PlayerCharacter() {
 		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
+		inventory = new Block[5];
 		hitBox = new Hitbox(false, 0.25);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
@@ -46,6 +53,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			GameMaster.restartServer();
 		} else if (contents[0].equals("mouse")) {
 			mouse.set(Double.parseDouble(contents[1]), Double.parseDouble(contents[2]));
+		} else if (contents[0].equals("scroll")) {
+			scrollInventory(contents[1]);
 		}
 
 	}
@@ -72,16 +81,16 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				velocity[1] = -jumpforce;
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_X)) {
-			if (heldBlock != null) {
-				heldBlock = null;
+			if (getHeldBlock().getId() != -1) {
+				setHeldBlock(null);
 				update = true;
 			}
 		}
 		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
-			if (fireCooldown <= 0 && heldBlock != null) {
-				fireCooldown = heldBlock.getAbilityCooldown();
-				heldBlock.activateAbility(this);
-			} else if (heldBlock == null) {
+			if (fireCooldown <= 0 && getHeldBlock().getId() != -1) {
+				fireCooldown = getHeldBlock().getAbilityCooldown();
+				getHeldBlock().activateAbility(this);
+			} else if (getHeldBlock().getId() == -1) {
 				if (Math.sqrt(Math.pow(mouse.getX(), 2) + Math.pow(mouse.getY(), 2)) <= craftingRange) {
 					CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()), (int) (mouse.getY() + pos.getY()));
 				}
@@ -89,26 +98,25 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
 			if (isGrounded) {
-				if (heldBlock == null && World.getBlock((int) pos.getX(), (int) (pos.getY() + 1))
+				if (getHeldBlock().getId() == -1 && World.getBlock((int) pos.getX(), (int) (pos.getY() + 1))
 						.getBreakThreshhold() <= breakCount) {
-					heldBlock = World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1);
-					heldBlock.setPosition(-id, 0);
+					setHeldBlock(World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1));
 					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, new BlockAir());
 					breakCount = 0;
-				} else if (heldBlock != null && placeFlag
+				} else if (getHeldBlock().getId() != -1 && placeFlag
 						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) - 1).isBlocksMovement()) {
 					placing = true;
 					velocity[1] = -jumpforce;
 				}
-				if (heldBlock == null) {
+				if (getHeldBlock().getId() == -1) {
 					update = true;
 					breakCount++;
 				}
 			} else {
-				if (heldBlock != null && placeFlag
+				if (getHeldBlock().getId() != -1 && placeFlag
 						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1).isBlocksMovement()) {
-					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, heldBlock);
-					heldBlock = null;
+					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, getHeldBlock());
+					setHeldBlock(null);
 				}
 			}
 			placeFlag = false;
@@ -121,8 +129,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		}
 
 		if (placing && !World.getBlock((int) pos.getX(), (int) pos.getY() + 1).isBlocksMovement()) {
-			World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, heldBlock);
-			heldBlock = null;
+			World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, getHeldBlock());
+			setHeldBlock(null);
 			placing = false;
 		}
 
@@ -132,8 +140,44 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		return false;
 	}
 
+	public void receiveDamage(int damage) {
+		HP -= damage;
+		if (HP <= 0) {
+			GameMaster.removeEntity(this);
+			return;
+		}
+		actionUpdateOverride = true;
+	}
+
 	public UDPClientConnection getConnection() {
 		return connection;
+	}
+
+	public Block getHeldBlock() {
+		if (inventory == null || inventory[heldBlock] == null)
+			return new Block();
+		return inventory[heldBlock];
+	}
+
+	public void setHeldBlock(Block b) {
+		inventory[heldBlock] = b;
+		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
+	}
+
+	public Block getInventory(int slot) {
+		if (inventory == null || inventory[slot] == null)
+			return new Block();
+		return inventory[slot];
+	}
+
+	private int getHPPercentile() {
+		if (maxHP == 0)
+			return 100;
+		return HP * 100 / maxHP;
+	}
+
+	public int getHP() {
+		return HP;
 	}
 
 	@Override
@@ -159,11 +203,34 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				true);
 	}
 
+	private void scrollInventory(String string) {
+		if (string.equals("up")) {
+			heldBlock--;
+			if (heldBlock <= 0)
+				heldBlock = 0;
+		} else if (string.equals("down")) {
+			heldBlock++;
+			if (heldBlock >= inventory.length)
+				heldBlock = inventory.length - 1;
+		}
+		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
+		this.actionUpdateOverride = true;
+	}
+
 	@Override
 	public void disconnected() {
-		if (heldBlock != null)
-			World.setBlock((int) pos.getX(), (int) pos.getY(), heldBlock);
 		GameMaster.removeEntity(this);
+	}
+
+	private String inventoryJSON() {
+		JSONObject json = new JSONObject();
+		json.put("heldid", "" + heldBlock);
+		json.put("block0", getInventory(0).toJSON());
+		json.put("block1", getInventory(1).toJSON());
+		json.put("block2", getInventory(2).toJSON());
+		json.put("block3", getInventory(3).toJSON());
+		json.put("block4", getInventory(4).toJSON());
+		return json.getJSON();
 	}
 
 	public String toJSON() {

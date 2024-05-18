@@ -2,6 +2,7 @@ package GameObjects.Blocks;
 
 import GameObjects.Entity;
 import GameObjects.Firebolt;
+import GameObjects.PlayerCharacter;
 import HelperObjects.Position;
 
 public class BlockCoalOre extends Block {
@@ -19,7 +20,7 @@ public class BlockCoalOre extends Block {
 		return new BlockCoalOre();
 	}
 
-	public void activateAbility(Entity e) {
+	public void activateAbility(PlayerCharacter e) {
 		for (int i = 0; i < 3; i++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -36,7 +37,7 @@ public class BlockCoalOre extends Block {
 
 			Position fireboltpos = new Position();
 			fireboltpos.set(e.getPos().getX(), e.getPos().getY());
-			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().clone(), e);
+			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
 		}
 	}
 

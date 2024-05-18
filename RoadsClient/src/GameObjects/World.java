@@ -14,6 +14,8 @@ public class World {
 
 	public static double cameraX, cameraY;
 	public static double playerid = -1;
+	public static Block[] playerInventory = new Block[5];
+	public static int selectedInventory = 0;
 
 	public static Block[][] getWorld() {
 		return world;

@@ -40,9 +40,22 @@ public class MessageInterpreter implements UDPMessageListener {
 		case "serverTickRate":
 			Panel.setServerTickRate(Integer.parseInt(message.get("serverTickRate")));
 			break;
+		case "inventoryUpdate":
+			updateInventory(new JSONObject(message.get("inventory")));
+			break;
 		default:
 			System.out.println("unknown command: " + receivedMessage);
 		}
+	}
+
+	private void updateInventory(JSONObject inv) {
+		World.selectedInventory = Integer.parseInt(inv.get("heldid"));
+		World.playerInventory[0] = Block.getBlockFromID(new JSONObject(inv.get("block0")).get("id"));
+		World.playerInventory[1] = Block.getBlockFromID(new JSONObject(inv.get("block1")).get("id"));
+		World.playerInventory[2] = Block.getBlockFromID(new JSONObject(inv.get("block2")).get("id"));
+		World.playerInventory[3] = Block.getBlockFromID(new JSONObject(inv.get("block3")).get("id"));
+		World.playerInventory[4] = Block.getBlockFromID(new JSONObject(inv.get("block4")).get("id"));
+		System.out.println("inv updated");
 	}
 
 	private void createWorld(JSONObject world) {

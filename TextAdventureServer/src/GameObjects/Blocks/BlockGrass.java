@@ -1,7 +1,7 @@
 package GameObjects.Blocks;
 
-import GameObjects.Entity;
 import GameObjects.GrassCrawler;
+import GameObjects.PlayerCharacter;
 import HelperObjects.Position;
 
 public class BlockGrass extends Block {
@@ -17,7 +17,7 @@ public class BlockGrass extends Block {
 		return new BlockGrass();
 	}
 
-	public void activateAbility(Entity e) {
+	public void activateAbility(PlayerCharacter e) {
 		double[] initialVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(initialVelocity[0], 2) + Math.pow(initialVelocity[1], 2));
 		double[] unitVelocity = { initialVelocity[0] / velocityLength, initialVelocity[1] / velocityLength };
@@ -26,7 +26,7 @@ public class BlockGrass extends Block {
 
 		Position initialPos = new Position();
 		initialPos.set(e.getPos().getX(), e.getPos().getY());
-		new GrassCrawler(initialPos, initialVelocity, e);
+		new GrassCrawler(initialPos, initialVelocity, e, e.getHeldBlock().getId());
 	}
 
 	public int getAbilityCooldown() {

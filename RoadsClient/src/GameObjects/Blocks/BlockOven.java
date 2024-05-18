@@ -26,5 +26,14 @@ public class BlockOven extends Block {
 		g.drawRect(x, y, size, size);
 		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
 	}
+	
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		g.setColor(getC());
+		g.fillRect(x, y, size, size);
+
+		g.setColor(Color.black);
+		g.drawRect(x, y, size, size);
+		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
+	}
 
 }
