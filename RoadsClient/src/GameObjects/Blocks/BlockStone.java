@@ -3,11 +3,12 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockStone extends Block {
 
-	public BlockStone() {
+	public BlockStone(JSONObject block) {
 		breakThreshhold = 15;
 		setC(new Color(100, 100, 100));
 	}

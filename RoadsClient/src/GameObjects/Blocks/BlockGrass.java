@@ -3,11 +3,12 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockGrass extends Block {
 	
-	public BlockGrass() {
+	public BlockGrass(JSONObject block) {
 		breakThreshhold = 5;
 		setC(new Color(34, 139, 34));
 	}

@@ -3,11 +3,12 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockIron extends Block {
 
-	public BlockIron() {
+	public BlockIron(JSONObject block) {
 		breakThreshhold = 100;
 		setC(new Color(153, 149, 148));
 	}
@@ -25,9 +26,9 @@ public class BlockIron extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
-	
+
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(getC());
+		g.setColor(getC().brighter());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(Color.black);

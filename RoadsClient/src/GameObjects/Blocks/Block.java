@@ -3,6 +3,8 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
+
 public class Block {
 	public static int size = 30;
 
@@ -31,21 +33,52 @@ public class Block {
 	public static Block getBlockFromID(String id) {
 		switch (id) {
 		case "0":
-			return new BlockAir();
+			return new BlockAir(null);
 		case "1":
-			return new BlockDirt();
+			return new BlockDirt(null);
 		case "2":
-			return new BlockGrass();
+			return new BlockGrass(null);
 		case "3":
-			return new BlockStone();
+			return new BlockStone(null);
 		case "4":
-			return new BlockOven();
+			return new BlockOven(null);
 		case "5":
-			return new BlockCoalOre();
+			return new BlockCoalOre(null);
 		case "6":
-			return new BlockIronOre();
+			return new BlockIronOre(null);
 		case "7":
-			return new BlockIron();
+			return new BlockIron(null);
+		case "8":
+			return new BlockGoldOre(null);
+		case "9":
+			return new BlockGold(null);
+		default:
+			return null;
+		}
+	}
+	
+	public static Block getBlockFromJSON(JSONObject block) {
+		switch (block.get("id")) {
+		case "0":
+			return new BlockAir(block);
+		case "1":
+			return new BlockDirt(block);
+		case "2":
+			return new BlockGrass(block);
+		case "3":
+			return new BlockStone(block);
+		case "4":
+			return new BlockOven(block);
+		case "5":
+			return new BlockCoalOre(block);
+		case "6":
+			return new BlockIronOre(block);
+		case "7":
+			return new BlockIron(block);
+		case "8":
+			return new BlockGoldOre(block);
+		case "9":
+			return new BlockGold(block);
 		default:
 			return null;
 		}

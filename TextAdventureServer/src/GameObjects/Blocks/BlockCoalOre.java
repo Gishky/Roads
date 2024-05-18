@@ -1,8 +1,8 @@
 package GameObjects.Blocks;
 
-import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class BlockCoalOre extends Block {
@@ -39,6 +39,15 @@ public class BlockCoalOre extends Block {
 			fireboltpos.set(e.getPos().getX(), e.getPos().getY());
 			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
 		}
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", "" + id);
+		json.put("x", "" + getX());
+		json.put("y", "" + getY());
+		json.put("fuel", "" + fuelValue);
+		return json.getJSON();
 	}
 
 	public int getAbilityCooldown() {

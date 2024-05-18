@@ -6,6 +6,7 @@ import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockCoalOre;
 import GameObjects.Blocks.BlockDirt;
+import GameObjects.Blocks.BlockGoldOre;
 import GameObjects.Blocks.BlockGrass;
 import GameObjects.Blocks.BlockIronOre;
 import GameObjects.Blocks.BlockStone;
@@ -79,12 +80,16 @@ public class World {
 		}
 		// generate stone
 		generateNoiseBlocks(worldHeight, worldHeight * 3 / 5, 0.6, 1, new BlockStone());
+		generateNoiseBlocks(worldHeight / 2 + worldHeight / 5, worldHeight / 4, 0.6, 1, new BlockStone());
 
 		// generate CoalOre
 		generateNoiseBlocks(worldHeight * 5 / 8, worldHeight * 3 / 10, 0.25, 4, new BlockCoalOre());
 
 		// generate IronOre
 		generateNoiseBlocks(worldHeight * 3 / 4, worldHeight / 2, 0.2, 2.5, new BlockIronOre());
+		
+		// generate GoldOre
+		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
 		System.out.println("done");
 	}

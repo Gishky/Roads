@@ -57,13 +57,15 @@ public class OvenEntity extends Entity {
 		boolean pastBurningLeft = burningLeft;
 		boolean pastBurningRight = burningRight;
 
-		if (left.getFuelValue() > 0) {
+		if (left.getFuelValue() > 0 && oven.getFuel() < oven.getMaxfuel()) {
 			for (int i = 0; i < 5; i++) {
 				left.setFuelValue(left.getFuelValue() - 1);
 				oven.setFuel(oven.getFuel() + 1);
 				if (left.getFuelValue() <= 0) {
 					World.setBlock(ovenX - 1, ovenY, new BlockAir());
 					break;
+				} else {
+					GameMaster.sendToAll("{action:setBlock,block:" + left.toJSON() + "}", false);
 				}
 			}
 			burningLeft = true;
@@ -71,13 +73,15 @@ public class OvenEntity extends Entity {
 			burningLeft = false;
 		}
 
-		if (right.getFuelValue() > 0) {
+		if (right.getFuelValue() > 0 && oven.getFuel() < oven.getMaxfuel()) {
 			for (int i = 0; i < 5; i++) {
 				right.setFuelValue(right.getFuelValue() - 1);
 				oven.setFuel(oven.getFuel() + 1);
 				if (right.getFuelValue() <= 0) {
 					World.setBlock(ovenX + 1, ovenY, new BlockAir());
 					break;
+				} else {
+					GameMaster.sendToAll("{action:setBlock,block:" + right.toJSON() + "}", false);
 				}
 			}
 			burningRight = true;
@@ -90,11 +94,14 @@ public class OvenEntity extends Entity {
 			up.setRequiredFuelForSmelting(up.getRequiredFuelForSmelting() - 1);
 			if (up.getRequiredFuelForSmelting() <= 0) {
 				World.setBlock(ovenX, ovenY - 1, up.getSmeltedBlock());
+			} else {
+				GameMaster.sendToAll("{action:setBlock,block:" + up.toJSON() + "}", false);
 			}
 			smelting = true;
 		} else {
 			smelting = false;
 		}
+		GameMaster.sendToAll("{action:setBlock,block:" + oven.toJSON() + "}", false);
 
 		if (!(burningLeft || burningRight || smelting)) {
 			oven.removeEntity();

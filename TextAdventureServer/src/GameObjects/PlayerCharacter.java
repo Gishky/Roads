@@ -213,13 +213,19 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			if (heldBlock >= inventory.length)
 				heldBlock = inventory.length - 1;
 		}
-		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
+
+		breakCount = 0;
+		updateInventory();
 		this.actionUpdateOverride = true;
 	}
 
 	@Override
 	public void disconnected() {
 		GameMaster.removeEntity(this);
+	}
+
+	public void updateInventory() {
+		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
 	}
 
 	private String inventoryJSON() {

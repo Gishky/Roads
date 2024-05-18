@@ -3,11 +3,12 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockAir extends Block {
 	
-	public BlockAir() {
+	public BlockAir(JSONObject block) {
 		setC(new Color(100, 100, 255));
 	}
 

@@ -3,6 +3,7 @@ package GameObjects.Blocks;
 import GameObjects.OvenAbilityJet;
 import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import Server.GameMaster;
 
 public class BlockOven extends Block {
@@ -40,6 +41,7 @@ public class BlockOven extends Block {
 				jet.setVelocity(unitVelocity[0] * boostAccelleration, unitVelocity[1] * boostAccelleration);
 				jet.reactivate();
 			}
+			e.updateInventory();
 		}
 	}
 
@@ -62,6 +64,15 @@ public class BlockOven extends Block {
 			GameMaster.removeEntity(entity);
 			entity = null;
 		}
+	}
+
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", "" + id);
+		json.put("x", "" + getX());
+		json.put("y", "" + getY());
+		json.put("fuel", "" + fuel * 100 / maxfuel);
+		return json.getJSON();
 	}
 
 	public int getFuel() {

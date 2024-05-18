@@ -12,7 +12,7 @@ public class BlockIron extends Block {
 	}
 
 	public Block clone() {
-		return new BlockIronOre();
+		return new BlockIron();
 	}
 
 	public void activateAbility(Entity e) {

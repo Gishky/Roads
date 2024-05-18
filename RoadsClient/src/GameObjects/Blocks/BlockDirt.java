@@ -3,11 +3,12 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockDirt extends Block {
 
-	public BlockDirt() {
+	public BlockDirt(JSONObject block) {
 		breakThreshhold = 5;
 		setC(new Color(139, 69, 19));
 	}

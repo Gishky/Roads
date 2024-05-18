@@ -3,13 +3,23 @@ package GameObjects.Blocks;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockCoalOre extends Block {
 
-	public BlockCoalOre() {
+	public BlockCoalOre(JSONObject block) {
 		breakThreshhold = 20;
 		setC(Color.black);
+
+		if (block == null)
+			return;
+
+		int maxFuel = 200;
+		int currentFuel = Integer.parseInt(block.get("fuel"));
+		int colorValue = (maxFuel - currentFuel) * 100 / maxFuel;
+
+		setC(new Color(colorValue, colorValue, colorValue));
 	}
 
 	@Override

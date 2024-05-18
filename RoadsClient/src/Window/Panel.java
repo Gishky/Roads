@@ -33,7 +33,7 @@ public class Panel extends JPanel
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
-	private String version = "1.0";
+	private String version = "1.1.0";
 
 	public static int windowWidth, windowHeight;
 
@@ -65,6 +65,7 @@ public class Panel extends JPanel
 	}
 
 	private long timestamp = 0;
+	private boolean statistics = false;
 
 	@Override
 	public void paintComponent(Graphics gr) {
@@ -96,6 +97,8 @@ public class Panel extends JPanel
 
 		paintInventory(g);
 
+		if (!statistics)
+			return;
 		g.setFont(new Font("Arial", Font.PLAIN, 15));
 		g.setColor(Color.green);
 		g.drawString("" + connection.getPing(), 2, 15);
@@ -161,6 +164,10 @@ public class Panel extends JPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_F1) {
+			statistics = !statistics;
+		}
+		
 		int key = e.getKeyCode();
 		if (!pressedKeys.contains(key)) {
 			connection.sendMessage("key;down;" + key, true);

@@ -50,11 +50,11 @@ public class MessageInterpreter implements UDPMessageListener {
 
 	private void updateInventory(JSONObject inv) {
 		World.selectedInventory = Integer.parseInt(inv.get("heldid"));
-		World.playerInventory[0] = Block.getBlockFromID(new JSONObject(inv.get("block0")).get("id"));
-		World.playerInventory[1] = Block.getBlockFromID(new JSONObject(inv.get("block1")).get("id"));
-		World.playerInventory[2] = Block.getBlockFromID(new JSONObject(inv.get("block2")).get("id"));
-		World.playerInventory[3] = Block.getBlockFromID(new JSONObject(inv.get("block3")).get("id"));
-		World.playerInventory[4] = Block.getBlockFromID(new JSONObject(inv.get("block4")).get("id"));
+		World.playerInventory[0] = Block.getBlockFromJSON(new JSONObject(inv.get("block0")));
+		World.playerInventory[1] = Block.getBlockFromJSON(new JSONObject(inv.get("block1")));
+		World.playerInventory[2] = Block.getBlockFromJSON(new JSONObject(inv.get("block2")));
+		World.playerInventory[3] = Block.getBlockFromJSON(new JSONObject(inv.get("block3")));
+		World.playerInventory[4] = Block.getBlockFromJSON(new JSONObject(inv.get("block4")));
 		System.out.println("inv updated");
 	}
 
@@ -77,7 +77,7 @@ public class MessageInterpreter implements UDPMessageListener {
 		int x = Integer.parseInt(block.get("x"));
 		int y = Integer.parseInt(block.get("y"));
 
-		World.setBlock(x, y, Block.getBlockFromID(block.get("id")));
+		World.setBlock(x, y, Block.getBlockFromJSON(block));
 	}
 
 	private static void updateEntity(JSONObject entity) {
