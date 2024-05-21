@@ -64,6 +64,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public boolean action() {
+		int oldX = (int) pos.getX();
+		int oldY = (int) pos.getY();
+
 		if (keyboard == null)
 			return false;
 
@@ -118,8 +121,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
 			if (isGrounded) {
-				if (getHeldBlock().getId() == -1 && World.getBlock((int) pos.getX(), (int) (pos.getY() + 1))
-						.getBreakThreshhold() <= breakCount) {
+				if (getHeldBlock().getId() == -1
+						&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).getBreakThreshhold() <= breakCount
+						&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).isBlocksMovement()) {
 					setHeldBlock(World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1));
 					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, new BlockAir());
 					breakCount = 0;
@@ -154,10 +158,14 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			placing = false;
 		}
 
-		if (super.action() || update) {
-			return true;
+		update = super.action() || update;
+
+		if (oldX != (int) pos.getX() || oldY != (int) pos.getY()) {
+			breakCount = 0;
+			System.out.println("pos change");
 		}
-		return false;
+
+		return update;
 	}
 
 	public void receiveDamage(int damage) {
