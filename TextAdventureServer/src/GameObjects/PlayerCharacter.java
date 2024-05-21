@@ -86,6 +86,26 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				update = true;
 			}
 		}
+		if (keyboard.getKey("" + KeyEvent.VK_1)) {
+			heldBlock = 0;
+			scrollInventory("");
+		}
+		if (keyboard.getKey("" + KeyEvent.VK_2)) {
+			heldBlock = 1;
+			scrollInventory("");
+		}
+		if (keyboard.getKey("" + KeyEvent.VK_3)) {
+			heldBlock = 2;
+			scrollInventory("");
+		}
+		if (keyboard.getKey("" + KeyEvent.VK_4)) {
+			heldBlock = 3;
+			scrollInventory("");
+		}
+		if (keyboard.getKey("" + KeyEvent.VK_5)) {
+			heldBlock = 4;
+			scrollInventory("");
+		}
 		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
 			if (fireCooldown <= 0 && getHeldBlock().getId() != -1) {
 				fireCooldown = getHeldBlock().getAbilityCooldown();
