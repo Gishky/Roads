@@ -33,7 +33,7 @@ public class Panel extends JPanel
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
-	private String version = "1.1.0";
+	private String version = "1.1.1";
 
 	public static int windowWidth, windowHeight;
 
@@ -50,7 +50,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("192.168.79.1", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			t.start();
 		}

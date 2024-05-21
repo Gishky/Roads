@@ -4,13 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.ArrayList;
-
-import GameObjects.Entity;
-import GameObjects.PlayerCharacter;
-import GameObjects.World;
-import Server.GameMaster;
 
 public class UDPServer extends Thread {
 
@@ -19,7 +13,6 @@ public class UDPServer extends Thread {
 	private int port;
 	private UDPClientObjectCreator creator;
 	private ArrayList<UDPClientConnection> clients;
-	private ArrayList<UDPClientConnection> deniedClients;
 	private DatagramSocket socket;
 	private boolean running;
 	private String controlString;
@@ -36,7 +29,6 @@ public class UDPServer extends Thread {
 		this.controlString = controlString;
 		setName(name);
 		clients = new ArrayList<UDPClientConnection>();
-		deniedClients = new ArrayList<UDPClientConnection>();
 		socket = new DatagramSocket(port);
 
 		instances.add(this);
@@ -119,7 +111,6 @@ public class UDPServer extends Thread {
 		try {
 			socket.send(packet);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.Timer;
 
@@ -63,7 +64,6 @@ public class UDPServerConnection extends Thread implements ActionListener {
 				return true;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("not approved");
@@ -85,10 +85,8 @@ public class UDPServerConnection extends Thread implements ActionListener {
 				if (receivedString.startsWith("NetworkPingRequest")) {
 					eval.addPing(Long.parseLong(receivedString.split(";")[1]));
 				} else if (receivedString.startsWith(PRIORITY_RESPONSE)) {
-					try {
+					synchronized (priorityMessages) {
 						priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
-					} catch (Exception e) {
-
 					}
 				} else {
 					if (receivedString.startsWith(PRIORITY_MARK)) {
@@ -107,28 +105,25 @@ public class UDPServerConnection extends Thread implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for (int i = 0; i < priorityMessages.size(); i++) {
-			if (i > 10)
-				return;
-			try {
-				if (priorityMessages.get(i) != null) {
-					System.out.println("sending: " + priorityMessages.get(i));
-					sendMessage(priorityMessages.get(i), false);
+		synchronized (priorityMessages) {
+			for (int i = 0; i < Math.min(10, priorityMessages.size()); i++) {
+				if (priorityMessages.get(0) != null) {
+					sendMessage(priorityMessages.get(0), false);
+					Collections.rotate(priorityMessages, -1);
 				} else {
-					priorityMessages.remove(i);
+					priorityMessages.remove(0);
 				}
-			} catch (Exception ex) {
-
 			}
 		}
-
 	}
 
 	public void sendMessage(String message, boolean priority) {
 		if (priority) {
 			message = PRIORITY_MARK + message;
 			System.out.println("sending: " + message);
-			priorityMessages.add(message);
+			synchronized (priorityMessages) {
+				priorityMessages.add(message);
+			}
 		}
 		byte[] buf = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);

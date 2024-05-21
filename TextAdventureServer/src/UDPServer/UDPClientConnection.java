@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.Timer;
 
@@ -46,7 +47,9 @@ public class UDPClientConnection implements ActionListener {
 			return;
 		if (priority) {
 			message = PRIORITY_MARK + message;
-			priorityMessages.add(message);
+			synchronized (priorityMessages) {
+				priorityMessages.add(message);
+			}
 		}
 		byte[] buf = message.getBytes();
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
@@ -61,24 +64,17 @@ public class UDPClientConnection implements ActionListener {
 			return;
 		connectionTimeoutCounter--;
 		if (connectionTimeoutCounter <= 0) {
-			server.removeClient(this);
-			clientObject.disconnected();
-			requiredPackageTimer.stop();
+			disconnect();
 		}
 
-		if (priorityMessages.size() < 1)
-			return;
-		for (int i = 0; i < priorityMessages.size(); i++) {
-			if (i > 10)
-				return;
-			try {
-				if (priorityMessages.get(i) != null) {
-					sendMessage(priorityMessages.get(i), false);
+		synchronized (priorityMessages) {
+			for (int i = 0; i < Math.min(10, priorityMessages.size()); i++) {
+				if (priorityMessages.get(0) != null) {
+					sendMessage(priorityMessages.get(0), false);
+					Collections.rotate(priorityMessages, -1);
 				} else {
-					priorityMessages.remove(i);
+					priorityMessages.remove(0);
 				}
-			} catch (Exception ex) {
-
 			}
 		}
 	}
@@ -99,7 +95,9 @@ public class UDPClientConnection implements ActionListener {
 		if (receivedString.startsWith("NetworkPingRequest")) {
 			sendMessage(receivedString, false);
 		} else if (receivedString.startsWith(PRIORITY_RESPONSE)) {
-			priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
+			synchronized (priorityMessages) {
+				priorityMessages.remove(PRIORITY_MARK + receivedString.substring(PRIORITY_RESPONSE.length()));
+			}
 		} else {
 			if (receivedString.startsWith(PRIORITY_MARK)) {
 				receivedString = receivedString.substring(PRIORITY_MARK.length());
@@ -117,6 +115,8 @@ public class UDPClientConnection implements ActionListener {
 
 	public void disconnect() {
 		server.removeClient(this);
+		requiredPackageTimer.stop();
+		clientObject.disconnected();
 	}
 
 	public boolean checkConnection(String received, String controlString) {
