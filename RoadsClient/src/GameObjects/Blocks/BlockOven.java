@@ -1,6 +1,7 @@
 package GameObjects.Blocks;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 
 import HelperObjects.JSONObject;
@@ -42,12 +43,17 @@ public class BlockOven extends Block {
 		g.setColor(getC());
 		g.fillRect(x, y, size, size);
 
-		g.setColor(getC().darker());
-		g.fillRect(x, y + size - size * fuelPercentage / 100, size, size * fuelPercentage / 100);
+		g.setColor(g.getColor().brighter());
+		g.drawRect(x, y, size, size);
 
 		g.setColor(getC().brighter());
 		g.drawRect(x, y, size, size);
 		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
+
+		g.setColor(Color.black);
+		g.setFont(new Font("Arial", Font.PLAIN, size / 3));
+		g.drawString(fuelPercentage + "%", x + size - 2 - g.getFontMetrics().stringWidth(fuelPercentage + "%"),
+				y + size - 4);
 	}
 
 }

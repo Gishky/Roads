@@ -20,33 +20,30 @@ public class BlockOven extends Block {
 		return new BlockOven();
 	}
 
-	private double boostAccelleration = 0.2;
-	private OvenAbilityJet jet = null;
+	private int fuelCost = 40;
+	private double boostAccelleration = 2;
 
 	public void activateAbility(PlayerCharacter e) {
-		if (fuel > 0) {
-			fuel -= 3;
+		if (fuel != 0) {
+			double boostPower = 1;
+			if (fuel < fuelCost)
+				boostPower = (double) fuel / fuelCost;
+			fuel -= fuelCost * boostPower;
 			double[] boostVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(boostVelocity[0], 2) + Math.pow(boostVelocity[1], 2));
 			double[] unitVelocity = { boostVelocity[0] / velocityLength, boostVelocity[1] / velocityLength };
-			double[] entityVelocity = e.getVelocity();
-			entityVelocity[0] += unitVelocity[0] * boostAccelleration;
-			entityVelocity[1] += unitVelocity[1] * boostAccelleration;
-			e.setVelocity(entityVelocity);
+			boostVelocity[0] = unitVelocity[0] * boostAccelleration * boostPower;
+			boostVelocity[1] = unitVelocity[1] * boostAccelleration * boostPower;
+			e.setVelocity(boostVelocity);
 
-			if (jet == null) {
-				jet = new OvenAbilityJet(e.getPos(), unitVelocity[0] * boostAccelleration,
-						unitVelocity[1] * boostAccelleration, this);
-			} else {
-				jet.setVelocity(unitVelocity[0] * boostAccelleration, unitVelocity[1] * boostAccelleration);
-				jet.reactivate();
-			}
+			new OvenAbilityJet(e.getPos(), boostVelocity, boostPower);
+
 			e.updateInventory();
 		}
 	}
 
 	public int getAbilityCooldown() {
-		return 0;
+		return 50;
 	}
 
 	private int fuel;
@@ -89,10 +86,6 @@ public class BlockOven extends Block {
 
 	public void setMaxfuel(int maxfuel) {
 		this.maxfuel = maxfuel;
-	}
-
-	public void setJet(OvenAbilityJet object) {
-		jet = object;
 	}
 
 	public void removeEntity() {

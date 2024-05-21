@@ -31,7 +31,7 @@ public class BlockGold extends Block {
 		g.setColor(getC());
 		g.fillRect(x, y, size, size);
 
-		g.setColor(Color.black);
+		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
 }

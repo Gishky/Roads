@@ -95,7 +95,7 @@ public class Panel extends JPanel
 			particles.remove(p);
 		}
 
-		paintInventory(g);
+		drawInventory(g);
 
 		if (!statistics)
 			return;
@@ -115,7 +115,7 @@ public class Panel extends JPanel
 		timestamp = System.currentTimeMillis();
 	}
 
-	private void paintInventory(Graphics2D g) {
+	private void drawInventory(Graphics2D g) {
 		g.setColor(Color.gray.brighter());
 		g.fillRect((int) (windowWidth - Block.size * 2.4), (int) (windowHeight / 2 - Block.size * 5.6),
 				(int) (Block.size * 2.4), (int) (Block.size * 11.2));
@@ -134,8 +134,8 @@ public class Panel extends JPanel
 
 			Block b = World.playerInventory[i];
 			if (b != null) {
-				b.drawInventory(g, (int) (windowWidth - Block.size * 2.2),
-						(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2,
+				b.drawInventory(g, (int) (windowWidth - Block.size * 2),
+						(int) (windowHeight / 2 - Block.size * 5.2 + Block.size * 2.2 * i), (int) (Block.size * 1.6),
 						i == World.selectedInventory);
 			}
 
@@ -167,7 +167,7 @@ public class Panel extends JPanel
 		if (e.getKeyCode() == KeyEvent.VK_F1) {
 			statistics = !statistics;
 		}
-		
+
 		int key = e.getKeyCode();
 		if (!pressedKeys.contains(key)) {
 			connection.sendMessage("key;down;" + key, true);

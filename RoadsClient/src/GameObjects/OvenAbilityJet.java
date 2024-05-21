@@ -13,35 +13,41 @@ public class OvenAbilityJet extends Entity {
 
 	private double velx;
 	private double vely;
+	private int lifetime;
 
 	public OvenAbilityJet(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		velx = Double.parseDouble(entity.get("velx"));
 		vely = Double.parseDouble(entity.get("vely"));
+		lifetime = Integer.parseInt(entity.get("lifetime"));
+		lastx = pos.getX();
+		lasty = pos.getY();
 	}
-	
+
 	public void updateEntity(JSONObject entity) {
 		pos.setX(entity.get("x"));
 		pos.setY(entity.get("y"));
 		velx = Double.parseDouble(entity.get("velx"));
 		vely = Double.parseDouble(entity.get("vely"));
+		lifetime = Integer.parseInt(entity.get("lifetime"));
 	}
 
 	private double lastx, lasty;
 
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
+		int steps = (int) (3 * Math.pow(lifetime, 3));
 		double stepx = lastx - pos.getX();
-		stepx /= 5;
+		stepx /= steps;
 		double stepy = lasty - pos.getY();
-		stepy /= 5;
+		stepy /= steps;
 		Random r = new Random();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i <= steps+1; i++) {
 			Panel.addParticle(
 					new Particle(pos.getX() + stepx * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
 							pos.getY() + stepy * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
-							velx * 0.15 * Block.size + r.nextDouble() * 0.01 * Block.size - 0.005 * Block.size,
-							vely * 0.15 * Block.size + r.nextDouble() * 0.01 * Block.size - 0.005 * Block.size, 0, 0,
-							Color.red, 10));
+							-velx * 0.05 * Block.size + (r.nextDouble() * 0.03 - 0.015) * Block.size * lifetime,
+							-vely * 0.05 * Block.size + (r.nextDouble() * 0.03 - 0.015) * Block.size * lifetime,
+							velx * 0.00015 * Block.size, 0.00015 * Block.size, Color.red, 10));
 		}
 		lastx = pos.getX();
 		lasty = pos.getY();
