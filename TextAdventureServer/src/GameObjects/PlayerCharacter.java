@@ -162,7 +162,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 		if (oldX != (int) pos.getX() || oldY != (int) pos.getY()) {
 			breakCount = 0;
-			System.out.println("pos change");
 		}
 
 		return update;

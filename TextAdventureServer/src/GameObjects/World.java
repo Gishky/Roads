@@ -84,6 +84,10 @@ public class World {
 		// generate GoldOre
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
+		// generate Caves
+		generateCaves(worldHeight * 5 / 8, worldHeight / 2, 0.3, 20, new BlockAir());
+		generateCaves(worldHeight * 6 / 8, worldHeight / 4, 0.1, 50, new BlockAir());
+
 		System.out.println("done");
 	}
 
@@ -95,6 +99,20 @@ public class World {
 				double normalDistribution = normalDistribution(y, medianHeight, standardHeightDeviation, veinDensity);
 				if (world[x][y].getId() == 0 || world[x][y].getId() == 2)
 					continue;
+				if (normalDistribution >= (OpenSimplex2S.noise2(seed, (double) x / veinSize, (double) y / veinSize) + 1)
+						/ 2) {
+					setBlock(x, y, generatedBlock.clone());
+				}
+			}
+		}
+	}
+
+	private static void generateCaves(double medianHeight, double standardHeightDeviation, double veinDensity,
+			double veinSize, Block generatedBlock) {
+		long seed = new Random().nextLong();
+		for (int x = 0; x < world.length; x++) {
+			for (int y = 0; y < world[0].length; y++) {
+				double normalDistribution = normalDistribution(y, medianHeight, standardHeightDeviation, veinDensity);
 				if (normalDistribution >= (OpenSimplex2S.noise2(seed, (double) x / veinSize, (double) y / veinSize) + 1)
 						/ 2) {
 					setBlock(x, y, generatedBlock.clone());

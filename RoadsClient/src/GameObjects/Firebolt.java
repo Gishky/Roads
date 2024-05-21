@@ -4,11 +4,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import GameObjects.Blocks.Block;
-import GameObjects.Blocks.BlockCoalOre;
-import GameObjects.Blocks.BlockDirt;
 import GameObjects.Blocks.BlockGrass;
-import GameObjects.Blocks.BlockIronOre;
-import GameObjects.Blocks.BlockStone;
 import HelperObjects.JSONObject;
 import HelperObjects.Particle;
 import Window.Panel;

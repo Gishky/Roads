@@ -1,7 +1,5 @@
 package GameObjects.Blocks;
 
-import HelperObjects.JSONObject;
-
 public class BlockAir extends Block {
 	public BlockAir() {
 		id = 0;

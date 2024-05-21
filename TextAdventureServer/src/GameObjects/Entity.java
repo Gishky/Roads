@@ -1,8 +1,6 @@
 package GameObjects;
 
-import GameObjects.Blocks.Block;
 import HelperObjects.Hitbox;
-import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 

@@ -1,7 +1,6 @@
 package GameObjects;
 
 import GameObjects.Blocks.BlockAir;
-import GameObjects.Blocks.BlockGrass;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
