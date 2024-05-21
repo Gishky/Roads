@@ -56,7 +56,7 @@ public class Block {
 			return null;
 		}
 	}
-	
+
 	public static Block getBlockFromJSON(JSONObject block) {
 		switch (block.get("id")) {
 		case "0":
@@ -85,14 +85,10 @@ public class Block {
 	}
 
 	public Color getColor() {
-		return getC();
-	}
-
-	public Color getC() {
 		return c;
 	}
 
-	public void setC(Color c) {
+	public void setColor(Color c) {
 		this.c = c;
 	}
 }

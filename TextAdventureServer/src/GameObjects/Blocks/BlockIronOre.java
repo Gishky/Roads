@@ -38,10 +38,10 @@ public class BlockIronOre extends Block {
 
 			Position fireboltpos = new Position();
 			fireboltpos.set(e.getPos().getX(), e.getPos().getY());
-			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
+			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e, 8);
 		}
 	}
-	
+
 	public String toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("id", "" + id);

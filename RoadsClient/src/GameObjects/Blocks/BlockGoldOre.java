@@ -12,7 +12,7 @@ public class BlockGoldOre extends Block {
 
 	public BlockGoldOre(JSONObject block) {
 		breakThreshhold = 24;
-		setC(new Color(255, 215, 0));
+		setColor(new Color(255, 215, 0));
 		rb = 100;
 		gb = 100;
 		bb = 100;
@@ -42,7 +42,7 @@ public class BlockGoldOre extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);
@@ -57,7 +57,7 @@ public class BlockGoldOre extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);

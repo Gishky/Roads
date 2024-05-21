@@ -20,6 +20,9 @@ public class Firebolt extends Entity {
 	public Firebolt(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		colourBlock = Block.getBlockFromID(entity.get("colourBlock"));
+
+		lastx = pos.getX();
+		lasty = pos.getY();
 	}
 
 	public void updateEntity(JSONObject entity) {
@@ -47,14 +50,13 @@ public class Firebolt extends Entity {
 
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {
-			if (colourBlock instanceof BlockDirt || colourBlock instanceof BlockStone
-					|| colourBlock instanceof BlockIronOre || colourBlock instanceof BlockCoalOre)
+			if (!(colourBlock instanceof BlockGrass))
 				Panel.addParticle(
 						new Particle(pos.getX() + stepx * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
 								pos.getY() + stepy * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size, 0, 0,
 								r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
 								-r.nextDouble() * 0.025 * Block.size, colourBlock.getColor()));
-			else if (colourBlock instanceof BlockGrass)
+			else
 				Panel.addParticle(new Particle(pos.getX() + stepx * i, pos.getY() + stepy * i,
 						r.nextDouble() * 0.1 * Block.size - 0.05 * Block.size, -0.05 * Block.size * r.nextDouble(), 0,
 						r.nextDouble() * 0.005 * Block.size, colourBlock.getColor()));

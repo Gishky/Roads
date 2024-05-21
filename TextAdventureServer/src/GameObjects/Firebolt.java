@@ -1,6 +1,5 @@
 package GameObjects;
 
-import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;
@@ -12,6 +11,19 @@ public class Firebolt extends Entity {
 	private int damage = 2;
 	private Entity owner = null;
 	private int colourBlockID;
+
+	public Firebolt(Position initialPosition, double[] initialVelocity, int colourBlockID, Entity owner, int damage) {
+		pos = initialPosition;
+		this.velocity = initialVelocity;
+		fallingaccelleration = 0.025;
+		isGrounded = false;
+		drag = 1.000005;
+		hitBox = new Hitbox(false, 0.25);
+		this.owner = owner;
+		this.colourBlockID = colourBlockID;
+		this.damage = damage;
+		createEntity();
+	}
 
 	public Firebolt(Position initialPosition, double[] initialVelocity, int colourBlockID, Entity owner) {
 		pos = initialPosition;

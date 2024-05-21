@@ -10,7 +10,7 @@ public class BlockIron extends Block {
 
 	public BlockIron(JSONObject block) {
 		breakThreshhold = 100;
-		setC(new Color(153, 149, 148));
+		setColor(new Color(153, 149, 148));
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class BlockIron extends Block {
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(g.getColor().brighter());
@@ -28,7 +28,7 @@ public class BlockIron extends Block {
 	}
 
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(getC().brighter());
+		g.setColor(getColor().brighter());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(g.getColor().brighter());

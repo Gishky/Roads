@@ -13,7 +13,7 @@ public class BlockOven extends Block {
 
 	public BlockOven(JSONObject block) {
 		breakThreshhold = 40;
-		setC(new Color(80, 80, 80));
+		setColor(new Color(80, 80, 80));
 
 		if (block == null)
 			return;
@@ -28,25 +28,25 @@ public class BlockOven extends Block {
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
 
-		g.setColor(getC().darker());
+		g.setColor(getColor().darker());
 		g.fillRect(x, y + size - size * fuelPercentage / 100, size, size * fuelPercentage / 100);
 
-		g.setColor(getC().brighter());
+		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
 	}
 
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(getC().brighter());
+		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 		g.fillRect(x + size / 4, y + size / 4, size / 2, size / 5);
 

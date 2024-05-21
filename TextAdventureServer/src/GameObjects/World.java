@@ -2,14 +2,7 @@ package GameObjects;
 
 import java.util.Random;
 
-import GameObjects.Blocks.Block;
-import GameObjects.Blocks.BlockAir;
-import GameObjects.Blocks.BlockCoalOre;
-import GameObjects.Blocks.BlockDirt;
-import GameObjects.Blocks.BlockGoldOre;
-import GameObjects.Blocks.BlockGrass;
-import GameObjects.Blocks.BlockIronOre;
-import GameObjects.Blocks.BlockStone;
+import GameObjects.Blocks.*;
 import HelperObjects.OpenSimplex2S;
 import Server.GameMaster;
 
@@ -87,7 +80,7 @@ public class World {
 
 		// generate IronOre
 		generateNoiseBlocks(worldHeight * 3 / 4, worldHeight / 2, 0.2, 2.5, new BlockIronOre());
-		
+
 		// generate GoldOre
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 

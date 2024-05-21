@@ -13,7 +13,7 @@ public class BlockIronOre extends Block {
 
 	public BlockIronOre(JSONObject block) {
 		breakThreshhold = 20;
-		setC(new Color(77, 30, 0));
+		setColor(new Color(77, 30, 0));
 		r = 77;
 		g = 30;
 		b = 0;
@@ -63,7 +63,7 @@ public class BlockIronOre extends Block {
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(getC());
+		g.setColor(getColor());
 		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);

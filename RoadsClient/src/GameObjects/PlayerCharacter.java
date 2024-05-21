@@ -68,7 +68,7 @@ public class PlayerCharacter extends Entity {
 		if (breakCount != 0) {
 			int blockx = (int) pos.getX() / Block.size;
 			int blocky = (int) pos.getY() / Block.size + 1;
-			Color c = World.getWorld()[blockx][blocky].getC();
+			Color c = World.getWorld()[blockx][blocky].getColor();
 
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {
