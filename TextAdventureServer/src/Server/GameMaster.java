@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import AdminConsole.AdminConsole;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.World;
@@ -24,7 +25,7 @@ public class GameMaster implements ActionListener {
 
 	private LocalDate currentDate;
 
-	public GameMaster(UDPServer server) {
+	public GameMaster(UDPServer server, AdminConsole adminConsole) {
 		if (master == null) {
 			master = this;
 		}
@@ -91,7 +92,10 @@ public class GameMaster implements ActionListener {
 		try {
 			Runtime.getRuntime().exec("sudo reboot");
 		} catch (IOException e) {
-			e.printStackTrace();
+			AdminConsole.log("Exception: "+e.getMessage());
+			for (StackTraceElement s : e.getStackTrace()) {
+				AdminConsole.log("    "+s.toString());
+			}
 		}
 	}
 }

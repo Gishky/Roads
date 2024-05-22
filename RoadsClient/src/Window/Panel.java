@@ -31,7 +31,7 @@ public class Panel extends JPanel
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
-	private String version = "1.1.1";
+	private String version = "v1.2.0";
 
 	public static int windowWidth, windowHeight;
 
@@ -48,7 +48,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("192.168.79.1", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			t.start();
 		}
@@ -166,10 +166,12 @@ public class Panel extends JPanel
 			statistics = !statistics;
 		}
 
-		int key = e.getKeyCode();
-		if (!pressedKeys.contains(key)) {
-			connection.sendMessage("key;down;" + key, true);
-			pressedKeys.add(key);
+		synchronized (pressedKeys) {
+			int key = e.getKeyCode();
+			if (!pressedKeys.contains(key)) {
+				connection.sendMessage("key;down;" + key, true);
+				pressedKeys.add(key);
+			}
 		}
 	}
 
@@ -177,7 +179,10 @@ public class Panel extends JPanel
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		connection.sendMessage("key;up;" + key, true);
-		pressedKeys.remove(pressedKeys.indexOf(key));
+		synchronized (pressedKeys) {
+			if (pressedKeys.contains(key))
+				pressedKeys.remove(pressedKeys.indexOf(key));
+		}
 	}
 
 	public static ArrayList<Entity> getEntities() {
@@ -221,24 +226,27 @@ public class Panel extends JPanel
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int key = e.getButton();
-		if (!pressedKeys.contains(key)) {
-			connection.sendMessage("key;down;" + key, true);
-			pressedKeys.add(key);
+		synchronized (pressedKeys) {
+			int key = e.getButton();
+			if (!pressedKeys.contains(key)) {
+				connection.sendMessage("key;down;" + key, true);
+				pressedKeys.add(key);
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int key = e.getButton();
-		connection.sendMessage("key;up;" + key, true);
-		pressedKeys.remove(pressedKeys.indexOf(key));
+		synchronized (pressedKeys) {
+			int key = e.getButton();
+			connection.sendMessage("key;up;" + key, true);
+			pressedKeys.remove(pressedKeys.indexOf(key));
+		}
 	}
 
 	@Override

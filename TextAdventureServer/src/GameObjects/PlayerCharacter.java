@@ -3,6 +3,7 @@ package GameObjects;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import AdminConsole.AdminConsole;
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.CraftingHandler;
@@ -13,6 +14,7 @@ import HelperObjects.VirtualKeyboard;
 import Server.GameMaster;
 import UDPServer.UDPClientConnection;
 import UDPServer.UDPClientObject;
+import UDPServer.UDPServer;
 
 public class PlayerCharacter extends Entity implements UDPClientObject {
 
@@ -214,6 +216,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void setClientConnection(UDPClientConnection con) {
+		AdminConsole.log("New Player connected from: " + con.getAddress() + ":" + con.getPort() + ". Players online: "
+				+ UDPServer.getInstances().get(0).getClientCount());
 		connection = con;
 		sendInitialData();
 	}
@@ -248,6 +252,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void disconnected() {
+		AdminConsole.log("Player at " + connection.getAddress() + ":" + connection.getPort()
+				+ " disconnected. Players online: " + UDPServer.getInstances().get(0).getClientCount());
 		GameMaster.removeEntity(this);
 	}
 

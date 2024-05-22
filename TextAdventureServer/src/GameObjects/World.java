@@ -2,18 +2,23 @@ package GameObjects;
 
 import java.util.Random;
 
+import AdminConsole.AdminConsole;
 import GameObjects.Blocks.*;
 import HelperObjects.OpenSimplex2S;
 import Server.GameMaster;
+import UDPServer.UDPServer;
 
 public class World {
 
 	private static Block[][] world = new Block[1000][300];
 
 	public static void generateWorld() {
+		AdminConsole.log("Generating World with Width " + world.length + " and Height " + world[0].length + "...");
+
 		int worldHeight = world[0].length;
 		Random r = new Random();
 
+		AdminConsole.log("Shaping terrain...");
 		// funktionen bestimmmen
 		int functions = r.nextInt(10) + 20;
 		double[] frequencies = new double[functions];
@@ -48,6 +53,7 @@ public class World {
 			terrainHoehe[i] = worldHeight - terrainBegin[i];
 		}
 
+		AdminConsole.log("Generating Blocks...");
 		// fill in blocks
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < worldHeight; y++) {
@@ -71,6 +77,7 @@ public class World {
 				}
 			}
 		}
+
 		// generate stone
 		generateNoiseBlocks(worldHeight, worldHeight * 3 / 5, 0.6, 1, new BlockStone());
 		generateNoiseBlocks(worldHeight / 2 + worldHeight / 5, worldHeight / 4, 0.6, 1, new BlockStone());
@@ -84,11 +91,13 @@ public class World {
 		// generate GoldOre
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
+		AdminConsole.log("Generating Caves...");
 		// generate Caves
 		generateCaves(worldHeight * 5 / 8, worldHeight / 2, 0.3, 20, new BlockAir());
 		generateCaves(worldHeight * 6 / 8, worldHeight / 4, 0.1, 50, new BlockAir());
 
-		System.out.println("done");
+		AdminConsole.log("World successfully Generated");
+		AdminConsole.log("");
 	}
 
 	private static void generateNoiseBlocks(double medianHeight, double standardHeightDeviation, double veinDensity,
@@ -146,6 +155,10 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
+			AdminConsole.log("Exception: " + e.getMessage());
+			for (StackTraceElement s : e.getStackTrace()) {
+				AdminConsole.log("    " + s.toString());
+			}
 		}
 
 		return castResult;
@@ -161,6 +174,10 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
+			AdminConsole.log("Exception: " + e.getMessage());
+			for (StackTraceElement s : e.getStackTrace()) {
+				AdminConsole.log("    " + s.toString());
+			}
 		}
 
 		return castResult;
@@ -331,6 +348,10 @@ public class World {
 		try {
 			return world[x][y];
 		} catch (Exception e) {
+			AdminConsole.log("Exception: " + e.getMessage());
+			for (StackTraceElement s : e.getStackTrace()) {
+				AdminConsole.log("    " + s.toString());
+			}
 		}
 		return null;
 	}

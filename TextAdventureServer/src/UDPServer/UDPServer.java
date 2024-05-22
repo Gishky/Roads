@@ -69,16 +69,22 @@ public class UDPServer extends Thread {
 	}
 
 	public void addClient(UDPClientConnection clientConnection) {
-		clients.add(clientConnection);
+		synchronized (clients) {
+			clients.add(clientConnection);
+		}
 	}
 
 	public void removeClient(UDPClientConnection clientConnection) {
-		clients.remove(clientConnection);
+		synchronized (clients) {
+			clients.remove(clientConnection);
+		}
 	}
 
 	public void sendToAll(String message, boolean priority) {
-		for (UDPClientConnection client : clients) {
-			client.sendMessage(message, priority);
+		synchronized (clients) {
+			for (UDPClientConnection client : clients) {
+				client.sendMessage(message, priority);
+			}
 		}
 	}
 
@@ -99,9 +105,11 @@ public class UDPServer extends Thread {
 	}
 
 	public UDPClientConnection getClientWithParameters(InetAddress address, int port) {
-		for (UDPClientConnection con : clients) {
-			if (con.getAddress().equals(address) && con.getPort() == port) {
-				return con;
+		synchronized (clients) {
+			for (UDPClientConnection con : clients) {
+				if (con.getAddress().equals(address) && con.getPort() == port) {
+					return con;
+				}
 			}
 		}
 		return null;
@@ -112,6 +120,12 @@ public class UDPServer extends Thread {
 			socket.send(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public int getClientCount() {
+		synchronized (clients) {
+			return clients.size();
 		}
 	}
 
