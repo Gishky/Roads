@@ -63,7 +63,7 @@ public class BlockOven extends Block {
 
 	private OvenEntity entity = null;
 
-	public void update() {
+	public void updateBlock() {
 		if (entity == null)
 			entity = new OvenEntity(getX(), getY(), this);
 	}

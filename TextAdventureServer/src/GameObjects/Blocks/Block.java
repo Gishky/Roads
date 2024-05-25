@@ -2,6 +2,7 @@ package GameObjects.Blocks;
 
 import GameObjects.PlayerCharacter;
 import HelperObjects.JSONObject;
+import Server.GameMaster;
 
 public class Block {
 
@@ -22,7 +23,7 @@ public class Block {
 	public Block() {
 		id = -1;
 	}
-	
+
 	public Block(JSONObject block) {
 		id = -1;
 	}
@@ -32,7 +33,7 @@ public class Block {
 	}
 
 	public void update() {
-
+		GameMaster.updateBlock(this);
 	}
 
 	public void breakBlock() {
@@ -114,5 +115,9 @@ public class Block {
 		json.put("x", "" + getX());
 		json.put("y", "" + getY());
 		return json.getJSON();
+	}
+
+	public void updateBlock() {
+
 	}
 }

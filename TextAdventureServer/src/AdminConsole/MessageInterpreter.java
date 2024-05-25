@@ -178,7 +178,7 @@ public class MessageInterpreter {
 
 	private static String updateWorld(String block) {
 		if(block.equals("?")) {
-			AdminConsole.log("├─<json of block>         | eg.: 0 0 {x:500,y:140,id:4,fuel:400}", true);
+			AdminConsole.log("├─<json of block>         | eg.: {x:500,y:150,id:4,fuel:400}", true);
 			AdminConsole.log("└─<x> <y> <blockname>     | eg.: 0 0 oven", true);
 			return null;
 		}

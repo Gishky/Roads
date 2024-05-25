@@ -4,15 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
 import AdminConsole.AdminConsole;
 import GameObjects.Entity;
-import GameObjects.Firebolt;
 import GameObjects.World;
+import GameObjects.Blocks.Block;
 import UDPServer.UDPServer;
 
 public class GameMaster implements ActionListener {
@@ -22,20 +21,18 @@ public class GameMaster implements ActionListener {
 	private Timer t;
 
 	private ArrayList<Entity> entities;
-
-	private LocalDate currentDate;
+	private ArrayList<Block> blockUpdates;
 
 	public GameMaster(UDPServer server, AdminConsole adminConsole) {
 		if (master == null) {
 			master = this;
 		}
 
-		currentDate = LocalDate.now();
-
 		this.server = server;
 		t = new Timer(50, this);
 		t.start();
 		entities = new ArrayList<Entity>();
+		blockUpdates = new ArrayList<Block>();
 		World.generateWorld();
 	}
 
@@ -46,15 +43,22 @@ public class GameMaster implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		synchronized (blockUpdates) {
+			for (Block b : blockUpdates) {
+				blocks.add(b);
+			}
+			blockUpdates.clear();
+		}
+		for (Block b : blocks) {
+			b.updateBlock();
+		}
+
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			if (entity.action()) {
 				sendToAll("{action:updateEntity,entity:" + entity.toJSON() + "}", false);
 			}
-		}
-
-		if (!LocalDate.now().getDayOfWeek().equals(currentDate.getDayOfWeek())) {
-			restartServer();
 		}
 
 		serverTickRate.add((int) (System.currentTimeMillis() - timestamp));
@@ -92,10 +96,17 @@ public class GameMaster implements ActionListener {
 		try {
 			Runtime.getRuntime().exec("sudo reboot");
 		} catch (IOException e) {
-			AdminConsole.log("Exception: "+e.getMessage(),false);
+			AdminConsole.log("Exception: " + e.getMessage(), false);
 			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    "+s.toString(),false);
+				AdminConsole.log("    " + s.toString(), false);
 			}
+		}
+	}
+
+	public static void updateBlock(Block b) {
+		synchronized (master.blockUpdates) {
+			if (!master.blockUpdates.contains(b))
+				master.blockUpdates.add(b);
 		}
 	}
 }
