@@ -53,6 +53,7 @@ public class AdminConsole extends Thread {
 		synchronized (log) {
 			if (!supressTime)
 				s = time.getHour() + ":" + time.getMinute() + "-" + s;
+			System.out.println(s);
 			log.add(s);
 			synchronized (connections) {
 				for (AdminConsoleConnection con : connections) {

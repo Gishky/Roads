@@ -78,8 +78,10 @@ public class MessageInterpreter implements UDPMessageListener {
 	private static void updateWorld(JSONObject block) {
 		int x = Integer.parseInt(block.get("x"));
 		int y = Integer.parseInt(block.get("y"));
-
-		World.setBlock(x, y, Block.getBlockFromJSON(block));
+		if (Block.getBlockFromJSON(block) != null)
+			World.setBlock(x, y, Block.getBlockFromJSON(block));
+		else
+			World.setBlock(x, y, new Block());
 	}
 
 	private static void updateEntity(JSONObject entity) {

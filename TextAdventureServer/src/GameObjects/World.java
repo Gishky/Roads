@@ -83,6 +83,7 @@ public class World {
 		generateNoiseBlocks(worldHeight, worldHeight * 3 / 5, 0.6, 1, new BlockStone());
 		generateNoiseBlocks(worldHeight / 2 + worldHeight / 5, worldHeight / 4, 0.6, 1, new BlockStone());
 
+		AdminConsole.log("Generating Ores...", false);
 		// generate CoalOre
 		generateNoiseBlocks(worldHeight * 5 / 8, worldHeight * 3 / 10, 0.25, 4, new BlockCoalOre());
 
@@ -93,12 +94,39 @@ public class World {
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
 		AdminConsole.log("Generating Caves...", false);
-		// generate Caves
 		generateCaves(worldHeight * 5 / 8, worldHeight / 2, 0.3, 20, new BlockAir());
 		generateCaves(worldHeight * 6 / 8, worldHeight / 4, 0.1, 50, new BlockAir());
 
+		AdminConsole.log("Generating Trees...", false);
+		generateTrees(0.5, 20);
+
 		AdminConsole.log("World successfully Generated", false);
 		AdminConsole.log("", true);
+	}
+
+	private static void generateTrees(double treeDensity, double forestSize) {
+		long seed = new Random().nextLong();
+		Random r = new Random();
+		for (int x = 0; x < world.length; x++) {
+			if (r.nextDouble() <= (OpenSimplex2S.noise2(seed, (double) x / forestSize, 1) + 1) / 2 * treeDensity) {
+				int y = getHeight(x);
+				if (getBlock(x, y + 1) instanceof BlockGrass) {
+					if (getBlock(x - 1, y) instanceof BlockAir)
+						setBlock(x - 1, y, new BlockLeaf());
+					if (getBlock(x + 1, y) instanceof BlockAir)
+						setBlock(x + 1, y, new BlockLeaf());
+					if (getBlock(x - 1, y - 1) instanceof BlockAir)
+						setBlock(x - 1, y - 1, new BlockLeaf());
+					if (getBlock(x + 1, y - 1) instanceof BlockAir)
+						setBlock(x + 1, y - 1, new BlockLeaf());
+					if (getBlock(x, y - 2) instanceof BlockAir)
+						setBlock(x, y - 2, new BlockLeaf());
+					setBlock(x, y, new BlockWood());
+					setBlock(x, y + 1, new BlockDirt());
+					setBlock(x, y - 1, new BlockWood());
+				}
+			}
+		}
 	}
 
 	private static void generateNoiseBlocks(double medianHeight, double standardHeightDeviation, double veinDensity,
@@ -351,20 +379,9 @@ public class World {
 	}
 
 	public static Block getBlock(int x, int y) {
-		try {
+		if (x >= 0 && x < world.length && y >= 0 && y < world[0].length)
 			return world[x][y];
-		} catch (Exception e) {
-			AdminConsole.log("Exception: " + e.getMessage(), false);
-			for (int i = 0; i < e.getStackTrace().length; i++) {
-				String s = "";
-				if (i != e.getStackTrace().length - 1)
-					s += "├─";
-				else
-					s += "└─";
-				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
-			}
-		}
-		return null;
+		return new Block();
 	}
 
 	public static Block[][] getWorld() {

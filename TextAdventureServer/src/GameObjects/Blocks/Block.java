@@ -12,9 +12,7 @@ public class Block {
 	protected double friction = 1;
 	protected boolean breakable = false;
 	protected int breakThreshhold = 1;
-	private int x;
-
-	private int y;
+	protected int x, y;
 
 	protected Block smeltedBlock;
 	protected int requiredFuelForSmelting;

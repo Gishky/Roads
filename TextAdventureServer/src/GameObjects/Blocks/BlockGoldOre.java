@@ -18,8 +18,10 @@ public class BlockGoldOre extends Block {
 	}
 
 	public BlockGoldOre(JSONObject block) {
-		setX(Integer.parseInt(block.get("x")));
-		setY(Integer.parseInt(block.get("y")));
+		if (block.get("x") != null)
+			setX(Integer.parseInt(block.get("x")));
+		if (block.get("y") != null)
+			setY(Integer.parseInt(block.get("y")));
 		id = 8;
 		friction = 1.5;
 

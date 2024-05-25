@@ -35,8 +35,8 @@ public class CraftingHandler {
 		if (craftedBlock != null) {
 			World.setBlock(x, y, craftedBlock);
 			World.setBlock(x + 1, y, new BlockAir());
-			World.setBlock(x, y + 1, new BlockAir());
-			World.setBlock(x + 1, y + 1, new BlockAir());
+			World.setBlock(x, y - 1, new BlockAir());
+			World.setBlock(x + 1, y - 1, new BlockAir());
 		}
 	}
 }

@@ -10,7 +10,7 @@ public class Block {
 
 	protected int breakThreshhold = 0;
 
-	private Color c;
+	private Color c = Color.pink;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		/*
@@ -52,6 +52,10 @@ public class Block {
 			return new BlockGoldOre(null);
 		case "9":
 			return new BlockGold(null);
+		case "10":
+			return new BlockWood(null);
+		case "11":
+			return new BlockLeaf(null);
 		default:
 			return null;
 		}
@@ -79,6 +83,10 @@ public class Block {
 			return new BlockGoldOre(block);
 		case "9":
 			return new BlockGold(block);
+		case "10":
+			return new BlockWood(block);
+		case "11":
+			return new BlockLeaf(block);
 		default:
 			return null;
 		}

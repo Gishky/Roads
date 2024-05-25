@@ -3,17 +3,7 @@ package AdminConsole;
 import GameObjects.Entity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
-import GameObjects.Blocks.Block;
-import GameObjects.Blocks.BlockAir;
-import GameObjects.Blocks.BlockCoalOre;
-import GameObjects.Blocks.BlockDirt;
-import GameObjects.Blocks.BlockGold;
-import GameObjects.Blocks.BlockGoldOre;
-import GameObjects.Blocks.BlockGrass;
-import GameObjects.Blocks.BlockIron;
-import GameObjects.Blocks.BlockIronOre;
-import GameObjects.Blocks.BlockOven;
-import GameObjects.Blocks.BlockStone;
+import GameObjects.Blocks.*;
 import HelperObjects.JSONObject;
 import Server.GameMaster;
 
@@ -39,7 +29,8 @@ public class MessageInterpreter {
 	}
 
 	private static String giveBlock(String command) {
-		if(command.equals("?")) {
+		if (command.equals("?")) {
+			AdminConsole.log("/give", true);
 			AdminConsole.log("├─<playerid> <inventoryslot> <json of block> | eg.: 0 0 {id:4,fuel:400}", true);
 			AdminConsole.log("└─<playerid> <inventoryslot> <blockname>     | eg.: 0 0 oven", true);
 			return null;
@@ -83,43 +74,51 @@ public class MessageInterpreter {
 				case "0":
 					b = new BlockAir(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to Air";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to Air";
 				case "1":
 					b = new BlockDirt(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Dirt";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Dirt";
 				case "2":
 					b = new BlockGrass(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Grass";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Grass";
 				case "3":
 					b = new BlockStone(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Stone";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Stone";
 				case "4":
 					b = new BlockOven(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Oven";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Oven";
 				case "5":
 					b = new BlockCoalOre(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  CoalOre";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  CoalOre";
 				case "6":
 					b = new BlockIronOre(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  IronOre";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronOre";
 				case "7":
 					b = new BlockIron(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Iron";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Iron";
 				case "8":
 					b = new BlockGoldOre(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  GoldOre";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldOre";
 				case "9":
 					b = new BlockGold(json);
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Gold";
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Gold";
+				case "10":
+					b = new BlockWood(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Wood";
+				case "11":
+					b = new BlockLeaf(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
 				default:
 					return "Error converting \"" + command + "\" to a block";
 				}
@@ -131,34 +130,40 @@ public class MessageInterpreter {
 			switch (command.split(" ")[0].toLowerCase()) {
 			case "air":
 				p.setInventoryBlock(new BlockAir(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Air";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Air";
 			case "dirt":
 				p.setInventoryBlock(new BlockDirt(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Dirt";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Dirt";
 			case "grass":
 				p.setInventoryBlock(new BlockGrass(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Grass";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Grass";
 			case "stone":
 				p.setInventoryBlock(new BlockStone(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Stone";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Stone";
 			case "oven":
 				p.setInventoryBlock(new BlockOven(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Oven";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Oven";
 			case "coalore":
 				p.setInventoryBlock(new BlockCoalOre(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  CoalOre";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  CoalOre";
 			case "ironore":
 				p.setInventoryBlock(new BlockIronOre(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  IronOre";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronOre";
 			case "iron":
 				p.setInventoryBlock(new BlockIron(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Iron";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Iron";
 			case "goldore":
 				p.setInventoryBlock(new BlockGoldOre(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  GoldOre";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldOre";
 			case "gold":
 				p.setInventoryBlock(new BlockGold(), invSlot);
-				return "Set Inventoryslot "+invSlot+" of Player "+p.getId()+" to  Gold";
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Gold";
+			case "wood":
+				p.setInventoryBlock(new BlockWood(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Wood";
+			case "leaf":
+				p.setInventoryBlock(new BlockLeaf(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
 			default:
 				return "Error converting \"" + command + "\" to a block";
 			}
@@ -177,7 +182,8 @@ public class MessageInterpreter {
 	}
 
 	private static String updateWorld(String block) {
-		if(block.equals("?")) {
+		if (block.equals("?")) {
+			AdminConsole.log("/setblock", true);
 			AdminConsole.log("├─<json of block>         | eg.: {x:500,y:150,id:4,fuel:400}", true);
 			AdminConsole.log("└─<x> <y> <blockname>     | eg.: 0 0 oven", true);
 			return null;
@@ -227,6 +233,14 @@ public class MessageInterpreter {
 					b = new BlockGold(json);
 					World.setBlock(b.getX(), b.getY(), b);
 					return "Block " + b.getX() + "/" + b.getY() + " set to Gold";
+				case "10":
+					b = new BlockWood(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to Wood";
+				case "11":
+					b = new BlockLeaf(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to Leaf";
 				default:
 					return "Error converting \"" + block + "\" to a block";
 				}
@@ -268,6 +282,12 @@ public class MessageInterpreter {
 			case "gold":
 				World.setBlock(x, y, new BlockGold());
 				return "Block " + x + "/" + y + " set to Gold";
+			case "wood":
+				World.setBlock(x, y, new BlockWood());
+				return "Block " + x + "/" + y + " set to Wood";
+			case "leaf":
+				World.setBlock(x, y, new BlockLeaf());
+				return "Block " + x + "/" + y + " set to Leaf";
 			default:
 				return "command \"setblock\" returns no functionality for input \"" + block + "\"";
 			}
