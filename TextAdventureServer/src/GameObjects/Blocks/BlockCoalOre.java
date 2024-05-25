@@ -16,8 +16,20 @@ public class BlockCoalOre extends Block {
 		fuelValue = 200;
 	}
 
+	public BlockCoalOre(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
+		id = 5;
+		friction = 2;
+
+		breakable = true;
+		breakThreshhold = 20;
+
+		fuelValue = Integer.parseInt(block.get("fuel"));
+	}
+
 	public Block clone() {
-		return new BlockCoalOre();
+		return new BlockCoalOre(new JSONObject(toJSON()));
 	}
 
 	public void activateAbility(PlayerCharacter e) {

@@ -92,9 +92,9 @@ public class GameMaster implements ActionListener {
 		try {
 			Runtime.getRuntime().exec("sudo reboot");
 		} catch (IOException e) {
-			AdminConsole.log("Exception: "+e.getMessage());
+			AdminConsole.log("Exception: "+e.getMessage(),false);
 			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    "+s.toString());
+				AdminConsole.log("    "+s.toString(),false);
 			}
 		}
 	}

@@ -10,13 +10,13 @@ import javax.swing.border.EmptyBorder;
 public class Frame extends JFrame {
 
 	private JPanel contentPane;
+	private static Frame frame = null;
 
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame frame = new Frame();
+					frame = new Frame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -25,7 +25,6 @@ public class Frame extends JFrame {
 		});
 	}
 
-	
 	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -36,6 +35,10 @@ public class Frame extends JFrame {
 
 		Panel panel = new Panel();
 		contentPane.add(panel, BorderLayout.CENTER);
+	}
+
+	public static Frame getFrame() {
+		return frame;
 	}
 
 }

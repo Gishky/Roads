@@ -2,10 +2,21 @@ package GameObjects.Blocks;
 
 import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class BlockDirt extends Block {
 	public BlockDirt() {
+		id = 1;
+		friction = 2;
+
+		breakable = true;
+		breakThreshhold = 5;
+	}
+	
+	public BlockDirt(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
 		id = 1;
 		friction = 2;
 

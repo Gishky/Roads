@@ -22,6 +22,10 @@ public class Block {
 	public Block() {
 		id = -1;
 	}
+	
+	public Block(JSONObject block) {
+		id = -1;
+	}
 
 	public int getId() {
 		return id;

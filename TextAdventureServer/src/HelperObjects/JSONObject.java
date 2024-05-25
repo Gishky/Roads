@@ -24,15 +24,17 @@ public class JSONObject {
 		json += "}";
 		return json;
 	}
-	
+
 	public String get(String key) {
-		return map.get(key);
+		if (map.containsKey(key))
+			return map.get(key);
+		return null;
 	}
-	
+
 	public JSONObject() {
-		
+
 	}
-	
+
 	public JSONObject(String json) {
 		fromJSON(json);
 	}
@@ -55,9 +57,9 @@ public class JSONObject {
 		}
 		putMap(json);
 	}
-	
+
 	private void putMap(String substring) {
-		//System.out.println(substring);
+		// System.out.println(substring);
 		String[] pair = substring.split(":");
 		map.put(pair[0], substring.substring(pair[0].length() + 1));
 	}

@@ -48,10 +48,12 @@ public class AdminConsole extends Thread {
 		}
 	}
 
-	public static void log(String s) {
+	public static void log(String s, boolean supressTime) {
 		LocalTime time = LocalTime.now();
 		synchronized (log) {
-			log.add(time.getHour() + ":" + time.getMinute() + "-" + s);
+			if (!supressTime)
+				s = time.getHour() + ":" + time.getMinute() + "-" + s;
+			log.add(s);
 			synchronized (connections) {
 				for (AdminConsoleConnection con : connections) {
 					con.sendMessage(s);

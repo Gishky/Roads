@@ -14,7 +14,7 @@ public class MainThread {
 		try {
 			adminConsole = new AdminConsole(61852);
 			adminConsole.start();
-			AdminConsole.log("starting Server...");
+			AdminConsole.log("starting Server...", false);
 			server = new UDPServer("RoadsServer", 61852, new PlayerCharacterCreator(), gameVersion);
 			server.start();
 		} catch (Exception e) {
@@ -22,8 +22,8 @@ public class MainThread {
 			e.printStackTrace();
 		}
 
-		AdminConsole.log("starting GameMaster...");
-		AdminConsole.log("");
+		AdminConsole.log("starting GameMaster...", false);
+		AdminConsole.log("", true);
 		new GameMaster(server, adminConsole);
 	}
 

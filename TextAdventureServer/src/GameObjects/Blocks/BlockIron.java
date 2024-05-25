@@ -3,10 +3,21 @@ package GameObjects.Blocks;
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class BlockIron extends Block {
 	public BlockIron() {
+		id = 7;
+		friction = 2;
+
+		breakable = true;
+		breakThreshhold = 100;
+	}
+	
+	public BlockIron(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
 		id = 7;
 		friction = 2;
 

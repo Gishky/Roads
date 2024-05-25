@@ -18,9 +18,15 @@ public class OvenEntity extends Entity {
 		int ovenX = oven.getX();
 		int ovenY = oven.getY();
 
-		Block left = World.getBlock(ovenX - 1, ovenY);
-		Block right = World.getBlock(ovenX + 1, ovenY);
-		Block up = World.getBlock(ovenX, ovenY - 1);
+		Block left = new Block();
+		Block right = new Block();
+		Block up = new Block();
+		if (ovenX != 0)
+			left = World.getBlock(ovenX - 1, ovenY);
+		if (ovenX != World.getWorld().length - 1)
+			right = World.getBlock(ovenX + 1, ovenY);
+		if (ovenY != 0)
+			up = World.getBlock(ovenX, ovenY - 1);
 
 		if (left.getFuelValue() > 0) {
 			burningLeft = true;

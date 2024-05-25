@@ -17,8 +17,21 @@ public class BlockIronOre extends Block {
 		requiredFuelForSmelting = 400;
 	}
 
+	public BlockIronOre(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
+		id = 6;
+		friction = 2;
+
+		breakable = true;
+		breakThreshhold = 20;
+
+		smeltedBlock = new BlockIron();
+		requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
+	}
+
 	public Block clone() {
-		return new BlockIronOre();
+		return new BlockIronOre(new JSONObject(toJSON()));
 	}
 
 	public void activateAbility(PlayerCharacter e) {

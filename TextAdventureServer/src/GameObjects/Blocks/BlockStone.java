@@ -2,10 +2,21 @@ package GameObjects.Blocks;
 
 import GameObjects.Firebolt;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class BlockStone extends Block {
 	public BlockStone() {
+		id = 3;
+		friction = 2;
+
+		breakable = true;
+		breakThreshhold = 15;
+	}
+
+	public BlockStone(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
 		id = 3;
 		friction = 2;
 

@@ -12,11 +12,24 @@ public class BlockGoldOre extends Block {
 
 		breakable = true;
 		breakThreshhold = 24;
-		
+
 		smeltedBlock = new BlockGold();
 		requiredFuelForSmelting = 300;
 	}
-	
+
+	public BlockGoldOre(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
+		id = 8;
+		friction = 1.5;
+
+		breakable = true;
+		breakThreshhold = 24;
+
+		smeltedBlock = new BlockGold();
+		requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
+	}
+
 	public void activateAbility(PlayerCharacter e) {
 		for (int i = 0; i < 3; i++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
@@ -37,11 +50,11 @@ public class BlockGoldOre extends Block {
 			new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
 		}
 	}
-	
+
 	public int getAbilityCooldown() {
 		return 20;
 	}
-	
+
 	public String toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("id", "" + id);
@@ -52,6 +65,6 @@ public class BlockGoldOre extends Block {
 	}
 
 	public Block clone() {
-		return new BlockGoldOre();
+		return new BlockGoldOre(new JSONObject(toJSON()));
 	}
 }

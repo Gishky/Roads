@@ -8,6 +8,9 @@ import Server.GameMaster;
 
 public class BlockOven extends Block {
 
+	private int fuel;
+	private int maxfuel = 2000;
+
 	public BlockOven() {
 		id = 4;
 		friction = 3;
@@ -16,8 +19,20 @@ public class BlockOven extends Block {
 		breakThreshhold = 40;
 	}
 
+	public BlockOven(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
+		id = 4;
+		friction = 3;
+
+		breakable = true;
+		breakThreshhold = 40;
+
+		fuel = Integer.parseInt(block.get("fuel"));
+	}
+
 	public Block clone() {
-		return new BlockOven();
+		return new BlockOven(new JSONObject(toJSON()));
 	}
 
 	private int fuelCost = 40;
@@ -46,8 +61,6 @@ public class BlockOven extends Block {
 		return 50;
 	}
 
-	private int fuel;
-	private int maxfuel = 2000;
 	private OvenEntity entity = null;
 
 	public void update() {

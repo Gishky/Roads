@@ -10,15 +10,16 @@ public class AdminConsoleConnection extends Thread {
 
 	public void run() {
 		synchronized (AdminConsole.getLog()) {
-			for(String s : AdminConsole.getLog()) {
+			for (String s : AdminConsole.getLog()) {
 				sendMessage(s);
 			}
 		}
 		String inputLine;
 		try {
-			inputLine = in.readLine();
 			while ((inputLine = in.readLine()) != null) {
-				AdminConsole.log(MessageInterpreter.receivedMessage(inputLine));
+				String message = MessageInterpreter.receivedMessage(inputLine);
+				if (message != null)
+					AdminConsole.log(message, false);
 			}
 		} catch (IOException e) {
 			AdminConsole.removeConnection(this);

@@ -13,12 +13,13 @@ public class World {
 	private static Block[][] world = new Block[1000][300];
 
 	public static void generateWorld() {
-		AdminConsole.log("Generating World with Width " + world.length + " and Height " + world[0].length + "...");
+		AdminConsole.log("Generating World with Width " + world.length + " and Height " + world[0].length + "...",
+				false);
 
 		int worldHeight = world[0].length;
 		Random r = new Random();
 
-		AdminConsole.log("Shaping terrain...");
+		AdminConsole.log("Shaping terrain...", false);
 		// funktionen bestimmmen
 		int functions = r.nextInt(10) + 20;
 		double[] frequencies = new double[functions];
@@ -53,7 +54,7 @@ public class World {
 			terrainHoehe[i] = worldHeight - terrainBegin[i];
 		}
 
-		AdminConsole.log("Generating Blocks...");
+		AdminConsole.log("Generating Blocks...", false);
 		// fill in blocks
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < worldHeight; y++) {
@@ -91,13 +92,13 @@ public class World {
 		// generate GoldOre
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
-		AdminConsole.log("Generating Caves...");
+		AdminConsole.log("Generating Caves...", false);
 		// generate Caves
 		generateCaves(worldHeight * 5 / 8, worldHeight / 2, 0.3, 20, new BlockAir());
 		generateCaves(worldHeight * 6 / 8, worldHeight / 4, 0.1, 50, new BlockAir());
 
-		AdminConsole.log("World successfully Generated");
-		AdminConsole.log("");
+		AdminConsole.log("World successfully Generated", false);
+		AdminConsole.log("", true);
 	}
 
 	private static void generateNoiseBlocks(double medianHeight, double standardHeightDeviation, double veinDensity,
@@ -155,9 +156,9 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
-			AdminConsole.log("Exception: " + e.getMessage());
+			AdminConsole.log("Exception: " + e.getMessage(), true);
 			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    " + s.toString());
+				AdminConsole.log("    " + s.toString(), true);
 			}
 		}
 
@@ -174,9 +175,14 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
-			AdminConsole.log("Exception: " + e.getMessage());
-			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    " + s.toString());
+			AdminConsole.log("Exception: " + e.getMessage(), false);
+			for (int i = 0; i < e.getStackTrace().length; i++) {
+				String s = "";
+				if (i != e.getStackTrace().length - 1)
+					s += "├─";
+				else
+					s += "└─";
+				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
 			}
 		}
 
@@ -348,9 +354,14 @@ public class World {
 		try {
 			return world[x][y];
 		} catch (Exception e) {
-			AdminConsole.log("Exception: " + e.getMessage());
-			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    " + s.toString());
+			AdminConsole.log("Exception: " + e.getMessage(), false);
+			for (int i = 0; i < e.getStackTrace().length; i++) {
+				String s = "";
+				if (i != e.getStackTrace().length - 1)
+					s += "├─";
+				else
+					s += "└─";
+				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
 			}
 		}
 		return null;

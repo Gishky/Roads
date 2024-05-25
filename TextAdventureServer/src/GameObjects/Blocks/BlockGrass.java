@@ -2,10 +2,21 @@ package GameObjects.Blocks;
 
 import GameObjects.GrassCrawler;
 import GameObjects.PlayerCharacter;
+import HelperObjects.JSONObject;
 import HelperObjects.Position;
 
 public class BlockGrass extends Block {
 	public BlockGrass() {
+		id = 2;
+		friction = 1.5;
+
+		breakable = true;
+		breakThreshhold = 5;
+	}
+	
+	public BlockGrass(JSONObject block) {
+		setX(Integer.parseInt(block.get("x")));
+		setY(Integer.parseInt(block.get("y")));
 		id = 2;
 		friction = 1.5;
 

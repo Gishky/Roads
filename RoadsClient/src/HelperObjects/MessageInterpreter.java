@@ -8,6 +8,7 @@ import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
 import UDPClient.UDPMessageListener;
+import Window.Frame;
 import Window.Panel;
 
 public class MessageInterpreter implements UDPMessageListener {
@@ -36,6 +37,7 @@ public class MessageInterpreter implements UDPMessageListener {
 			break;
 		case "playerID":
 			World.playerid = (int) Integer.parseInt(message.get("playerID"));
+			Frame.getFrame().setTitle((int) World.playerid + "");
 			break;
 		case "serverTickRate":
 			Panel.setServerTickRate(Integer.parseInt(message.get("serverTickRate")));

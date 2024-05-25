@@ -190,7 +190,12 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	public void setHeldBlock(Block b) {
 		inventory[heldBlock] = b;
-		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
+		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", true);
+	}
+
+	public void setInventoryBlock(Block b, int slot) {
+		inventory[slot] = b;
+		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", true);
 	}
 
 	public Block getInventory(int slot) {
@@ -216,8 +221,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void setClientConnection(UDPClientConnection con) {
-		AdminConsole.log("New Player connected from: " + con.getAddress() + ":" + con.getPort() + ". Players online: "
-				+ UDPServer.getInstances().get(0).getClientCount());
+		AdminConsole.log("New Player connected from: " + con.getAddress().getHostAddress() + ":" + con.getPort() + ".",
+				false);
+		AdminConsole.log("    Players online: " + UDPServer.getInstances().get(0).getClientCount(), true);
 		connection = con;
 		sendInitialData();
 	}
@@ -252,8 +258,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void disconnected() {
-		AdminConsole.log("Player at " + connection.getAddress() + ":" + connection.getPort()
-				+ " disconnected. Players online: " + UDPServer.getInstances().get(0).getClientCount());
+		AdminConsole.log(
+				"Player at " + connection.getAddress().getHostAddress() + ":" + connection.getPort() + " disconnected.",
+				false);
+		AdminConsole.log("    Players online: " + UDPServer.getInstances().get(0).getClientCount(), true);
 		GameMaster.removeEntity(this);
 	}
 
