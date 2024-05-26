@@ -1,5 +1,6 @@
-package GameObjects;
+package GameObjects.Entities;
 
+import GameObjects.World;
 import HelperObjects.Hitbox;
 import HelperObjects.Position;
 import Server.GameMaster;
@@ -21,8 +22,6 @@ public class Entity {
 
 	protected boolean isGrounded = false;
 	protected Position mouse;
-
-	protected String parameters = "";
 
 	public Entity(Position pos) {
 		this.pos = pos;
@@ -115,17 +114,6 @@ public class Entity {
 
 	public void setVelocity(double[] velocity) {
 		this.velocity = velocity;
-	}
-
-	public String getParameters() {
-		if (parameters.equals("")) {
-			return "empty";
-		}
-		return parameters;
-	}
-
-	public void setParameters(String parameters) {
-		this.parameters = parameters;
 	}
 
 	public String toJSON() {

@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import HelperObjects.JSONObject;
 import Window.Panel;
 
-public class BlockWood extends Block {
+public class BlockActivator extends Block {
 
-	public BlockWood(JSONObject block) {
+	public BlockActivator(JSONObject block) {
 		setColor(new Color(109, 59, 9));
 	}
 
@@ -18,7 +18,11 @@ public class BlockWood extends Block {
 		g.setColor(getColor());
 		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 
-		g.setColor(g.getColor().brighter());
+		g.setColor(new Color(255, 215, 0));
+		g.fillRect(x * size - cameraX + Panel.windowWidth / 2 + size * 2 / 6,
+				y * size - cameraY + Panel.windowHeight / 2 + size * 2 / 6, size * 2 / 6, size * 2 / 6);
+
+		g.setColor(getColor().brighter());
 		g.drawRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
 	}
 
@@ -26,7 +30,10 @@ public class BlockWood extends Block {
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
 
-		g.setColor(g.getColor().brighter());
+		g.setColor(new Color(255, 215, 0));
+		g.fillRect(x + size * 2 / 6, y + size * 2 / 6, size * 2 / 6, size * 2 / 6);
+
+		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
 }

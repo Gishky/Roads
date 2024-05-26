@@ -11,7 +11,6 @@ public class BlockGoldOre extends Block {
 	private int rb, gb, bb;
 
 	public BlockGoldOre(JSONObject block) {
-		breakThreshhold = 24;
 		setColor(new Color(255, 215, 0));
 		rb = 100;
 		gb = 100;

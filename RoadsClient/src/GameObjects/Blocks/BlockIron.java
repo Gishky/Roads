@@ -9,7 +9,6 @@ import Window.Panel;
 public class BlockIron extends Block {
 
 	public BlockIron(JSONObject block) {
-		breakThreshhold = 100;
 		setColor(new Color(153, 149, 148));
 	}
 

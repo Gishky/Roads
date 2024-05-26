@@ -1,4 +1,4 @@
-package HelperObjects;
+package Crafting;
 
 import java.util.LinkedList;
 
@@ -15,28 +15,22 @@ public class CraftingHandler {
 	public CraftingHandler() {
 		recipes = new LinkedList<CraftingRecipe>();
 		recipes.add(new CraftingOven());
+		recipes.add(new CraftingRelay());
+		recipes.add(new CraftingActivator());
+		recipes.add(new CraftingMachine());
 	}
 
-	private Block getCraftedBlock(int x, int y) {
+	private void getCraftedBlock(int x, int y) {
 		for (CraftingRecipe r : recipes) {
-			Block craftedBlock = r.checkCrafting(x, y);
-			if (craftedBlock != null) {
-				return craftedBlock;
-			}
+			if (r.checkCrafting(x, y))
+				return;
 		}
-		return null;
 	}
 
 	public static void tryCrafting(int x, int y) {
 		if (instance == null)
 			instance = new CraftingHandler();
 
-		Block craftedBlock = instance.getCraftedBlock(x, y);
-		if (craftedBlock != null) {
-			World.setBlock(x, y, craftedBlock);
-			World.setBlock(x + 1, y, new BlockAir());
-			World.setBlock(x, y - 1, new BlockAir());
-			World.setBlock(x + 1, y - 1, new BlockAir());
-		}
+		instance.getCraftedBlock(x, y);
 	}
 }

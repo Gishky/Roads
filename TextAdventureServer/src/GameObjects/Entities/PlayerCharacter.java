@@ -1,12 +1,13 @@
-package GameObjects;
+package GameObjects.Entities;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import AdminConsole.AdminConsole;
+import Crafting.CraftingHandler;
+import GameObjects.World;
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
-import HelperObjects.CraftingHandler;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;

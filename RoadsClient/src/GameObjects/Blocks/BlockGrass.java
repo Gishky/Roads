@@ -9,7 +9,6 @@ import Window.Panel;
 public class BlockGrass extends Block {
 	
 	public BlockGrass(JSONObject block) {
-		breakThreshhold = 5;
 		setColor(new Color(34, 139, 34));
 	}
 	

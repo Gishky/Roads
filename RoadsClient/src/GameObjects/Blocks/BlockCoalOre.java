@@ -9,7 +9,6 @@ import Window.Panel;
 public class BlockCoalOre extends Block {
 
 	public BlockCoalOre(JSONObject block) {
-		breakThreshhold = 20;
 		setColor(Color.black);
 
 		if (block == null)

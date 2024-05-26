@@ -1,9 +1,9 @@
 package AdminConsole;
 
-import GameObjects.Entity;
-import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import GameObjects.Blocks.*;
+import GameObjects.Entities.Entity;
+import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import Server.GameMaster;
 
@@ -23,6 +23,9 @@ public class MessageInterpreter {
 			return updateWorld(receivedMessage.substring(command.length() + 1));
 		case "give":
 			return giveBlock(receivedMessage.substring(command.length() + 1));
+		case "reboot":
+			GameMaster.restartServer();
+			return "restarting Server...";
 		default:
 			return "unknown command: " + receivedMessage;
 		}
@@ -40,7 +43,7 @@ public class MessageInterpreter {
 			int playerid = Integer.parseInt(command.split(" ")[0]);
 			for (Entity e : GameMaster.getEntities()) {
 				if (e.getId() == playerid) {
-					p = (PlayerCharacter) GameMaster.getEntities().get(playerid);
+					p = (PlayerCharacter) e;
 					break;
 				}
 			}
@@ -119,6 +122,18 @@ public class MessageInterpreter {
 					b = new BlockLeaf(json);
 					p.setInventoryBlock(b, invSlot);
 					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
+				case "12":
+					b = new BlockRelay(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Relay";
+				case "13":
+					b = new BlockActivator(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Activator";
+				case "14":
+					b = new BlockMachine(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
 				default:
 					return "Error converting \"" + command + "\" to a block";
 				}
@@ -164,6 +179,15 @@ public class MessageInterpreter {
 			case "leaf":
 				p.setInventoryBlock(new BlockLeaf(), invSlot);
 				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
+			case "relay":
+				p.setInventoryBlock(new BlockRelay(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Relay";
+			case "activator":
+				p.setInventoryBlock(new BlockActivator(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Activator";
+			case "machine":
+				p.setInventoryBlock(new BlockMachine(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
 			default:
 				return "Error converting \"" + command + "\" to a block";
 			}
@@ -241,6 +265,18 @@ public class MessageInterpreter {
 					b = new BlockLeaf(json);
 					World.setBlock(b.getX(), b.getY(), b);
 					return "Block " + b.getX() + "/" + b.getY() + " set to Leaf";
+				case "12":
+					b = new BlockRelay(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to Relay";
+				case "13":
+					b = new BlockActivator(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to Activator";
+				case "14":
+					b = new BlockMachine(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to Machine";
 				default:
 					return "Error converting \"" + block + "\" to a block";
 				}
@@ -288,6 +324,15 @@ public class MessageInterpreter {
 			case "leaf":
 				World.setBlock(x, y, new BlockLeaf());
 				return "Block " + x + "/" + y + " set to Leaf";
+			case "relay":
+				World.setBlock(x, y, new BlockRelay());
+				return "Block " + x + "/" + y + " set to Relay";
+			case "activator":
+				World.setBlock(x, y, new BlockActivator());
+				return "Block " + x + "/" + y + " set to Activator";
+			case "machine":
+				World.setBlock(x, y, new BlockMachine());
+				return "Block " + x + "/" + y + " set to Machine";
 			default:
 				return "command \"setblock\" returns no functionality for input \"" + block + "\"";
 			}

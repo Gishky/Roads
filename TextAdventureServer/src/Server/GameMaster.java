@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import AdminConsole.AdminConsole;
-import GameObjects.Entity;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
+import GameObjects.Entities.Entity;
 import UDPServer.UDPServer;
 
 public class GameMaster implements ActionListener {

@@ -1,6 +1,6 @@
 package HelperObjects;
 
-import GameObjects.PlayerCharacter;
+import GameObjects.Entities.PlayerCharacter;
 import UDPServer.UDPClientObject;
 import UDPServer.UDPClientObjectCreator;
 

@@ -9,7 +9,6 @@ import Window.Panel;
 public class BlockDirt extends Block {
 
 	public BlockDirt(JSONObject block) {
-		breakThreshhold = 5;
 		setColor(new Color(139, 69, 19));
 	}
 

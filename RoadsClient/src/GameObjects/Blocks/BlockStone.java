@@ -9,7 +9,6 @@ import Window.Panel;
 public class BlockStone extends Block {
 
 	public BlockStone(JSONObject block) {
-		breakThreshhold = 15;
 		setColor(new Color(100, 100, 100));
 	}
 

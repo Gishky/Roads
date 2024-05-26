@@ -116,7 +116,8 @@ public class UDPClientConnection implements ActionListener {
 	public void disconnect() {
 		server.removeClient(this);
 		requiredPackageTimer.stop();
-		clientObject.disconnected();
+		if (clientObject != null)
+			clientObject.disconnected();
 	}
 
 	public boolean checkConnection(String received, String controlString) {

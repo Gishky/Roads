@@ -1,4 +1,4 @@
-package GameObjects;
+package GameObjects.Entities;
 
 import HelperObjects.JSONObject;
 import HelperObjects.Position;

@@ -184,9 +184,14 @@ public class World {
 			castResult[2] = result[4];
 			castResult[3] = result[5];
 		} catch (Exception e) {
-			AdminConsole.log("Exception: " + e.getMessage(), true);
-			for (StackTraceElement s : e.getStackTrace()) {
-				AdminConsole.log("    " + s.toString(), true);
+			AdminConsole.log("Exception: " + e.getMessage(), false);
+			for (int i = 0; i < e.getStackTrace().length; i++) {
+				String s = "";
+				if (i != e.getStackTrace().length - 1)
+					s += "├─";
+				else
+					s += "└─";
+				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
 			}
 		}
 
@@ -367,7 +372,6 @@ public class World {
 		GameMaster.sendToAll("{action:setBlock,block:" + block.toJSON() + "}", true);
 		world[x][y] = block;
 
-		world[x][y].update();
 		if (x != 0)
 			world[x - 1][y].update();
 		if (y != 0)

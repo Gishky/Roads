@@ -12,7 +12,6 @@ public class BlockOven extends Block {
 	private int fuelPercentage = 0;
 
 	public BlockOven(JSONObject block) {
-		breakThreshhold = 40;
 		setColor(new Color(80, 80, 80));
 
 		if (block == null)

@@ -1,8 +1,8 @@
 package GameObjects.Blocks;
 
-import GameObjects.OvenAbilityJet;
-import GameObjects.OvenEntity;
-import GameObjects.PlayerCharacter;
+import GameObjects.Entities.OvenAbilityJet;
+import GameObjects.Entities.OvenEntity;
+import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import Server.GameMaster;
 

@@ -1,7 +1,7 @@
 package GameObjects.Blocks;
 
-import GameObjects.Firebolt;
-import GameObjects.PlayerCharacter;
+import GameObjects.Entities.Firebolt;
+import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
 

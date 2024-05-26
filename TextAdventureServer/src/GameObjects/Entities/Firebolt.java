@@ -1,5 +1,6 @@
-package GameObjects;
+package GameObjects.Entities;
 
+import GameObjects.World;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;

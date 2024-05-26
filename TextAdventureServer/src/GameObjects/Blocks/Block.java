@@ -1,6 +1,8 @@
 package GameObjects.Blocks;
 
-import GameObjects.PlayerCharacter;
+import java.util.ArrayList;
+
+import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import Server.GameMaster;
 
@@ -117,5 +119,11 @@ public class Block {
 
 	public void updateBlock() {
 
+	}
+
+	public void activate(ArrayList<Block> activationchain) {
+		if (activationchain.contains(this))
+			return;
+		activationchain.add(this);
 	}
 }

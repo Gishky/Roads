@@ -12,7 +12,6 @@ public class BlockIronOre extends Block {
 	private int rb, gb, bb;
 
 	public BlockIronOre(JSONObject block) {
-		breakThreshhold = 20;
 		setColor(new Color(77, 30, 0));
 		r = 77;
 		g = 30;

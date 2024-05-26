@@ -1,7 +1,7 @@
 package GameObjects.Blocks;
 
-import GameObjects.GrassCrawler;
-import GameObjects.PlayerCharacter;
+import GameObjects.Entities.GrassCrawler;
+import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
 

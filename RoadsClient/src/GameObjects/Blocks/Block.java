@@ -8,8 +8,6 @@ import HelperObjects.JSONObject;
 public class Block {
 	public static int size = 30;
 
-	protected int breakThreshhold = 0;
-
 	private Color c = Color.pink;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
@@ -56,6 +54,12 @@ public class Block {
 			return new BlockWood(null);
 		case "11":
 			return new BlockLeaf(null);
+		case "12":
+			return new BlockRelay(null);
+		case "13":
+			return new BlockActivator(null);
+		case "14":
+			return new BlockMachine(null);
 		default:
 			return null;
 		}
@@ -87,6 +91,12 @@ public class Block {
 			return new BlockWood(block);
 		case "11":
 			return new BlockLeaf(block);
+		case "12":
+			return new BlockRelay(block);
+		case "13":
+			return new BlockActivator(block);
+		case "14":
+			return new BlockMachine(block);
 		default:
 			return null;
 		}
