@@ -380,6 +380,7 @@ public class World {
 			world[x + 1][y].update();
 		if (y != world[0].length - 1 && world[x][y + 1] != null)
 			world[x][y + 1].update();
+		world[x][y].update();
 	}
 
 	public static Block getBlock(int x, int y) {

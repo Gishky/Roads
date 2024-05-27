@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import GameObjects.World;
 import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
+import Server.GameMaster;
 
 public class BlockMachine extends Block {
 
@@ -59,6 +60,7 @@ public class BlockMachine extends Block {
 			if (pushBlock(x + dirx, y + diry, 5)) {
 				World.setBlock(x + dirx, y + diry, new BlockAir());
 			}
+		GameMaster.sendToAll("{action:activate,x:" + x + ",y:" + y + "}", true);
 	}
 
 	private boolean pushBlock(int x, int y, int force) {

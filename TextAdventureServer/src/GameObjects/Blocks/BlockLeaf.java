@@ -8,9 +8,10 @@ public class BlockLeaf extends Block {
 		id = 11;
 		setBlocksMovement(false);
 		friction = 1;
-		
+
 		breakable = true;
 		breakThreshhold = 1;
+		fuelValue = 10;
 	}
 
 	public BlockLeaf(JSONObject block) {

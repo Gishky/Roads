@@ -6,6 +6,7 @@ import GameObjects.World;
 import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
+import Server.GameMaster;
 
 public class BlockActivator extends Block {
 
@@ -40,12 +41,11 @@ public class BlockActivator extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
-		if (Math.sqrt(Math.pow(e.getMousePosition().getX(), 2) + Math.pow(e.getMousePosition().getY(), 2)) > 4)
-			return;
+		lastActivated.set(e.getMousePosition().getX() + e.getPos().getX(),
+				e.getMousePosition().getY() + e.getPos().getY());
+		World.getBlock((int) lastActivated.getX(), (int) lastActivated.getY()).activate(new ArrayList<Block>());
 
-		lastActivated.set(e.getMousePosition().getX(), e.getMousePosition().getY());
-		World.getBlock((int) (e.getMousePosition().getX() + e.getPos().getX()),
-				(int) (e.getMousePosition().getY() + e.getPos().getY())).activate(new ArrayList<Block>());
+		e.updateInventory();
 	}
 
 	public int getAbilityCooldown() {
@@ -56,13 +56,28 @@ public class BlockActivator extends Block {
 		return new BlockActivator();
 	}
 
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", "" + id);
+		json.put("x", "" + getX());
+		json.put("y", "" + getY());
+		json.put("act", (int) lastActivated.getX() + "/" + (int) lastActivated.getY());
+		return json.getJSON();
+	}
+
+	public void setPosition(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+	}
+
 	public void activate(ArrayList<Block> activationchain) {
-		if(activationchain.contains(this))
+		if (activationchain.contains(this))
 			return;
 		activationchain.add(this);
-		
-		if (lastActivated.getX() == 0 && lastActivated.getY() == 0)
+
+		if ((int) lastActivated.getX() == x && (int) lastActivated.getY() == y)
 			return;
-		World.getBlock(x + (int) lastActivated.getX(), y + (int) lastActivated.getY()).activate(activationchain);
+		World.getBlock((int) lastActivated.getX(), (int) lastActivated.getY()).activate(activationchain);
+		GameMaster.sendToAll("{action:activate,x:" + x + ",y:" + y + "}", true);
 	}
 }

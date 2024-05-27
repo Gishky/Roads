@@ -81,6 +81,9 @@ public class Particle {
 		g.drawOval((int) x - (int) size / 2 - cameraX + Panel.windowWidth / 2,
 				(int) y - (int) size / 2 - cameraY + Panel.windowHeight / 2, (int) size, (int) size);
 
+		System.out.println(((int) x - (int) size / 2 - cameraX + Panel.windowWidth / 2) + "/"
+				+ ((int) y - (int) size / 2 - cameraY + Panel.windowHeight / 2));
+
 		return false;
 	}
 

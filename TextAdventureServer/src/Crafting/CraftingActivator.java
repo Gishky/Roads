@@ -7,10 +7,11 @@ public class CraftingActivator implements CraftingRecipe {
 
 	@Override
 	public boolean checkCrafting(int x, int y) {
-		if ((World.getBlock(x, y - 1) instanceof BlockGold && World.getBlock(x + 1, y - 1) instanceof BlockWood
-				&& World.getBlock(x, y) instanceof BlockIron && World.getBlock(x + 1, y) instanceof BlockGold)
-				|| (World.getBlock(x, y - 1) instanceof BlockWood && World.getBlock(x + 1, y - 1) instanceof BlockGold
-						&& World.getBlock(x, y) instanceof BlockGold
+		if ((World.getBlock(x, y - 1) instanceof BlockGoldChunk && World.getBlock(x + 1, y - 1) instanceof BlockWood
+				&& World.getBlock(x, y) instanceof BlockIron && World.getBlock(x + 1, y) instanceof BlockGoldChunk)
+				|| (World.getBlock(x, y - 1) instanceof BlockWood
+						&& World.getBlock(x + 1, y - 1) instanceof BlockGoldChunk
+						&& World.getBlock(x, y) instanceof BlockGoldChunk
 						&& World.getBlock(x + 1, y) instanceof BlockIron)) {
 
 			World.setBlock(x, y, new BlockActivator());

@@ -22,11 +22,15 @@ public class BlockMachine extends Block {
 
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
-		
+
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
-		
+
 		g.setColor(new Color(255, 215, 0));
+		if (activated) {
+			g.setColor(Color.blue);
+			activated = false;
+		}
 		switch (dir) {
 		case 1:
 			g.fillRect(x, y, size * 2 / 6, size);
@@ -49,8 +53,12 @@ public class BlockMachine extends Block {
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
-		
+
 		g.setColor(new Color(255, 215, 0));
+		if (activated) {
+			g.setColor(Color.blue);
+			activated = false;
+		}
 		switch (dir) {
 		case 1:
 			g.fillRect(x, y, size * 2 / 6, size);
@@ -65,7 +73,7 @@ public class BlockMachine extends Block {
 			g.fillRect(x, y + size * 4 / 6, size, size * 2 / 6);
 			break;
 		}
-		
+
 		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}

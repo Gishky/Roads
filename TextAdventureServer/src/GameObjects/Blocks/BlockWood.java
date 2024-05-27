@@ -12,6 +12,8 @@ public class BlockWood extends Block {
 
 		breakable = true;
 		breakThreshhold = 5;
+		
+		fuelValue = 50;
 	}
 
 	public BlockWood(JSONObject block) {

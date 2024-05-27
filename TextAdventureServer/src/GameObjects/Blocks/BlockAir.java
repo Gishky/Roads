@@ -7,8 +7,10 @@ public class BlockAir extends Block {
 		id = 0;
 		setBlocksMovement(false);
 		friction = 1;
+
+		breakable = false;
 	}
-	
+
 	public BlockAir(JSONObject block) {
 		if (block.get("x") != null)
 			setX(Integer.parseInt(block.get("x")));

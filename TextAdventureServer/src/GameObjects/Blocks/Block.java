@@ -126,4 +126,8 @@ public class Block {
 			return;
 		activationchain.add(this);
 	}
+
+	public boolean isBreakable() {
+		return breakable;
+	}
 }

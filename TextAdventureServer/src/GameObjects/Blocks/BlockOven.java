@@ -68,6 +68,7 @@ public class BlockOven extends Block {
 	public void updateBlock() {
 		if (entity == null)
 			entity = new OvenEntity(getX(), getY(), this);
+		entity.action();
 	}
 
 	@Override

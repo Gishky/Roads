@@ -1,5 +1,8 @@
 package HelperObjects;
 
+import java.awt.Color;
+import java.util.Random;
+
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.OvenAbilityJet;
@@ -43,21 +46,33 @@ public class MessageInterpreter implements UDPMessageListener {
 			Panel.setServerTickRate(Integer.parseInt(message.get("serverTickRate")));
 			break;
 		case "inventoryUpdate":
-			updateInventory(new JSONObject(message.get("inventory")));
+			updateInventory(message);
+			break;
+		case "activate":
+			activateVFX(message);
 			break;
 		default:
 			System.out.println("unknown command: " + receivedMessage);
 		}
 	}
 
+	private void activateVFX(JSONObject message) {
+		World.getWorld()[Integer.parseInt(message.get("x"))][Integer.parseInt(message.get("y"))].activate();
+	}
+
 	private void updateInventory(JSONObject inv) {
-		World.selectedInventory = Integer.parseInt(inv.get("heldid"));
-		World.playerInventory[0] = Block.getBlockFromJSON(new JSONObject(inv.get("block0")));
-		World.playerInventory[1] = Block.getBlockFromJSON(new JSONObject(inv.get("block1")));
-		World.playerInventory[2] = Block.getBlockFromJSON(new JSONObject(inv.get("block2")));
-		World.playerInventory[3] = Block.getBlockFromJSON(new JSONObject(inv.get("block3")));
-		World.playerInventory[4] = Block.getBlockFromJSON(new JSONObject(inv.get("block4")));
-		System.out.println("inv updated");
+		if (inv.get("heldid") != null)
+			World.selectedInventory = Integer.parseInt(inv.get("heldid"));
+		if (inv.get("0") != null)
+			World.playerInventory[0] = Block.getBlockFromJSON(new JSONObject(inv.get("0")));
+		if (inv.get("1") != null)
+			World.playerInventory[1] = Block.getBlockFromJSON(new JSONObject(inv.get("1")));
+		if (inv.get("2") != null)
+			World.playerInventory[2] = Block.getBlockFromJSON(new JSONObject(inv.get("2")));
+		if (inv.get("3") != null)
+			World.playerInventory[3] = Block.getBlockFromJSON(new JSONObject(inv.get("3")));
+		if (inv.get("4") != null)
+			World.playerInventory[4] = Block.getBlockFromJSON(new JSONObject(inv.get("4")));
 	}
 
 	private void createWorld(JSONObject world) {

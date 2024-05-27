@@ -9,6 +9,7 @@ public class Block {
 	public static int size = 30;
 
 	private Color c = Color.pink;
+	protected boolean activated = false;
 
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		/*
@@ -60,6 +61,10 @@ public class Block {
 			return new BlockActivator(null);
 		case "14":
 			return new BlockMachine(null);
+		case "15":
+			return new BlockGoldChunk(null);
+		case "16":
+			return new BlockIronChunk(null);
 		default:
 			return null;
 		}
@@ -97,6 +102,10 @@ public class Block {
 			return new BlockActivator(block);
 		case "14":
 			return new BlockMachine(block);
+		case "15":
+			return new BlockGoldChunk(block);
+		case "16":
+			return new BlockIronChunk(block);
 		default:
 			return null;
 		}
@@ -108,5 +117,16 @@ public class Block {
 
 	public void setColor(Color c) {
 		this.c = c;
+	}
+
+	public static Color interpolateColor(Color start, Color end, double transition) {
+		int r = (int) (start.getRed() * (1 - transition) + end.getRed() * transition);
+		int g = (int) (start.getGreen() * (1 - transition) + end.getGreen() * transition);
+		int b = (int) (start.getBlue() * (1 - transition) + end.getBlue() * transition);
+		return new Color(r, g, b);
+	}
+
+	public void activate() {
+		activated = true;
 	}
 }

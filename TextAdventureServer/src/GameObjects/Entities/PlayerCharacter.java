@@ -123,19 +123,21 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_S)) {
-			if (isGrounded) {
-				if (getHeldBlock().getId() == -1
-						&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).getBreakThreshhold() <= breakCount
-						&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).isBlocksMovement()) {
-					setHeldBlock(World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1));
-					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, new BlockAir());
-					breakCount = 0;
-				} else if (getHeldBlock().getId() != -1 && placeFlag
+			if (getHeldBlock().getId() == -1
+					&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).getBreakThreshhold() <= breakCount
+					&& World.getBlock((int) pos.getX(), (int) (pos.getY() + 1)).isBreakable()) {
+				Block b = World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1);
+				World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, new BlockAir());
+				setHeldBlock(b);
+				breakCount = 0;
+			} else if (isGrounded) {
+				if (getHeldBlock().getId() != -1 && placeFlag
 						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) - 1).isBlocksMovement()) {
 					placing = true;
 					velocity[1] = -jumpforce;
 				}
-				if (getHeldBlock().getId() == -1) {
+				if (getHeldBlock().getId() == -1
+						&& World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1).isBreakable()) {
 					update = true;
 					breakCount++;
 				}
@@ -144,6 +146,13 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 						&& !World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1).isBlocksMovement()) {
 					World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, getHeldBlock());
 					setHeldBlock(null);
+				} else if (getHeldBlock().getId() == -1
+						&& World.getBlock((int) pos.getX(), (int) (pos.getY()) + 1).isBreakable()) {
+					update = true;
+					breakCount++;
+				} else {
+					update = true;
+					breakCount = 0;
 				}
 			}
 			placeFlag = false;
@@ -191,12 +200,13 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	public void setHeldBlock(Block b) {
 		inventory[heldBlock] = b;
-		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate," + heldBlock + ":" + getInventory(heldBlock).toJSON() + "}",
+				true);
 	}
 
 	public void setInventoryBlock(Block b, int slot) {
 		inventory[slot] = b;
-		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate," + slot + ":" + getInventory(slot).toJSON() + "}", true);
 	}
 
 	public Block getInventory(int slot) {
@@ -253,7 +263,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		}
 
 		breakCount = 0;
-		updateInventory();
+		connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);
 		this.actionUpdateOverride = true;
 	}
 
@@ -267,18 +277,12 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	public void updateInventory() {
-		connection.sendMessage("{action:inventoryUpdate,inventory:" + inventoryJSON() + "}", placeFlag);
-	}
-
-	private String inventoryJSON() {
-		JSONObject json = new JSONObject();
-		json.put("heldid", "" + heldBlock);
-		json.put("block0", getInventory(0).toJSON());
-		json.put("block1", getInventory(1).toJSON());
-		json.put("block2", getInventory(2).toJSON());
-		json.put("block3", getInventory(3).toJSON());
-		json.put("block4", getInventory(4).toJSON());
-		return json.getJSON();
+		connection.sendMessage("{action:inventoryUpdate,0:" + getInventory(0).toJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate,1:" + getInventory(1).toJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate,2:" + getInventory(2).toJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate,3:" + getInventory(3).toJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate,4:" + getInventory(4).toJSON() + "}", true);
+		connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);
 	}
 
 	public String toJSON() {

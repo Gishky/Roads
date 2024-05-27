@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 import HelperObjects.JSONObject;
 import Window.Panel;
 
-public class BlockLeaf extends Block {
+public class BlockIronChunk extends Block {
 
-	public BlockLeaf(JSONObject block) {
-		setColor(new Color(0, 200, 0, 100));
+	public BlockIronChunk(JSONObject block) {
+		setColor(new Color(153, 149, 148));
 	}
 
 	@Override
@@ -18,9 +18,6 @@ public class BlockLeaf extends Block {
 
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
-
-		g.setColor(new Color(100, 100, 255));
-		g.fillRect(x, y, size, size);
 
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
@@ -31,10 +28,13 @@ public class BlockLeaf extends Block {
 		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 1 / 6, y + size * 2 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 4 / 6, y + size * 4 / 6, size / 6, size / 6);
+
+		g.setColor(g.getColor().brighter());
+		g.drawRect(x, y, size, size);
 	}
-	
+
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(getColor());
+		g.setColor(getColor().brighter());
 		g.fillRect(x, y, size, size);
 
 		g.setColor(g.getColor().brighter());

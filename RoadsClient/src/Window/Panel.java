@@ -48,7 +48,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			t.start();
 		}

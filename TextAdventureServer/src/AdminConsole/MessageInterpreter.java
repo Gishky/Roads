@@ -134,6 +134,14 @@ public class MessageInterpreter {
 					b = new BlockMachine(json);
 					p.setInventoryBlock(b, invSlot);
 					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
+				case "15":
+					b = new BlockGoldChunk(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldChunk";
+				case "16":
+					b = new BlockIronChunk(json);
+					p.setInventoryBlock(b, invSlot);
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronChunk";
 				default:
 					return "Error converting \"" + command + "\" to a block";
 				}
@@ -188,6 +196,12 @@ public class MessageInterpreter {
 			case "machine":
 				p.setInventoryBlock(new BlockMachine(), invSlot);
 				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
+			case "goldchunk":
+				p.setInventoryBlock(new BlockGoldChunk(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldChunk";
+			case "ironchunk":
+				p.setInventoryBlock(new BlockIronChunk(), invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronChunk";
 			default:
 				return "Error converting \"" + command + "\" to a block";
 			}
@@ -277,6 +291,14 @@ public class MessageInterpreter {
 					b = new BlockMachine(json);
 					World.setBlock(b.getX(), b.getY(), b);
 					return "Block " + b.getX() + "/" + b.getY() + " set to Machine";
+				case "15":
+					b = new BlockGoldChunk(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to GoldChunk";
+				case "16":
+					b = new BlockIronChunk(json);
+					World.setBlock(b.getX(), b.getY(), b);
+					return "Block " + b.getX() + "/" + b.getY() + " set to IronChunk";
 				default:
 					return "Error converting \"" + block + "\" to a block";
 				}
@@ -333,6 +355,12 @@ public class MessageInterpreter {
 			case "machine":
 				World.setBlock(x, y, new BlockMachine());
 				return "Block " + x + "/" + y + " set to Machine";
+			case "goldchunk":
+				World.setBlock(x, y, new BlockMachine());
+				return "Block " + x + "/" + y + " set to GoldChunk";
+			case "ironchunk":
+				World.setBlock(x, y, new BlockMachine());
+				return "Block " + x + "/" + y + " set to IronChunk";
 			default:
 				return "command \"setblock\" returns no functionality for input \"" + block + "\"";
 			}

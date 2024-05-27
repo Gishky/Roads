@@ -18,6 +18,8 @@ public class CraftingHandler {
 		recipes.add(new CraftingRelay());
 		recipes.add(new CraftingActivator());
 		recipes.add(new CraftingMachine());
+		recipes.add(new CraftingGoldChunk());
+		recipes.add(new CraftingIronChunk());
 	}
 
 	private void getCraftedBlock(int x, int y) {

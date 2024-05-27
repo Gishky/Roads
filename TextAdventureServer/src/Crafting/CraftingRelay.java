@@ -7,11 +7,12 @@ public class CraftingRelay implements CraftingRecipe {
 
 	@Override
 	public boolean checkCrafting(int x, int y) {
-		System.out.println("checked");
-		if ((World.getBlock(x, y) instanceof BlockGold && World.getBlock(x + 1, y) instanceof BlockWood
-				&& World.getBlock(x, y - 1) instanceof BlockWood && World.getBlock(x + 1, y - 1) instanceof BlockGold)
-				|| (World.getBlock(x, y) instanceof BlockWood && World.getBlock(x + 1, y) instanceof BlockGold
-						&& World.getBlock(x, y - 1) instanceof BlockGold && World.getBlock(x + 1, y - 1) instanceof BlockWood)) {
+		if ((World.getBlock(x, y) instanceof BlockGoldChunk && World.getBlock(x + 1, y) instanceof BlockWood
+				&& World.getBlock(x, y - 1) instanceof BlockWood
+				&& World.getBlock(x + 1, y - 1) instanceof BlockGoldChunk)
+				|| (World.getBlock(x, y) instanceof BlockWood && World.getBlock(x + 1, y) instanceof BlockGoldChunk
+						&& World.getBlock(x, y - 1) instanceof BlockGoldChunk
+						&& World.getBlock(x + 1, y - 1) instanceof BlockWood)) {
 
 			World.setBlock(x, y, new BlockRelay());
 			World.setBlock(x + 1, y, new BlockRelay());

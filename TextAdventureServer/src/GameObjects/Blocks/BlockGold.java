@@ -56,8 +56,4 @@ public class BlockGold extends Block {
 	public Block clone() {
 		return new BlockGold();
 	}
-
-	public void activateAbility(Entity e) {
-
-	}
 }
