@@ -29,15 +29,22 @@ public class BlockGoldChunk extends Block {
 		g.fillRect(x + size * 1 / 6, y + size * 2 / 6, size / 6, size / 6);
 		g.fillRect(x + size * 4 / 6, y + size * 4 / 6, size / 6, size / 6);
 
-		g.setColor(g.getColor().brighter());
+		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
 	
 	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
+		
+		g.setColor(getColor().darker());
+		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
+		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
+		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);
+		g.fillRect(x + size * 1 / 6, y + size * 2 / 6, size / 6, size / 6);
+		g.fillRect(x + size * 4 / 6, y + size * 4 / 6, size / 6, size / 6);
 
-		g.setColor(g.getColor().brighter());
+		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
 }

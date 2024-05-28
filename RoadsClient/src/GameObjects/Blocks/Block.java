@@ -29,86 +29,49 @@ public class Block {
 		g.fillRect(x, y, size, size);
 	}
 
-	public static Block getBlockFromID(String id) {
+	public static Block getBlockFromID(String id, JSONObject json) {
 		switch (id) {
 		case "0":
-			return new BlockAir(null);
+			return new BlockAir(json);
 		case "1":
-			return new BlockDirt(null);
+			return new BlockDirt(json);
 		case "2":
-			return new BlockGrass(null);
+			return new BlockGrass(json);
 		case "3":
-			return new BlockStone(null);
+			return new BlockStone(json);
 		case "4":
-			return new BlockOven(null);
+			return new BlockOven(json);
 		case "5":
-			return new BlockCoalOre(null);
+			return new BlockCoalOre(json);
 		case "6":
-			return new BlockIronOre(null);
+			return new BlockIronOre(json);
 		case "7":
-			return new BlockIron(null);
+			return new BlockIron(json);
 		case "8":
-			return new BlockGoldOre(null);
+			return new BlockGoldOre(json);
 		case "9":
-			return new BlockGold(null);
+			return new BlockGold(json);
 		case "10":
-			return new BlockWood(null);
+			return new BlockWood(json);
 		case "11":
-			return new BlockLeaf(null);
+			return new BlockLeaf(json);
 		case "12":
-			return new BlockRelay(null);
+			return new BlockRelay(json);
 		case "13":
-			return new BlockActivator(null);
+			return new BlockActivator(json);
 		case "14":
-			return new BlockMachine(null);
+			return new BlockMachine(json);
 		case "15":
-			return new BlockGoldChunk(null);
+			return new BlockGoldChunk(json);
 		case "16":
-			return new BlockIronChunk(null);
+			return new BlockIronChunk(json);
 		default:
 			return null;
 		}
 	}
 
 	public static Block getBlockFromJSON(JSONObject block) {
-		switch (block.get("id")) {
-		case "0":
-			return new BlockAir(block);
-		case "1":
-			return new BlockDirt(block);
-		case "2":
-			return new BlockGrass(block);
-		case "3":
-			return new BlockStone(block);
-		case "4":
-			return new BlockOven(block);
-		case "5":
-			return new BlockCoalOre(block);
-		case "6":
-			return new BlockIronOre(block);
-		case "7":
-			return new BlockIron(block);
-		case "8":
-			return new BlockGoldOre(block);
-		case "9":
-			return new BlockGold(block);
-		case "10":
-			return new BlockWood(block);
-		case "11":
-			return new BlockLeaf(block);
-		case "12":
-			return new BlockRelay(block);
-		case "13":
-			return new BlockActivator(block);
-		case "14":
-			return new BlockMachine(block);
-		case "15":
-			return new BlockGoldChunk(block);
-		case "16":
-			return new BlockIronChunk(block);
-		default:
-			return null;
-		}
+		return getBlockFromID(block.get("id"), block);
 	}
 
 	public Color getColor() {

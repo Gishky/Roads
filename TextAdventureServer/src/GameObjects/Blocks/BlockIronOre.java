@@ -18,10 +18,6 @@ public class BlockIronOre extends Block {
 	}
 
 	public BlockIronOre(JSONObject block) {
-		if (block.get("x") != null)
-			setX(Integer.parseInt(block.get("x")));
-		if (block.get("y") != null)
-			setY(Integer.parseInt(block.get("y")));
 		id = 6;
 		friction = 2;
 
@@ -29,7 +25,17 @@ public class BlockIronOre extends Block {
 		breakThreshhold = 20;
 
 		smeltedBlock = new BlockIron();
-		requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
+		requiredFuelForSmelting = 400;
+
+		if (block == null)
+			return;
+
+		if (block.get("x") != null)
+			setX(Integer.parseInt(block.get("x")));
+		if (block.get("y") != null)
+			setY(Integer.parseInt(block.get("y")));
+		if (block.get("smelt") != null)
+			requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
 	}
 
 	public Block clone() {

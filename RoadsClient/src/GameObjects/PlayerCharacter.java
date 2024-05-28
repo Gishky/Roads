@@ -19,14 +19,14 @@ public class PlayerCharacter extends Entity {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		breakCount = Integer.parseInt(entity.get("breakCount"));
 		HPPercent = Integer.parseInt(entity.get("hp%"));
-		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"));
+		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"),null);
 	}
 
 	public void updateEntity(JSONObject json) {
 		pos.setX(json.get("x"));
 		pos.setY(json.get("y"));
 		HPPercent = Integer.parseInt(json.get("hp%"));
-		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"));
+		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"),null);
 		breakCount = Integer.parseInt(json.get("breakCount"));
 
 		if (id == World.playerid) {

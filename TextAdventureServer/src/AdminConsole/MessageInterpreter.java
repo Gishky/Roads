@@ -72,77 +72,11 @@ public class MessageInterpreter {
 		try {
 			JSONObject json = new JSONObject(command);
 			if (json.get("id") != null) {
-				Block b = null;
-				switch (json.get("id")) {
-				case "0":
-					b = new BlockAir(json);
+				Block b = getBlockFromIdentifier(json.get("id"), json);
+				if (b.getId() != -1) {
 					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to Air";
-				case "1":
-					b = new BlockDirt(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Dirt";
-				case "2":
-					b = new BlockGrass(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Grass";
-				case "3":
-					b = new BlockStone(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Stone";
-				case "4":
-					b = new BlockOven(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Oven";
-				case "5":
-					b = new BlockCoalOre(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  CoalOre";
-				case "6":
-					b = new BlockIronOre(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronOre";
-				case "7":
-					b = new BlockIron(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Iron";
-				case "8":
-					b = new BlockGoldOre(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldOre";
-				case "9":
-					b = new BlockGold(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Gold";
-				case "10":
-					b = new BlockWood(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Wood";
-				case "11":
-					b = new BlockLeaf(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
-				case "12":
-					b = new BlockRelay(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Relay";
-				case "13":
-					b = new BlockActivator(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Activator";
-				case "14":
-					b = new BlockMachine(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
-				case "15":
-					b = new BlockGoldChunk(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldChunk";
-				case "16":
-					b = new BlockIronChunk(json);
-					p.setInventoryBlock(b, invSlot);
-					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronChunk";
-				default:
+					return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to " + command;
+				} else {
 					return "Error converting \"" + command + "\" to a block";
 				}
 			}
@@ -150,59 +84,12 @@ public class MessageInterpreter {
 
 		}
 		try {
-			switch (command.split(" ")[0].toLowerCase()) {
-			case "air":
-				p.setInventoryBlock(new BlockAir(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Air";
-			case "dirt":
-				p.setInventoryBlock(new BlockDirt(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Dirt";
-			case "grass":
-				p.setInventoryBlock(new BlockGrass(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Grass";
-			case "stone":
-				p.setInventoryBlock(new BlockStone(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Stone";
-			case "oven":
-				p.setInventoryBlock(new BlockOven(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Oven";
-			case "coalore":
-				p.setInventoryBlock(new BlockCoalOre(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  CoalOre";
-			case "ironore":
-				p.setInventoryBlock(new BlockIronOre(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronOre";
-			case "iron":
-				p.setInventoryBlock(new BlockIron(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Iron";
-			case "goldore":
-				p.setInventoryBlock(new BlockGoldOre(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldOre";
-			case "gold":
-				p.setInventoryBlock(new BlockGold(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Gold";
-			case "wood":
-				p.setInventoryBlock(new BlockWood(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Wood";
-			case "leaf":
-				p.setInventoryBlock(new BlockLeaf(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Leaf";
-			case "relay":
-				p.setInventoryBlock(new BlockRelay(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Relay";
-			case "activator":
-				p.setInventoryBlock(new BlockActivator(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Activator";
-			case "machine":
-				p.setInventoryBlock(new BlockMachine(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  Machine";
-			case "goldchunk":
-				p.setInventoryBlock(new BlockGoldChunk(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  GoldChunk";
-			case "ironchunk":
-				p.setInventoryBlock(new BlockIronChunk(), invSlot);
-				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to  IronChunk";
-			default:
+			Block b = getBlockFromIdentifier(command.split(" ")[0].toLowerCase(), null);
+			if (b.getId() != -1) {
+				p.setInventoryBlock(b, invSlot);
+				return "Set Inventoryslot " + invSlot + " of Player " + p.getId() + " to "
+						+ command.split(" ")[0].toLowerCase();
+			} else {
 				return "Error converting \"" + command + "\" to a block";
 			}
 		} catch (Exception e) {
@@ -229,77 +116,11 @@ public class MessageInterpreter {
 		try {
 			JSONObject json = new JSONObject(block);
 			if (json.get("id") != null) {
-				Block b = null;
-				switch (json.get("id")) {
-				case "0":
-					b = new BlockAir(json);
+				Block b = getBlockFromIdentifier(json.get("id"), json);
+				if (b.getId() != -1) {
 					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Air";
-				case "1":
-					b = new BlockDirt(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Dirt";
-				case "2":
-					b = new BlockGrass(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Grass";
-				case "3":
-					b = new BlockStone(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Stone";
-				case "4":
-					b = new BlockOven(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Oven";
-				case "5":
-					b = new BlockCoalOre(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to CoalOre";
-				case "6":
-					b = new BlockIronOre(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to IronOre";
-				case "7":
-					b = new BlockIron(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Iron";
-				case "8":
-					b = new BlockGoldOre(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to GoldOre";
-				case "9":
-					b = new BlockGold(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Gold";
-				case "10":
-					b = new BlockWood(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Wood";
-				case "11":
-					b = new BlockLeaf(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Leaf";
-				case "12":
-					b = new BlockRelay(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Relay";
-				case "13":
-					b = new BlockActivator(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Activator";
-				case "14":
-					b = new BlockMachine(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to Machine";
-				case "15":
-					b = new BlockGoldChunk(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to GoldChunk";
-				case "16":
-					b = new BlockIronChunk(json);
-					World.setBlock(b.getX(), b.getY(), b);
-					return "Block " + b.getX() + "/" + b.getY() + " set to IronChunk";
-				default:
+					return "Block " + b.getX() + "/" + b.getY() + " set to " + block;
+				} else {
 					return "Error converting \"" + block + "\" to a block";
 				}
 			}
@@ -309,62 +130,16 @@ public class MessageInterpreter {
 		try {
 			int x = Integer.parseInt(block.split(" ")[0]);
 			int y = Integer.parseInt(block.split(" ")[1]);
-			switch (block.split(" ")[2].toLowerCase()) {
-			case "air":
-				World.setBlock(x, y, new BlockAir());
-				return "Block " + x + "/" + y + " set to Air";
-			case "dirt":
-				World.setBlock(x, y, new BlockDirt());
-				return "Block " + x + "/" + y + " set to Dirt";
-			case "grass":
-				World.setBlock(x, y, new BlockGrass());
-				return "Block " + x + "/" + y + " set to Grass";
-			case "stone":
-				World.setBlock(x, y, new BlockStone());
-				return "Block " + x + "/" + y + " set to Stone";
-			case "oven":
-				World.setBlock(x, y, new BlockOven());
-				return "Block " + x + "/" + y + " set to Oven";
-			case "coalore":
-				World.setBlock(x, y, new BlockCoalOre());
-				return "Block " + x + "/" + y + " set to CoalOre";
-			case "ironore":
-				World.setBlock(x, y, new BlockIronOre());
-				return "Block " + x + "/" + y + " set to IronOre";
-			case "iron":
-				World.setBlock(x, y, new BlockIron());
-				return "Block " + x + "/" + y + " set to Iron";
-			case "goldore":
-				World.setBlock(x, y, new BlockGoldOre());
-				return "Block " + x + "/" + y + " set to GoldOre";
-			case "gold":
-				World.setBlock(x, y, new BlockGold());
-				return "Block " + x + "/" + y + " set to Gold";
-			case "wood":
-				World.setBlock(x, y, new BlockWood());
-				return "Block " + x + "/" + y + " set to Wood";
-			case "leaf":
-				World.setBlock(x, y, new BlockLeaf());
-				return "Block " + x + "/" + y + " set to Leaf";
-			case "relay":
-				World.setBlock(x, y, new BlockRelay());
-				return "Block " + x + "/" + y + " set to Relay";
-			case "activator":
-				World.setBlock(x, y, new BlockActivator());
-				return "Block " + x + "/" + y + " set to Activator";
-			case "machine":
-				World.setBlock(x, y, new BlockMachine());
-				return "Block " + x + "/" + y + " set to Machine";
-			case "goldchunk":
-				World.setBlock(x, y, new BlockMachine());
-				return "Block " + x + "/" + y + " set to GoldChunk";
-			case "ironchunk":
-				World.setBlock(x, y, new BlockMachine());
-				return "Block " + x + "/" + y + " set to IronChunk";
-			default:
-				return "command \"setblock\" returns no functionality for input \"" + block + "\"";
+			Block b = getBlockFromIdentifier(block.split(" ")[2].toLowerCase(), null);
+			if (b.getId() != -1) {
+				World.setBlock(x, y, b);
+				return "Block " + x + "/" + y + " set to " + block.split(" ")[2].toLowerCase();
+			} else {
+				return "Error converting \"" + block + "\" to a block";
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			AdminConsole.log("Exception: " + e.getMessage(), false);
 			for (int i = 0; i < e.getStackTrace().length; i++) {
 				String s = "";
@@ -375,6 +150,64 @@ public class MessageInterpreter {
 				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
 			}
 			return null;
+		}
+	}
+
+	private static Block getBlockFromIdentifier(String identifier, JSONObject json) {
+		switch (identifier) {
+		case "air":
+		case "0":
+			return new BlockAir(json);
+		case "dirt":
+		case "1":
+			return new BlockDirt(json);
+		case "grass":
+		case "2":
+			return new BlockGrass(json);
+		case "stone":
+		case "3":
+			return new BlockStone(json);
+		case "oven":
+		case "4":
+			return new BlockOven(json);
+		case "coalore":
+		case "5":
+			return new BlockCoalOre(json);
+		case "ironore":
+		case "6":
+			return new BlockIronOre(json);
+		case "iron":
+		case "7":
+			return new BlockIron(json);
+		case "goldore":
+		case "8":
+			return new BlockGoldOre(json);
+		case "gold":
+		case "9":
+			return new BlockGold(json);
+		case "wood":
+		case "10":
+			return new BlockWood(json);
+		case "leaf":
+		case "11":
+			return new BlockLeaf(json);
+		case "relay":
+		case "12":
+			return new BlockRelay(json);
+		case "activator":
+		case "13":
+			return new BlockActivator(json);
+		case "machine":
+		case "14":
+			return new BlockMachine(json);
+		case "goldchunk":
+		case "15":
+			return new BlockGoldChunk(json);
+		case "ironchunk":
+		case "16":
+			return new BlockIronChunk(json);
+		default:
+			return new Block(json);
 		}
 	}
 }

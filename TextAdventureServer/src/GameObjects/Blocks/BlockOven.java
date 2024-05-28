@@ -12,25 +12,25 @@ public class BlockOven extends Block {
 	private int maxfuel = 2000;
 
 	public BlockOven() {
+		this(null);
+	}
+
+	public BlockOven(JSONObject block) {
 		id = 4;
 		friction = 3;
 
 		breakable = true;
 		breakThreshhold = 40;
-	}
+		
+		if(block==null)
+			return;
 
-	public BlockOven(JSONObject block) {
 		if (block.get("x") != null)
 			setX(Integer.parseInt(block.get("x")));
 		if (block.get("y") != null)
 			setY(Integer.parseInt(block.get("y")));
-		id = 4;
-		friction = 3;
-
-		breakable = true;
-		breakThreshhold = 40;
-
-		fuel = Integer.parseInt(block.get("fuel"));
+		if (block.get("fuel") != null)
+			fuel = Integer.parseInt(block.get("fuel"));
 	}
 
 	public Block clone() {

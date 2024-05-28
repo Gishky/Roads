@@ -16,15 +16,19 @@ public class BlockIron extends Block {
 	}
 	
 	public BlockIron(JSONObject block) {
-		if (block.get("x") != null)
-			setX(Integer.parseInt(block.get("x")));
-		if (block.get("y") != null)
-			setY(Integer.parseInt(block.get("y")));
 		id = 7;
 		friction = 2;
 
 		breakable = true;
 		breakThreshhold = 100;
+
+		if (block == null)
+			return;
+
+		if (block.get("x") != null)
+			setX(Integer.parseInt(block.get("x")));
+		if (block.get("y") != null)
+			setY(Integer.parseInt(block.get("y")));
 	}
 
 	public void activateAbility(PlayerCharacter e) {

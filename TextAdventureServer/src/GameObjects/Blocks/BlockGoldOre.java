@@ -18,10 +18,6 @@ public class BlockGoldOre extends Block {
 	}
 
 	public BlockGoldOre(JSONObject block) {
-		if (block.get("x") != null)
-			setX(Integer.parseInt(block.get("x")));
-		if (block.get("y") != null)
-			setY(Integer.parseInt(block.get("y")));
 		id = 8;
 		friction = 1.5;
 
@@ -29,7 +25,17 @@ public class BlockGoldOre extends Block {
 		breakThreshhold = 24;
 
 		smeltedBlock = new BlockGold();
-		requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
+		requiredFuelForSmelting = 300;
+
+		if (block == null)
+			return;
+
+		if (block.get("x") != null)
+			setX(Integer.parseInt(block.get("x")));
+		if (block.get("y") != null)
+			setY(Integer.parseInt(block.get("y")));
+		if (block.get("smelt") != null)
+			requiredFuelForSmelting = Integer.parseInt(block.get("smelt"));
 	}
 
 	public void activateAbility(PlayerCharacter e) {

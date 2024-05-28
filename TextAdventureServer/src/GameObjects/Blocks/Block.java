@@ -21,7 +21,7 @@ public class Block {
 	protected int fuelValue = 0;
 
 	public Block() {
-		id = -1;
+		this(null);
 	}
 
 	public Block(JSONObject block) {

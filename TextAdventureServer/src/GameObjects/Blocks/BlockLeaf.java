@@ -15,13 +15,17 @@ public class BlockLeaf extends Block {
 	}
 
 	public BlockLeaf(JSONObject block) {
+		id = 11;
+		setBlocksMovement(false);
+		friction = 1;
+
+		if (block == null)
+			return;
+
 		if (block.get("x") != null)
 			setX(Integer.parseInt(block.get("x")));
 		if (block.get("y") != null)
 			setY(Integer.parseInt(block.get("y")));
-		id = 11;
-		setBlocksMovement(false);
-		friction = 1;
 	}
 
 	public void updateBlock() {

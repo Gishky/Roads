@@ -15,7 +15,7 @@ public class Firebolt extends Entity {
 
 	public Firebolt(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
-		colourBlock = Block.getBlockFromID(entity.get("colourBlock"));
+		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
 
 		lastx = pos.getX();
 		lasty = pos.getY();
@@ -24,7 +24,7 @@ public class Firebolt extends Entity {
 	public void updateEntity(JSONObject entity) {
 		pos.setX(entity.get("x"));
 		pos.setY(entity.get("y"));
-		colourBlock = Block.getBlockFromID(entity.get("colourBlock"));
+		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
 	}
 
 	private double lastx, lasty;
