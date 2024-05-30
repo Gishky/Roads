@@ -110,20 +110,20 @@ public class World {
 		for (int x = 0; x < world.length; x++) {
 			if (r.nextDouble() <= (OpenSimplex2S.noise2(seed, (double) x / forestSize, 1) + 1) / 2 * treeDensity) {
 				int y = getHeight(x);
-				if (getBlock(x, y + 1) instanceof BlockGrass) {
-					if (getBlock(x - 1, y) instanceof BlockAir)
-						setBlock(x - 1, y, new BlockLeaf());
-					if (getBlock(x + 1, y) instanceof BlockAir)
-						setBlock(x + 1, y, new BlockLeaf());
+				if (getBlock(x, y) instanceof BlockGrass) {
 					if (getBlock(x - 1, y - 1) instanceof BlockAir)
 						setBlock(x - 1, y - 1, new BlockLeaf());
 					if (getBlock(x + 1, y - 1) instanceof BlockAir)
 						setBlock(x + 1, y - 1, new BlockLeaf());
-					if (getBlock(x, y - 2) instanceof BlockAir)
-						setBlock(x, y - 2, new BlockLeaf());
-					setBlock(x, y, new BlockWood());
-					setBlock(x, y + 1, new BlockDirt());
+					if (getBlock(x - 1, y - 2) instanceof BlockAir)
+						setBlock(x - 1, y - 2, new BlockLeaf());
+					if (getBlock(x + 1, y - 2) instanceof BlockAir)
+						setBlock(x + 1, y - 2, new BlockLeaf());
+					if (getBlock(x, y - 3) instanceof BlockAir)
+						setBlock(x, y - 3, new BlockLeaf());
 					setBlock(x, y - 1, new BlockWood());
+					setBlock(x, y, new BlockDirt());
+					setBlock(x, y - 2, new BlockWood());
 				}
 			}
 		}

@@ -65,6 +65,8 @@ public class Block {
 			return new BlockGoldChunk(json);
 		case "16":
 			return new BlockIronChunk(json);
+		case "17":
+			return new BlockChest(json);
 		default:
 			return null;
 		}

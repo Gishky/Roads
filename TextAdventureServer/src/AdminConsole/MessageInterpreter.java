@@ -153,7 +153,7 @@ public class MessageInterpreter {
 		}
 	}
 
-	private static Block getBlockFromIdentifier(String identifier, JSONObject json) {
+	public static Block getBlockFromIdentifier(String identifier, JSONObject json) {
 		switch (identifier) {
 		case "air":
 		case "0":
@@ -206,6 +206,9 @@ public class MessageInterpreter {
 		case "ironchunk":
 		case "16":
 			return new BlockIronChunk(json);
+		case "chest":
+		case "17":
+			return new BlockChest(json);
 		default:
 			return new Block(json);
 		}

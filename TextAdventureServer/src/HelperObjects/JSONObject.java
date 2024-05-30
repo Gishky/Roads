@@ -24,7 +24,7 @@ public class JSONObject {
 		json += "}";
 		return json;
 	}
-
+	
 	public String get(String key) {
 		if (map.containsKey(key))
 			return map.get(key);

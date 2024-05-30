@@ -120,6 +120,10 @@ public class Block {
 	public void updateBlock() {
 
 	}
+	
+	public void inventoryUpdate(PlayerCharacter e) {
+		
+	}
 
 	public void activate(ArrayList<Block> activationchain) {
 		if (activationchain.contains(this))

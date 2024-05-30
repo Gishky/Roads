@@ -199,14 +199,13 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	public void setHeldBlock(Block b) {
-		inventory[heldBlock] = b;
-		connection.sendMessage("{action:inventoryUpdate," + heldBlock + ":" + getInventory(heldBlock).toJSON() + "}",
-				true);
+		setInventoryBlock(b, heldBlock);
 	}
 
 	public void setInventoryBlock(Block b, int slot) {
 		inventory[slot] = b;
 		connection.sendMessage("{action:inventoryUpdate," + slot + ":" + getInventory(slot).toJSON() + "}", true);
+		updateInventory();
 	}
 
 	public Block getInventory(int slot) {
@@ -277,6 +276,11 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	public void updateInventory() {
+		for (Block b : inventory) {
+			if (b != null)
+				b.inventoryUpdate(this);
+		}
+
 		connection.sendMessage("{action:inventoryUpdate,0:" + getInventory(0).toJSON() + "}", true);
 		connection.sendMessage("{action:inventoryUpdate,1:" + getInventory(1).toJSON() + "}", true);
 		connection.sendMessage("{action:inventoryUpdate,2:" + getInventory(2).toJSON() + "}", true);

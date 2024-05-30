@@ -16,6 +16,7 @@ public class CraftingHandler {
 		recipes.add(new CraftingMachine());
 		recipes.add(new CraftingGoldChunk());
 		recipes.add(new CraftingIronChunk());
+		recipes.add(new CraftingChest());
 	}
 
 	private void getCraftedBlock(int x, int y) {
