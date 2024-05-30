@@ -6,7 +6,7 @@ import UDPServer.UDPServer;
 
 public class MainThread {
 
-	public static String gameVersion = "v1.4";
+	public static String gameVersion = "v1.5";
 
 	public static void main(String[] args) {
 		UDPServer server = null;
