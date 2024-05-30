@@ -1,6 +1,5 @@
 package GameObjects.Blocks;
 
-import GameObjects.Entities.Entity;
 import GameObjects.Entities.Firebolt;
 import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;

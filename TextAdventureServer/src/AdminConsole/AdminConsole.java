@@ -6,10 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AdminConsole extends Thread {
 
@@ -36,6 +34,7 @@ public class AdminConsole extends Thread {
 			try {
 				connection = serverSocket.accept();
 				AdminConsoleConnection adminConnection = new AdminConsoleConnection();
+				adminConnection.setName(connection.getInetAddress().toString());
 				adminConnection.setWriter(new PrintWriter(connection.getOutputStream(), true));
 				adminConnection.setReader(new BufferedReader(new InputStreamReader(connection.getInputStream())));
 				adminConnection.start();

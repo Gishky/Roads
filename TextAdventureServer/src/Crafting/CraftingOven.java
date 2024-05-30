@@ -1,7 +1,6 @@
 package Crafting;
 
 import GameObjects.World;
-import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import GameObjects.Blocks.BlockOven;
 

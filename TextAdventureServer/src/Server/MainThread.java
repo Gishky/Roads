@@ -13,9 +13,10 @@ public class MainThread {
 		AdminConsole adminConsole = null;
 		try {
 			adminConsole = new AdminConsole(61852);
+			adminConsole.setName("AdminConsole");
 			adminConsole.start();
 			AdminConsole.log("starting Server...", false);
-			server = new UDPServer("RoadsServer", 61852, new PlayerCharacterCreator(), gameVersion);
+			server = new UDPServer("UDPServer", 61852, new PlayerCharacterCreator(), gameVersion);
 			server.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

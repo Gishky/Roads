@@ -1,8 +1,5 @@
 package HelperObjects;
 
-import java.awt.Color;
-import java.util.Random;
-
 import GameObjects.Entity;
 import GameObjects.Firebolt;
 import GameObjects.OvenAbilityJet;

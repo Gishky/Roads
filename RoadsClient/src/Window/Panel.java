@@ -26,6 +26,7 @@ import HelperObjects.MessageInterpreter;
 import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel
 		implements ActionListener, KeyListener, MouseMotionListener, MouseListener, MouseWheelListener {
 
