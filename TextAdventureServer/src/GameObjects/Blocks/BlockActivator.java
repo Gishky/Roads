@@ -40,7 +40,7 @@ public class BlockActivator extends Block {
 			setY(Integer.parseInt(block.get("y")));
 	}
 
-	public void updateBlock() {
+	public void update() {
 		activate(new ArrayList<Block>());
 	}
 

@@ -28,7 +28,7 @@ public class BlockLeaf extends Block {
 			setY(Integer.parseInt(block.get("y")));
 	}
 
-	public void updateBlock() {
+	public void update() {
 		if (!(World.getBlock(x - 1, y) instanceof BlockWood)) {
 			if (!(World.getBlock(x + 1, y) instanceof BlockWood)) {
 				if (!(World.getBlock(x, y - 1) instanceof BlockWood)) {

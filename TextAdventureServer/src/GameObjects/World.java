@@ -61,7 +61,7 @@ public class World {
 				if (y < terrainBegin[x])
 					setBlock(x, y, new BlockAir());
 				else {
-					if (r.nextInt(2) >= Math.abs(terrainBegin[x] - y)) {
+					if (1 > Math.abs(terrainBegin[x] - y)) {
 						setBlock(x, y, new BlockGrass());
 					} else {
 						setBlock(x, y, new BlockDirt());
@@ -373,14 +373,14 @@ public class World {
 		world[x][y] = block;
 
 		if (x != 0)
-			world[x - 1][y].update();
+			world[x - 1][y].scheduleUpdate();
 		if (y != 0)
-			world[x][y - 1].update();
+			world[x][y - 1].scheduleUpdate();
 		if (x != world.length - 1 && world[x + 1][y] != null)
-			world[x + 1][y].update();
+			world[x + 1][y].scheduleUpdate();
 		if (y != world[0].length - 1 && world[x][y + 1] != null)
-			world[x][y + 1].update();
-		world[x][y].update();
+			world[x][y + 1].scheduleUpdate();
+		world[x][y].scheduleUpdate();
 	}
 
 	public static Block getBlock(int x, int y) {

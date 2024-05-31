@@ -280,7 +280,7 @@ public class Panel extends JPanel
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		World.wantedSelectedInventory += e.getWheelRotation();
 		World.wantedSelectedInventory = Math.min(4, Math.max(0, World.wantedSelectedInventory));
-
-		connection.sendMessage("scroll;" + World.wantedSelectedInventory, true);
+		if (World.wantedSelectedInventory != World.selectedInventory)
+			connection.sendMessage("scroll;" + World.wantedSelectedInventory, true);
 	}
 }

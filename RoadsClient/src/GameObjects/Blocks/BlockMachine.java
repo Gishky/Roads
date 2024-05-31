@@ -7,7 +7,8 @@ import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class BlockMachine extends Block {
-	int dir = 0;
+
+	int dir = 1;
 
 	public BlockMachine(JSONObject block) {
 		setColor(new Color(109, 59, 9));
@@ -55,10 +56,6 @@ public class BlockMachine extends Block {
 		g.fillRect(x, y, size, size);
 
 		g.setColor(new Color(255, 215, 0));
-		if (activated) {
-			g.setColor(Color.blue);
-			activated = false;
-		}
 		switch (dir) {
 		case 1:
 			g.fillRect(x, y, size * 2 / 6, size);

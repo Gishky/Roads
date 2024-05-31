@@ -51,7 +51,7 @@ public class GameMaster implements ActionListener {
 			blockUpdates.clear();
 		}
 		for (Block b : blocks) {
-			b.updateBlock();
+			b.update();
 		}
 
 		for (int i = 0; i < entities.size(); i++) {

@@ -1,7 +1,9 @@
 package GameObjects.Blocks;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import GameObjects.World;
 import GameObjects.Entities.PlayerCharacter;
 import HelperObjects.JSONObject;
 import Server.GameMaster;
@@ -16,6 +18,7 @@ public class Block {
 	protected int breakThreshhold = 1;
 	protected int x, y;
 
+	protected LinkedList<Block> inventory = null;
 	protected Block smeltedBlock;
 	protected int requiredFuelForSmelting;
 	protected int fuelValue = 0;
@@ -32,7 +35,7 @@ public class Block {
 		return id;
 	}
 
-	public void update() {
+	public void scheduleUpdate() {
 		GameMaster.updateBlock(this);
 	}
 
@@ -117,12 +120,12 @@ public class Block {
 		return json.getJSON();
 	}
 
-	public void updateBlock() {
+	public void update() {
 
 	}
-	
+
 	public void inventoryUpdate(PlayerCharacter e) {
-		
+
 	}
 
 	public void activate(ArrayList<Block> activationchain) {
@@ -133,5 +136,22 @@ public class Block {
 
 	public boolean isBreakable() {
 		return breakable;
+	}
+
+	public LinkedList<Block> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(LinkedList<Block> inventory) {
+		this.inventory = inventory;
+	}
+
+	public Block popInventory() {
+		if (inventory.size() != 0) {
+			Block b = inventory.pop();
+			World.setBlock(x, y, this);
+			return b;
+		}
+		return null;
 	}
 }

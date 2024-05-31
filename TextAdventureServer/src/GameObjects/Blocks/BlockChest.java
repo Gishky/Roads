@@ -10,14 +10,14 @@ import HelperObjects.JSONObject;
 
 public class BlockChest extends Block {
 
-	private LinkedList<Block> inventory = new LinkedList<Block>();
-
 	public BlockChest() {
 		id = 17;
 		friction = 2;
 
 		breakable = true;
 		breakThreshhold = 5;
+		
+		inventory = new LinkedList<Block>();
 	}
 
 	public BlockChest(JSONObject block) {
@@ -26,6 +26,8 @@ public class BlockChest extends Block {
 
 		breakable = true;
 		breakThreshhold = 5;
+
+		inventory = new LinkedList<Block>();
 
 		if (block == null)
 			return;
@@ -51,18 +53,16 @@ public class BlockChest extends Block {
 	public void inventoryUpdate(PlayerCharacter e) {
 		if (this.inventory.size() == 0)
 			return;
-		AdminConsole.log("inventoryUpdate!", false);
 		for (int i = 0; i < 5; i++) {
 			Block b = e.getInventory(i);
 			if (b.getId() != this.inventory.getFirst().getId())
 				continue;
-			AdminConsole.log("found match", false);
 			this.inventory.addLast(b);
 			e.setInventoryBlock(null, i);
 		}
 	}
 
-	public void updateBlock() {
+	public void update() {
 		if (inventory.size() != 0 && World.getBlock(x, y - 1).getId() != inventory.getFirst().getId())
 			return;
 		if (World.getBlock(x, y - 1).isBreakable()) {

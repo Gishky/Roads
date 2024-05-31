@@ -47,24 +47,32 @@ public class BlockMachine extends Block {
 		e.updateInventory();
 	}
 
-	public int getAbilityCooldown() {
-		return 0;
-	}
-
 	public Block clone() {
 		return new BlockMachine();
 	}
 
+	private boolean push = false;
+
 	public void activate(ArrayList<Block> activationchain) {
-		if(activationchain.contains(this))
+		if (activationchain.contains(this))
 			return;
 		activationchain.add(this);
-		
+
+		push = true;
+		scheduleUpdate();
+		GameMaster.sendToAll("{action:activate,x:" + x + ",y:" + y + "}", true);
+	}
+
+	@Override
+	public void update() {
+		if (!push)
+			return;
+
+		push = false;
 		if (World.getBlock(x + dirx, y + diry).isBlocksMovement())
 			if (pushBlock(x + dirx, y + diry, 5)) {
 				World.setBlock(x + dirx, y + diry, new BlockAir());
 			}
-		GameMaster.sendToAll("{action:activate,x:" + x + ",y:" + y + "}", true);
 	}
 
 	private boolean pushBlock(int x, int y, int force) {

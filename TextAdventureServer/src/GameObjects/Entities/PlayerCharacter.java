@@ -231,8 +231,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void setClientConnection(UDPClientConnection con) {
-		AdminConsole.log("New Player connected from: " + con.getAddress().getHostAddress() + ":" + con.getPort() + ".",
-				false);
+		AdminConsole.log("New Player connected from: " + con.getAddress().getHostAddress() + ":" + con.getPort()
+				+ " with ID: " + id + ".", false);
 		AdminConsole.log("    Players online: " + UDPServer.getInstances().get(0).getClientCount(), true);
 		connection = con;
 		sendInitialData();
@@ -251,7 +251,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void scrollInventory(String string) {
-		heldBlock=Integer.parseInt(string);
+		heldBlock = Integer.parseInt(string);
 
 		breakCount = 0;
 		connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);

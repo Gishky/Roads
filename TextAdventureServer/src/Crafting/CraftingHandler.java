@@ -8,17 +8,6 @@ public class CraftingHandler {
 
 	private LinkedList<CraftingRecipe> recipes;
 
-	public CraftingHandler() {
-		recipes = new LinkedList<CraftingRecipe>();
-		recipes.add(new CraftingOven());
-		recipes.add(new CraftingRelay());
-		recipes.add(new CraftingActivator());
-		recipes.add(new CraftingMachine());
-		recipes.add(new CraftingGoldChunk());
-		recipes.add(new CraftingIronChunk());
-		recipes.add(new CraftingChest());
-	}
-
 	private void getCraftedBlock(int x, int y) {
 		for (CraftingRecipe r : recipes) {
 			if (r.checkCrafting(x, y))
@@ -31,5 +20,17 @@ public class CraftingHandler {
 			instance = new CraftingHandler();
 
 		instance.getCraftedBlock(x, y);
+	}
+	
+	public CraftingHandler() {
+		recipes = new LinkedList<CraftingRecipe>();
+		recipes.add(new CraftingOven());
+		recipes.add(new CraftingRelay());
+		recipes.add(new CraftingActivator());
+		recipes.add(new CraftingMachine());
+		recipes.add(new CraftingGoldChunk());
+		recipes.add(new CraftingIronChunk());
+		recipes.add(new CraftingChest());
+		recipes.add(new CraftingPlacer());
 	}
 }

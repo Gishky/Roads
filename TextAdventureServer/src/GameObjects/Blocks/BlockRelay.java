@@ -40,9 +40,6 @@ public class BlockRelay extends Block {
 	public void activateAbility(PlayerCharacter e) {
 		Position pos = new Position((int) (e.getMousePosition().getX() + e.getPos().getX()),
 				(int) (e.getMousePosition().getY() + e.getPos().getY()));
-		for (Position p : activationList)
-			if (p.getX() == pos.getX() && p.getY() == pos.getY())
-				return;
 
 		activationList.add(pos);
 		if (activationList.size() > activationSize)
