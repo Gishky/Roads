@@ -17,6 +17,8 @@ public class BlockChest extends Block {
 		breakable = true;
 		breakThreshhold = 5;
 		
+		fuelValue = 180;
+
 		inventory = new LinkedList<Block>();
 	}
 
@@ -27,6 +29,8 @@ public class BlockChest extends Block {
 		breakable = true;
 		breakThreshhold = 5;
 
+		fuelValue = 180;
+		
 		inventory = new LinkedList<Block>();
 
 		if (block == null)
@@ -98,6 +102,13 @@ public class BlockChest extends Block {
 		return 2;
 	}
 
+	@Override
+	public int getFuelValue() {
+		if (inventory.size() == 0)
+			return super.getFuelValue();
+		return 0;
+	}
+
 	public String toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("id", "" + id);
@@ -107,6 +118,7 @@ public class BlockChest extends Block {
 		if (inventory.size() > 0) {
 			json.put("inventory", "" + inventory.getFirst().getId());
 		}
+		json.put("fuel", "" + fuelValue);
 		return json.getJSON();
 	}
 }

@@ -51,4 +51,13 @@ public class BlockWood extends Block {
 	public int getAbilityCooldown() {
 		return 15;
 	}
+	
+	public String toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", "" + id);
+		json.put("x", "" + getX());
+		json.put("y", "" + getY());
+		json.put("fuel", "" + fuelValue);
+		return json.getJSON();
+	}
 }
