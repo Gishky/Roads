@@ -78,8 +78,9 @@ public class Particle {
 		y += velocityy;
 
 		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), (lifetime < 10 ? lifetime * 25 : 255)));
-		g.drawOval((int) x - (int) size / 2 - cameraX + Panel.windowWidth / 2,
-				(int) y - (int) size / 2 - cameraY + Panel.windowHeight / 2, (int) size, (int) size);
+		g.fillRect(((int) x - (int) size / 2) / (int) size * (int) size - cameraX + Panel.windowWidth / 2,
+				((int) y - (int) size / 2) / (int) size * (int) size - cameraY + Panel.windowHeight / 2, (int) size,
+				(int) size);
 
 		return false;
 	}

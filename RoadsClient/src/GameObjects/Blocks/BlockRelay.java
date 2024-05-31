@@ -16,7 +16,7 @@ public class BlockRelay extends Block {
 	private ArrayList<Position> activationList = new ArrayList<Position>();
 
 	public BlockRelay(JSONObject block) {
-		setColor(new Color(109, 59, 9));
+		setColor(BlockWood.getDefaultColor().brighter());
 
 		if (block == null)
 			return;
@@ -30,40 +30,35 @@ public class BlockRelay extends Block {
 
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
-		super.draw(x, y, g, cameraX, cameraY);
-		g.setColor(getColor());
-		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
+		x = x * size - cameraX + Panel.windowWidth / 2;
+		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(new Color(255, 215, 0));
+		Color c = BlockGold.getDefaultColor();
 		if (activated) {
-			g.setColor(Color.blue);
+			c = Color.blue;
 			activated = false;
 		}
-		g.fillRect(x * size - cameraX + Panel.windowWidth / 2 + size * 2 / 6,
-				y * size - cameraY + Panel.windowHeight / 2, size * 2 / 6, size);
-		g.fillRect(x * size - cameraX + Panel.windowWidth / 2,
-				y * size - cameraY + Panel.windowHeight / 2 + size * 2 / 6, size, size * 2 / 6);
+		drawGrain(g, c, x, y, size, 20);
 
-		g.setColor(getColor().brighter());
-		g.drawRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
-	}
-
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
 		g.setColor(getColor());
-		g.fillRect(x, y, size, size);
-
-		g.setColor(new Color(255, 215, 0));
-		Random r = new Random();
-		if (activated) {
-			g.setColor(Color.blue);
-			activated = false;
-		}
-		g.fillRect(x + size * 2 / 6, y, size * 2 / 6, size);
-		g.fillRect(x, y + size * 2 / 6, size, size * 2 / 6);
+		drawPixel(g, x, y, 0, 0, size * 2);
+		drawPixel(g, x, y, 0, 2, size * 2);
+		drawPixel(g, x, y, 2, 0, size * 2);
+		drawPixel(g, x, y, 2, 2, size * 2);
+		g.setColor(darkerColor(getColor(), 10));
+		drawPixel(g, x, y, 1, 4, size);
+		drawPixel(g, x, y, 5, 1, size);
+		g.setColor(brighterColor(getColor(), 10));
+		drawPixel(g, x, y, 1, 1, size);
 
 		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
+	}
 
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		super.drawInventory(g, x, y, size, selected);
+
+		Random r = new Random();
 		if (World.playerInventory[World.selectedInventory] == this) {
 			for (int block = 0; block < activationList.size(); block++) {
 				Position activationBlock = activationList.get(block);

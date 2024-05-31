@@ -23,39 +23,14 @@ public class BlockCoalOre extends Block {
 
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
-		super.draw(x, y, g, cameraX, cameraY);
-
 		x = x * size - cameraX + Panel.windowWidth / 2;
 		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(new Color(100, 100, 100));
-		g.fillRect(x, y, size, size);
+		drawGrain(g, BlockStone.getDefaultColor(), x, y, size,10);
 
 		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 
-		g.setColor(getColor());
-		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);
-		// g.fillRect(x + size * 2 / 6, y + size * 2 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 1 / 6, y + size * 2 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 4 / 6, y + size * 4 / 6, size / 6, size / 6);
-	}
-
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(new Color(100, 100, 100));
-		g.fillRect(x, y, size, size);
-
-		g.setColor(g.getColor().brighter());
-		g.drawRect(x, y, size, size);
-
-		g.setColor(getColor());
-		g.fillRect(x + size * 2 / 6, y + size * 3 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 1 / 6, y + size * 4 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 3 / 6, y + size * 1 / 6, size / 6, size / 6);
-		// g.fillRect(x + size * 2 / 6, y + size * 2 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 1 / 6, y + size * 2 / 6, size / 6, size / 6);
-		g.fillRect(x + size * 4 / 6, y + size * 4 / 6, size / 6, size / 6);
+		drawOre(g, getColor(), x, y, size);
 	}
 }

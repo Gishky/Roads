@@ -12,6 +12,10 @@ public class BlockIron extends Block {
 		setColor(new Color(153, 149, 148));
 	}
 
+	public static Color getDefaultColor() {
+		return new Color(153, 149, 148);
+	}
+
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
 		super.draw(x, y, g, cameraX, cameraY);
@@ -22,15 +26,9 @@ public class BlockIron extends Block {
 		g.setColor(getColor());
 		g.fillRect(x, y, size, size);
 
-		g.setColor(g.getColor().brighter());
-		g.drawRect(x, y, size, size);
-	}
+		drawWoodGrain(g, getColor(), x, y, size, 5);
 
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
 		g.setColor(getColor().brighter());
-		g.fillRect(x, y, size, size);
-
-		g.setColor(g.getColor().brighter());
 		g.drawRect(x, y, size, size);
 	}
 }

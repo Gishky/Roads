@@ -15,7 +15,7 @@ public class BlockActivator extends Block {
 	private Position activationBlock = null;
 
 	public BlockActivator(JSONObject block) {
-		setColor(new Color(109, 59, 9));
+		setColor(BlockWood.getDefaultColor().brighter());
 
 		if (block == null)
 			return;
@@ -25,36 +25,28 @@ public class BlockActivator extends Block {
 
 	@Override
 	public void draw(int x, int y, Graphics2D g, int cameraX, int cameraY) {
-		super.draw(x, y, g, cameraX, cameraY);
-		g.setColor(getColor());
-		g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
+		x = x * size - cameraX + Panel.windowWidth / 2;
+		y = y * size - cameraY + Panel.windowHeight / 2;
 
-		g.setColor(new Color(255, 215, 0));
-		if(activated) {
-			g.setColor(Color.blue);
+		drawGrain(g, getColor(), x, y, size, 10);
+
+		Color c = BlockGold.getDefaultColor();
+		if (activated) {
+			c = Color.blue;
 			activated = false;
 		}
-		g.fillRect(x * size - cameraX + Panel.windowWidth / 2 + size * 2 / 6,
-				y * size - cameraY + Panel.windowHeight / 2 + size * 2 / 6, size * 2 / 6, size * 2 / 6);
 
-		g.setColor(getColor().brighter());
-		g.drawRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY + Panel.windowHeight / 2, size, size);
-	}
-
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		g.setColor(getColor());
-		g.fillRect(x, y, size, size);
-
-		g.setColor(new Color(255, 215, 0));
-		if(activated) {
-			g.setColor(Color.blue);
-			activated = false;
-		}
-		g.fillRect(x + size * 2 / 6, y + size * 2 / 6, size * 2 / 6, size * 2 / 6);
+		g.setColor(c);
+		g.fillRect(x + size * 2 / 6, y + size * 2 / 6, size * 2 / 6, +size * 2 / 6);
+		g.setColor(darkerColor(c, 20));
+		drawPixel(g, x, y, 3, 3, size);
 
 		g.setColor(getColor().brighter());
 		g.drawRect(x, y, size, size);
+	}
 
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+		super.drawInventory(g, x, y, size, selected);
 		if (World.playerInventory[World.selectedInventory] == this) {
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {
