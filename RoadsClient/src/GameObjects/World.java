@@ -16,6 +16,7 @@ public class World {
 	public static int playerid = -1;
 	public static Block[] playerInventory = new Block[5];
 	public static int selectedInventory = 0;
+	public static int wantedSelectedInventory = 0;
 
 	public static Block[][] getWorld() {
 		return world;

@@ -49,7 +49,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			t.start();
 		}
@@ -227,7 +227,7 @@ public class Panel extends JPanel
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -278,10 +278,9 @@ public class Panel extends JPanel
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.getWheelRotation() > 0)
-			connection.sendMessage("scroll;down", true);
-		else {
-			connection.sendMessage("scroll;up", true);
-		}
+		World.wantedSelectedInventory += e.getWheelRotation();
+		World.wantedSelectedInventory = Math.min(4, Math.max(0, World.wantedSelectedInventory));
+
+		connection.sendMessage("scroll;" + World.wantedSelectedInventory, true);
 	}
 }

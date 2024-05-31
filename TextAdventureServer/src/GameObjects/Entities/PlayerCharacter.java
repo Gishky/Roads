@@ -251,15 +251,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void scrollInventory(String string) {
-		if (string.equals("up")) {
-			heldBlock--;
-			if (heldBlock <= 0)
-				heldBlock = 0;
-		} else if (string.equals("down")) {
-			heldBlock++;
-			if (heldBlock >= inventory.length)
-				heldBlock = inventory.length - 1;
-		}
+		heldBlock=Integer.parseInt(string);
 
 		breakCount = 0;
 		connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);
