@@ -10,13 +10,15 @@ import HelperObjects.JSONObject;
 
 public class BlockChest extends Block {
 
+	private int maxInventory = 10;
+
 	public BlockChest() {
 		id = 17;
 		friction = 2;
 
 		breakable = true;
 		breakThreshhold = 5;
-		
+
 		fuelValue = 180;
 
 		inventory = new LinkedList<Block>();
@@ -30,7 +32,7 @@ public class BlockChest extends Block {
 		breakThreshhold = 5;
 
 		fuelValue = 180;
-		
+
 		inventory = new LinkedList<Block>();
 
 		if (block == null)
@@ -55,7 +57,7 @@ public class BlockChest extends Block {
 
 	@Override
 	public void inventoryUpdate(PlayerCharacter e) {
-		if (this.inventory.size() == 0)
+		if (this.inventory.size() == 0 || inventory.size() >= maxInventory)
 			return;
 		for (int i = 0; i < 5; i++) {
 			Block b = e.getInventory(i);
@@ -67,7 +69,8 @@ public class BlockChest extends Block {
 	}
 
 	public void update() {
-		if (inventory.size() != 0 && World.getBlock(x, y - 1).getId() != inventory.getFirst().getId())
+		if (inventory.size() != 0 && World.getBlock(x, y - 1).getId() != inventory.getFirst().getId()
+				|| inventory.size() >= maxInventory)
 			return;
 		if (World.getBlock(x, y - 1).isBreakable()) {
 			inventory.addLast(World.getBlock(x, y - 1));
@@ -114,7 +117,7 @@ public class BlockChest extends Block {
 		json.put("id", "" + id);
 		json.put("x", "" + getX());
 		json.put("y", "" + getY());
-		json.put("inventorysize", "" + inventory.size());
+		json.put("inventorysize", "" + (int) (inventory.size() * 100 / maxInventory));
 		if (inventory.size() > 0) {
 			json.put("inventory", "" + inventory.getFirst().getId());
 		}

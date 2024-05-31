@@ -30,7 +30,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private Block[] inventory;
 	private int breakCount = 0;
 	private int maxHP = 0;
-	private int HP;
+	private double HP;
 
 	public PlayerCharacter() {
 		super(new Position(World.getWorld().length / 2 + 0.5,
@@ -67,6 +67,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public boolean action() {
+		if (HP < maxHP)
+			HP += 0.05;
+
 		int oldX = (int) pos.getX();
 		int oldY = (int) pos.getY();
 
@@ -93,24 +96,19 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			}
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_1)) {
-			heldBlock = 0;
-			scrollInventory("");
+			scrollInventory("" + 0);
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_2)) {
-			heldBlock = 1;
-			scrollInventory("");
+			scrollInventory("" + 1);
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_3)) {
-			heldBlock = 2;
-			scrollInventory("");
+			scrollInventory("" + 2);
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_4)) {
-			heldBlock = 3;
-			scrollInventory("");
+			scrollInventory("" + 3);
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_5)) {
-			heldBlock = 4;
-			scrollInventory("");
+			scrollInventory("" + 4);
 		}
 		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
 			if (fireCooldown <= 0 && getHeldBlock().getId() != -1) {
@@ -165,7 +163,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		}
 
 		if (placing && !World.getBlock((int) pos.getX(), (int) pos.getY() + 1).isBlocksMovement()) {
-			World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, getHeldBlock());
+			if (getHeldBlock().getId() != -1)
+				World.setBlock((int) pos.getX(), (int) (pos.getY()) + 1, getHeldBlock());
 			setHeldBlock(null);
 			placing = false;
 		}
@@ -217,10 +216,10 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private int getHPPercentile() {
 		if (maxHP == 0)
 			return 100;
-		return HP * 100 / maxHP;
+		return (int) HP * 100 / maxHP;
 	}
 
-	public int getHP() {
+	public double getHP() {
 		return HP;
 	}
 
@@ -251,11 +250,23 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void scrollInventory(String string) {
-		heldBlock = Integer.parseInt(string);
+		try {
+			heldBlock = Integer.parseInt(string);
 
-		breakCount = 0;
-		connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);
-		this.actionUpdateOverride = true;
+			breakCount = 0;
+			connection.sendMessage("{action:inventoryUpdate,heldid:+" + heldBlock + "}", true);
+			this.actionUpdateOverride = true;
+		} catch (Exception e) {
+			AdminConsole.log("Exception: " + e.getMessage(), false);
+			for (int i = 0; i < e.getStackTrace().length; i++) {
+				String s = "";
+				if (i != e.getStackTrace().length - 1)
+					s += "├─";
+				else
+					s += "└─";
+				AdminConsole.log(s + e.getStackTrace()[i].toString(), true);
+			}
+		}
 	}
 
 	@Override
