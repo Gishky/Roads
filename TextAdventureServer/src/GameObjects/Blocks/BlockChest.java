@@ -81,9 +81,10 @@ public class BlockChest extends Block {
 	public void activateAbility(PlayerCharacter e) {
 		if (!canAbilityActivate())
 			return;
-		
-		if (inventory.size() == 0)
+
+		if (inventory.size() == 0) {
 			return;
+		}
 
 		int dirx = 0;
 		int diry = 0;
@@ -101,10 +102,6 @@ public class BlockChest extends Block {
 		}
 
 		e.updateInventory();
-	}
-
-	public int getAbilityCooldown() {
-		return 100;
 	}
 
 	@Override

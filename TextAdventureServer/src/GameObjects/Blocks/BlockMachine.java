@@ -39,7 +39,7 @@ public class BlockMachine extends Block {
 	public void activateAbility(PlayerCharacter e) {
 		if (!canAbilityActivate())
 			return;
-		
+
 		if (Math.abs(e.getMousePosition().getX()) > Math.abs(e.getMousePosition().getY())) {
 			dirx = (e.getMousePosition().getX() > 0 ? 1 : -1);
 			diry = 0;
@@ -73,7 +73,7 @@ public class BlockMachine extends Block {
 
 		push = false;
 		if (World.getBlock(x + dirx, y + diry).isBlocksMovement())
-			if (pushBlock(x + dirx, y + diry, 5)) {
+			if (pushBlock(x + dirx, y + diry, 100)) {
 				World.setBlock(x + dirx, y + diry, new BlockAir());
 			}
 	}
@@ -83,8 +83,8 @@ public class BlockMachine extends Block {
 			World.setBlock(x + dirx, y + diry, World.getBlock(x, y));
 			return true;
 		} else {
-			if (force > 0)
-				if (pushBlock(x + dirx, y + diry, force - 1)) {
+			if (force >= World.getBlock(x, y).breakThreshhold)
+				if (pushBlock(x + dirx, y + diry, force - World.getBlock(x, y).breakThreshhold)) {
 					World.setBlock(x + dirx, y + diry, World.getBlock(x, y));
 					return true;
 				}
