@@ -78,10 +78,11 @@ public class GameMaster implements ActionListener {
 		sendToAll("{action:createEntity,entity:" + e.toJSON() + "}", true);
 	}
 
-	public static void removeEntity(Entity e) {
+	public static void removeEntity(Entity e, Boolean silent) {
 		master.entities.remove(e);
 		// System.out.println("removing: " + e.getId());
-		sendToAll("{action:removeEntity,entity:{id:" + e.getId() + "}}", true);
+		if(!silent)
+			sendToAll("{action:removeEntity,entity:{id:" + e.getId() + "}}", true);
 	}
 
 	public static ArrayList<Entity> getEntities() {

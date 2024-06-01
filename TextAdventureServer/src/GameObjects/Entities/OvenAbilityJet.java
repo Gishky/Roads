@@ -7,22 +7,14 @@ import Server.GameMaster;
 public class OvenAbilityJet extends Entity {
 
 	private int lifetime = 0;
-	
-	public OvenAbilityJet(Position initialPosition, double[] velocity, double boostPower) {
-		this.pos = initialPosition;
+
+	public OvenAbilityJet(int entityid, double[] velocity, double boostPower) {
+		this.pos = new Position(entityid, entityid);
 		this.velocity = velocity;
 		lifetime = (int) (5 * boostPower);
 
 		createEntity();
-	}
-
-	@Override
-	public boolean action() {
-		lifetime--;
-		if (lifetime < 0) {
-			GameMaster.removeEntity(this);
-		}
-		return true;
+		GameMaster.removeEntity(this, true);
 	}
 
 	public String toJSON() {

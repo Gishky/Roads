@@ -56,7 +56,7 @@ public class BlockOven extends Block {
 			boostVelocity[1] = unitVelocity[1] * boostAccelleration * boostPower;
 			e.setVelocity(boostVelocity);
 
-			new OvenAbilityJet(e.getPos(), boostVelocity, boostPower);
+			new OvenAbilityJet(e.getId(), boostVelocity, boostPower);
 
 			e.updateInventory();
 		} else {
@@ -79,7 +79,7 @@ public class BlockOven extends Block {
 	@Override
 	public void breakBlock() {
 		if (entity != null) {
-			GameMaster.removeEntity(entity);
+			GameMaster.removeEntity(entity, false);
 			entity = null;
 		}
 	}

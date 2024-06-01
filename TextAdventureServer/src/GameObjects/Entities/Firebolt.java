@@ -42,7 +42,7 @@ public class Firebolt extends Entity {
 	public boolean action() {
 		if (isGrounded || pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
 				|| pos.getY() > World.getWorld()[0].length) {
-			GameMaster.removeEntity(this);
+			GameMaster.removeEntity(this, false);
 			return false;
 		}
 

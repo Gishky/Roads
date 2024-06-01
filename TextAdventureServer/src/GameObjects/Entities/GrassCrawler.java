@@ -29,7 +29,7 @@ public class GrassCrawler extends Entity {
 	public boolean action() {
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
 				|| pos.getY() > World.getWorld()[0].length) {
-			GameMaster.removeEntity(this);
+			GameMaster.removeEntity(this, false);
 			return false;
 		}
 
@@ -45,7 +45,7 @@ public class GrassCrawler extends Entity {
 							p.getPos().getY() - pos.getY())) {
 						p.receiveDamage(damage);
 
-						GameMaster.removeEntity(this);
+						GameMaster.removeEntity(this, false);
 						return false;
 					}
 				}
@@ -86,7 +86,7 @@ public class GrassCrawler extends Entity {
 			return true;
 		} else {
 			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
-			GameMaster.removeEntity(this);
+			GameMaster.removeEntity(this, false);
 			return false;
 		}
 	}

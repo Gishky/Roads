@@ -112,7 +112,7 @@ public class OvenEntity extends Entity {
 
 		if (!(burningLeft || burningRight || smelting)) {
 			oven.removeEntity();
-			GameMaster.removeEntity(this);
+			GameMaster.removeEntity(this, false);
 		} else if (!(burningLeft == pastBurningLeft && burningRight == pastBurningRight && smelting == pastSmelting)) {
 			JSONObject json = new JSONObject();
 			json.put("id", "" + id);

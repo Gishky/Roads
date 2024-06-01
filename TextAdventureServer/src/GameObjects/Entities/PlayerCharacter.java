@@ -186,7 +186,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	public void receiveDamage(int damage) {
 		HP -= damage;
 		if (HP <= 0) {
-			GameMaster.removeEntity(this);
+			GameMaster.removeEntity(this, false);
 			return;
 		}
 		actionUpdateOverride = true;
@@ -230,7 +230,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public void remove() {
-		GameMaster.removeEntity(this);
+		GameMaster.removeEntity(this, false);
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				"Player at " + connection.getAddress().getHostAddress() + ":" + connection.getPort() + " disconnected.",
 				false);
 		AdminConsole.log("    Players online: " + UDPServer.getInstances().get(0).getClientCount(), true);
-		GameMaster.removeEntity(this);
+		GameMaster.removeEntity(this, false);
 	}
 
 	public void updateInventory() {
