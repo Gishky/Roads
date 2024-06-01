@@ -71,6 +71,9 @@ public class BlockPlacer extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		if (Math.abs(e.getMousePosition().getX()) > Math.abs(e.getMousePosition().getY())) {
 			dirx = (e.getMousePosition().getX() > 0 ? -1 : 1);
 			diry = 0;

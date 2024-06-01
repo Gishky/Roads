@@ -38,6 +38,9 @@ public class BlockRelay extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		Position pos = new Position((int) (e.getMousePosition().getX() + e.getPos().getX()),
 				(int) (e.getMousePosition().getY() + e.getPos().getY()));
 
@@ -50,7 +53,7 @@ public class BlockRelay extends Block {
 
 	@Override
 	public int getAbilityCooldown() {
-		return 2;
+		return 100;
 	}
 
 	public void activate(ArrayList<Block> activationchain) {

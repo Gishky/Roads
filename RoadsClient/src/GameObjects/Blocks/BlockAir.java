@@ -27,16 +27,12 @@ public class BlockAir extends Block {
 	}
 
 	public static Color getSkyColor(int x, int y) {
-		try {
-			double time = (double) System.currentTimeMillis() / 1000;
-			double wind = OpenSimplex2S.noise2(windSeed,
-					((double) x / (10 + Math.sin(time / 100)) + Math.sin(time) * Math.sin(y) / 10) - time / 7,
-					((double) y / (10 + Math.sin(time / 100)) + Math.sin(time / 2) * Math.sin(y) / 10));
-			int windmod = (int) ((wind + 1) * 5 / ((double) (1 + y) / 200));
-			Color c = new Color(90 + windmod, 90 + windmod, 245 + windmod);
-			return c;
-		} catch (Exception e) {
-			return new Color(100, 100, 255);
-		}
+		double time = (double) System.currentTimeMillis() / 1000;
+		double wind = OpenSimplex2S.noise2(windSeed,
+				((double) x / (10 + Math.sin(time / 100)) + Math.sin(time) * Math.sin(y) / 10) - time / 7,
+				((double) y / (10 + Math.sin(time / 100)) + Math.sin(time / 2) * Math.sin(y) / 10));
+		int windmod = Math.max(Math.min((int) ((wind + 1) * 5 / ((double) (1 + y) / 200)), 55), 0);
+		Color c = new Color(90 + windmod, 90 + windmod, 200 + windmod);
+		return c;
 	}
 }

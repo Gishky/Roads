@@ -21,8 +21,8 @@ public class BlockOven extends Block {
 
 		breakable = true;
 		breakThreshhold = 40;
-		
-		if(block==null)
+
+		if (block == null)
 			return;
 
 		if (block.get("x") != null)
@@ -41,6 +41,9 @@ public class BlockOven extends Block {
 	private double boostAccelleration = 2;
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+
 		if (fuel != 0) {
 			double boostPower = 1;
 			if (fuel < fuelCost)
@@ -56,11 +59,13 @@ public class BlockOven extends Block {
 			new OvenAbilityJet(e.getPos(), boostVelocity, boostPower);
 
 			e.updateInventory();
+		} else {
+			setAbilityTime(System.currentTimeMillis());
 		}
 	}
 
 	public int getAbilityCooldown() {
-		return 50;
+		return 2500;
 	}
 
 	private OvenEntity entity = null;

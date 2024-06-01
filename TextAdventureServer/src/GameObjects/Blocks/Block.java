@@ -23,6 +23,8 @@ public class Block {
 	protected int requiredFuelForSmelting;
 	protected int fuelValue = 0;
 
+	private long abilityTime = 0;
+
 	public Block() {
 		this(null);
 	}
@@ -59,7 +61,7 @@ public class Block {
 
 	}
 
-	public int getAbilityCooldown() {
+	protected int getAbilityCooldown() {
 		return 0;
 	}
 
@@ -144,6 +146,22 @@ public class Block {
 
 	public void setInventory(LinkedList<Block> inventory) {
 		this.inventory = inventory;
+	}
+
+	protected boolean canAbilityActivate() {
+		if (System.currentTimeMillis() >= abilityTime) {
+			abilityTime = System.currentTimeMillis() + getAbilityCooldown();
+			return true;
+		}
+		return false;
+	}
+
+	public long getAbilityTime() {
+		return abilityTime;
+	}
+
+	public void setAbilityTime(long abilityTime) {
+		this.abilityTime = abilityTime;
 	}
 
 	public Block popInventory() {

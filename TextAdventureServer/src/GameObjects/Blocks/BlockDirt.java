@@ -35,6 +35,9 @@ public class BlockDirt extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
@@ -48,6 +51,6 @@ public class BlockDirt extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 15;
+		return 750;
 	}
 }

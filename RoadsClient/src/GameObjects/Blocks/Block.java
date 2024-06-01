@@ -1,6 +1,9 @@
 package GameObjects.Blocks;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import HelperObjects.JSONObject;
@@ -9,6 +12,7 @@ import Window.Panel;
 public class Block {
 	public static int size = 30;
 
+	private long abilityCooldown = 0;
 	private Color c = Color.pink;
 	protected boolean activated = false;
 
@@ -29,6 +33,23 @@ public class Block {
 		int yErr = y - (yInv * size + Panel.windowHeight / 2);
 		draw(xInv, yInv, g, -xErr, -yErr);
 		Block.size = originalSize;
+
+		if (System.currentTimeMillis() >= abilityCooldown)
+			return;
+
+		g.setColor(new Color(0, 0, 0, 100));
+		g.fillRect(x, y, size + 1, size + 1);
+
+		g.setColor(Color.white);
+
+		g.setFont(new Font("Monospaced", Font.BOLD, 30));
+		int seconds = (int) (abilityCooldown - System.currentTimeMillis()) / 1000;
+		int secondsSize = g.getFontMetrics().stringWidth("" + seconds);
+		g.drawString("" + seconds, x + size / 2 - secondsSize / 2, y + size / 2 + 10);
+
+		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		int miliseconds = (int) ((abilityCooldown - System.currentTimeMillis()) / 100) - seconds * 10;
+		g.drawString("" + miliseconds, x + size / 2 + secondsSize / 2, y + size / 2 - 2);
 	}
 
 	public static Block getBlockFromID(String id, JSONObject json) {
@@ -158,5 +179,13 @@ public class Block {
 
 	public static Color getDefaultColor() {
 		return Color.pink;
+	}
+
+	public long getAbilityCooldown() {
+		return abilityCooldown;
+	}
+
+	public void setAbilityCooldown(long abilityCooldown) {
+		this.abilityCooldown = abilityCooldown;
 	}
 }

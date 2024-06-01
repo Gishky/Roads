@@ -31,7 +31,7 @@ public class BlockActivator extends Block {
 
 		lastActivated = new Position(0, 0);
 
-		if(block==null)
+		if (block == null)
 			return;
 
 		if (block.get("x") != null)
@@ -45,6 +45,9 @@ public class BlockActivator extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		lastActivated.set(e.getMousePosition().getX() + e.getPos().getX(),
 				e.getMousePosition().getY() + e.getPos().getY());
 		World.getBlock((int) lastActivated.getX(), (int) lastActivated.getY()).activate(new ArrayList<Block>());
@@ -53,7 +56,7 @@ public class BlockActivator extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 10;
+		return 500;
 	}
 
 	public Block clone() {

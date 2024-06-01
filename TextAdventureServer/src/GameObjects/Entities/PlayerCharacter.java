@@ -66,7 +66,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	}
 
-	private int fireCooldown = 0;
 	private boolean placing = false;
 
 	@Override
@@ -80,7 +79,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (keyboard == null)
 			return false;
 
-		fireCooldown--;
 		boolean update = false;
 
 		if (keyboard.getKey("" + KeyEvent.VK_A)) {
@@ -115,10 +113,13 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			scrollInventory("" + 4);
 		}
 		if (keyboard.getKey("" + MouseEvent.BUTTON1)) {
-			if (fireCooldown <= 0 && getHeldBlock().getId() != -1) {
-				fireCooldown = getHeldBlock().getAbilityCooldown();
+			if (getHeldBlock().getId() > 0) {
 				getHeldBlock().activateAbility(this);
-			} else if (getHeldBlock().getId() == -1) {
+				if (getHeldBlock().getAbilityTime() > System.currentTimeMillis()) {
+					connection.sendMessage("{action:setCooldown,block:" + heldBlock + ",cooldown:"
+							+ getHeldBlock().getAbilityTime() + "}", true);
+				}
+			} else {
 				if (Math.sqrt(Math.pow(mouse.getX(), 2) + Math.pow(mouse.getY(), 2)) <= craftingRange) {
 					CraftingHandler.tryCrafting((int) (mouse.getX() + pos.getX()), (int) (mouse.getY() + pos.getY()));
 				}

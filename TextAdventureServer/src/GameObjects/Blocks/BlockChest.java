@@ -79,6 +79,9 @@ public class BlockChest extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		if (inventory.size() == 0)
 			return;
 
@@ -101,7 +104,7 @@ public class BlockChest extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 2;
+		return 100;
 	}
 
 	@Override

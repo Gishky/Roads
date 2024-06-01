@@ -35,6 +35,9 @@ public class BlockGrass extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		double[] initialVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(initialVelocity[0], 2) + Math.pow(initialVelocity[1], 2));
 		double[] unitVelocity = { initialVelocity[0] / velocityLength, initialVelocity[1] / velocityLength };
@@ -47,7 +50,7 @@ public class BlockGrass extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 30;
+		return 1500;
 	}
 
 }

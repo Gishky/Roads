@@ -43,6 +43,9 @@ public class BlockIronOre extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		for (int i = 0; i < 3; i++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -73,6 +76,6 @@ public class BlockIronOre extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 20;
+		return 1000;
 	}
 }

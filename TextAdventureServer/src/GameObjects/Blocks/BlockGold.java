@@ -31,6 +31,9 @@ public class BlockGold extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		for (int c = 0; c < 2; c++)
 			for (int i = 0; i < 3; i++) {
 				double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
@@ -53,7 +56,7 @@ public class BlockGold extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 30;
+		return 1500;
 	}
 
 	public Block clone() {

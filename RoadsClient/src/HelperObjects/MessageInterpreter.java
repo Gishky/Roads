@@ -48,8 +48,18 @@ public class MessageInterpreter implements UDPMessageListener {
 		case "activate":
 			activateVFX(message);
 			break;
+		case "setCooldown":
+			setCooldown(message);
+			break;
 		default:
 			System.out.println("unknown command: " + receivedMessage);
+		}
+	}
+
+	private void setCooldown(JSONObject message) {
+		int id = Integer.parseInt(message.get("block"));
+		if (World.playerInventory[id] != null) {
+			World.playerInventory[id].setAbilityCooldown(Long.parseLong(message.get("cooldown")));
 		}
 	}
 

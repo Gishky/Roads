@@ -32,6 +32,9 @@ public class BlockIronChunk extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		for (int c = 0; c < 4; c++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -53,7 +56,7 @@ public class BlockIronChunk extends Block {
 	}
 
 	public int getAbilityCooldown() {
-		return 30;
+		return 1500;
 	}
 
 	public Block clone() {

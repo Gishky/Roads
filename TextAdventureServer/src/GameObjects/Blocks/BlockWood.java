@@ -37,6 +37,9 @@ public class BlockWood extends Block {
 	}
 
 	public void activateAbility(PlayerCharacter e) {
+		if (!canAbilityActivate())
+			return;
+		
 		double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 		double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 		double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
@@ -45,11 +48,12 @@ public class BlockWood extends Block {
 
 		Position fireboltpos = new Position();
 		fireboltpos.set(e.getPos().getX(), e.getPos().getY());
-		new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
+		Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
+		bolt.setFallingAccelleration(0.13);
 	}
 
 	public int getAbilityCooldown() {
-		return 15;
+		return 750;
 	}
 	
 	public String toJSON() {
