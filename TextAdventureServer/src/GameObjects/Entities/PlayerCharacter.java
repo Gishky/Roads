@@ -23,6 +23,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	private UDPClientConnection connection;
 
+	private String username = "";
+
 	private boolean placeFlag = false;
 	private double craftingRange = 4;
 
@@ -52,12 +54,14 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			connection.sendMessage("{action:setBlock,block:"
 					+ World.getBlock(Integer.parseInt(contents[1]), Integer.parseInt(contents[2])).toJSON() + "}",
 					true);
-		} else if (contents[0].equals("reboot")) {
-			GameMaster.restartServer();
 		} else if (contents[0].equals("mouse")) {
 			mouse.set(Double.parseDouble(contents[1]), Double.parseDouble(contents[2]));
 		} else if (contents[0].equals("scroll")) {
 			scrollInventory(contents[1]);
+		} else if (contents[0].equals("username")) {
+			if (username.equals(""))
+				AdminConsole.log("Player with ID: " + id + " registered with Name: " + contents[1], placeFlag);
+			username = contents[1];
 		}
 
 	}
@@ -301,6 +305,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		json.put("heldBlock", getHeldBlock().toJSON());
 		json.put("breakCount", "" + breakCount);
 		json.put("hp%", "" + getHPPercentile());
+		json.put("name", username);
 		return json.getJSON();
 	}
 

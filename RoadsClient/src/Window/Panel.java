@@ -49,8 +49,10 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
+			String username = System.getProperty("user.name");
+			connection.sendMessage("username;" + username, true);
 			t.start();
 		}
 	}
@@ -149,14 +151,8 @@ public class Panel extends JPanel
 		}
 	}
 
-	private String typedString = "";
-
 	@Override
 	public void keyTyped(KeyEvent e) {
-		typedString += e.getKeyChar();
-		if (typedString.endsWith("sudo reboot\n")) {
-			connection.sendMessage("reboot", true);
-		}
 	}
 
 	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();

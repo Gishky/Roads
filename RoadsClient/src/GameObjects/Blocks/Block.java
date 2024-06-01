@@ -92,7 +92,6 @@ public class Block {
 		int r = (int) (start.getRed() * (1 - transition) + end.getRed() * transition);
 		int g = (int) (start.getGreen() * (1 - transition) + end.getGreen() * transition);
 		int b = (int) (start.getBlue() * (1 - transition) + end.getBlue() * transition);
-		int a = (int) (start.getAlpha() * (1 - transition) + end.getAlpha() * transition);
 		return new Color(r, g, b);
 	}
 

@@ -1,6 +1,7 @@
 package GameObjects;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import Window.Panel;
 
 public class PlayerCharacter extends Entity {
 
+	private String name = "";
 	protected Block heldBlock;
 	protected int breakCount;
 	protected int HPPercent = 100;
@@ -19,15 +21,17 @@ public class PlayerCharacter extends Entity {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		breakCount = Integer.parseInt(entity.get("breakCount"));
 		HPPercent = Integer.parseInt(entity.get("hp%"));
-		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"),null);
+		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"), null);
+		name = entity.get("name");
 	}
 
 	public void updateEntity(JSONObject json) {
 		pos.setX(json.get("x"));
 		pos.setY(json.get("y"));
 		HPPercent = Integer.parseInt(json.get("hp%"));
-		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"),null);
+		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"), null);
 		breakCount = Integer.parseInt(json.get("breakCount"));
+		name = json.get("name");
 
 		if (id == World.playerid) {
 			World.cameraX = Double.parseDouble(json.get("x"));
@@ -78,6 +82,14 @@ public class PlayerCharacter extends Entity {
 						r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
 						r.nextDouble() * 0.15 * Block.size + 0.025 * Block.size, c.brighter()));
 			}
+		}
+
+		if (id != World.playerid) {
+			g.setColor(Color.black);
+			g.setFont(new Font("Monospaced", Font.PLAIN, 15));
+			g.drawString(name,
+					(int) pos.getX() - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(name) / 2,
+					(int) pos.getY() - cameraY + Panel.windowHeight / 2 - 15);
 		}
 
 		super.draw(g, cameraX, cameraY);

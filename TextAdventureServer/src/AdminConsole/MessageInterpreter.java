@@ -23,7 +23,7 @@ public class MessageInterpreter {
 			return updateWorld(receivedMessage.substring(command.length() + 1));
 		case "give":
 			return giveBlock(receivedMessage.substring(command.length() + 1));
-		case "reboot":
+		case "restart":
 			GameMaster.restartServer();
 			return "restarting Server...";
 		default:
