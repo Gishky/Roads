@@ -102,8 +102,8 @@ public class World {
 		generateNoiseBlocks(worldHeight * 6 / 8, worldHeight / 5, 0.1, 4, new BlockGoldOre());
 
 		AdminConsole.log("Generating Caves...", false);
-		generateCaves(worldHeight * 5 / 8, worldHeight / 2, 0.3, 20, new BlockAir());
-		generateCaves(worldHeight * 6 / 8, worldHeight / 4, 0.1, 50, new BlockAir());
+		generateCaves(worldHeight * 3 / 8, worldHeight / 4, 0.15, 20, new BlockAir());
+		generateCaves(worldHeight * 6 / 8, worldHeight / 3, 0.2, 50, new BlockAir());
 
 		AdminConsole.log("Generating Trees...", false);
 		generateTrees(0.5, 20);
@@ -155,12 +155,19 @@ public class World {
 
 	private static void generateCaves(double medianHeight, double standardHeightDeviation, double veinDensity,
 			double veinSize, Block generatedBlock) {
-		long seed = new Random().nextLong();
+		long seedbig = new Random().nextLong();
+		long seedsmall1 = new Random().nextLong();
+		long seedsmall2 = new Random().nextLong();
+		long seedsmall3 = new Random().nextLong();
 		for (int x = 0; x < world.length; x++) {
 			for (int y = 0; y < world[0].length; y++) {
 				double normalDistribution = normalDistribution(y, medianHeight, standardHeightDeviation, veinDensity);
-				if (normalDistribution >= (OpenSimplex2S.noise2(seed, (double) x / veinSize, (double) y / veinSize) + 1)
-						/ 2) {
+				if (normalDistribution * 18 >= (OpenSimplex2S.noise2(seedbig, (double) x / veinSize,
+						(double) y / veinSize) + 1)
+						+ (OpenSimplex2S.noise2(seedsmall1, (double) x / veinSize * 2, (double) y / veinSize * 2) + 1)
+						+ (OpenSimplex2S.noise2(seedsmall2, (double) x / veinSize * 3, (double) y / veinSize * 2) + 1)
+						+ (OpenSimplex2S.noise2(seedsmall3, (double) x / veinSize * 2, (double) y / veinSize * 3)
+								+ 1)) {
 					setBlock(x, y, generatedBlock.clone());
 				}
 			}

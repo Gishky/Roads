@@ -21,9 +21,6 @@ public class BlockAir extends Block {
 
 		drawGrain(g, getSkyColor(x, y), x * size - cameraX + Panel.windowWidth / 2,
 				y * size - cameraY + Panel.windowHeight / 2, size, 2);
-		// g.setColor(getSkyColor(x, y));
-		// g.fillRect(x * size - cameraX + Panel.windowWidth / 2, y * size - cameraY +
-		// Panel.windowHeight / 2, size, size);
 	}
 
 	public static Color getSkyColor(int x, int y) {
