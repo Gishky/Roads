@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import GameObjects.World;
 import HelperObjects.JSONObject;
 import Window.Panel;
 
 public class Block {
 	public static int size = 30;
 
-	private long abilityCooldown = 0;
 	private Color c = Color.pink;
 	protected boolean activated = false;
 
@@ -22,7 +22,7 @@ public class Block {
 		g.fillRect(x, y, size, size);
 	}
 
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected, int id) {
 		int originalSize = Block.size;
 		Block.size = size;
 		int xInv = (x - Panel.windowWidth / 2) / Block.size;
@@ -32,7 +32,7 @@ public class Block {
 		draw(xInv, yInv, g, -xErr, -yErr);
 		Block.size = originalSize;
 
-		if (System.currentTimeMillis() >= abilityCooldown)
+		if (id == -1 || System.currentTimeMillis() >= World.playerInventoryCooldown[id])
 			return;
 
 		g.setColor(new Color(0, 0, 0, 100));
@@ -41,12 +41,12 @@ public class Block {
 		g.setColor(Color.white);
 
 		g.setFont(new Font("Monospaced", Font.BOLD, 30));
-		int seconds = (int) (abilityCooldown - System.currentTimeMillis()) / 1000;
+		int seconds = (int) (World.playerInventoryCooldown[id] - System.currentTimeMillis()) / 1000;
 		int secondsSize = g.getFontMetrics().stringWidth("" + seconds);
 		g.drawString("" + seconds, x + size / 2 - secondsSize / 2, y + size / 2 + 10);
 
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		int miliseconds = (int) ((abilityCooldown - System.currentTimeMillis()) / 100) - seconds * 10;
+		int miliseconds = (int) ((World.playerInventoryCooldown[id] - System.currentTimeMillis()) / 100) - seconds * 10;
 		g.drawString("" + miliseconds, x + size / 2 + secondsSize / 2, y + size / 2 - 2);
 	}
 
@@ -108,9 +108,9 @@ public class Block {
 	}
 
 	public static Color interpolateColor(Color start, Color end, double transition) {
-		int r = (int) (start.getRed() * (1 - transition) + end.getRed() * transition);
-		int g = (int) (start.getGreen() * (1 - transition) + end.getGreen() * transition);
-		int b = (int) (start.getBlue() * (1 - transition) + end.getBlue() * transition);
+		int r = Math.min(255, Math.max(0, (int) (start.getRed() * (1 - transition) + end.getRed() * transition)));
+		int g = Math.min(255, Math.max(0, (int) (start.getGreen() * (1 - transition) + end.getGreen() * transition)));
+		int b = Math.min(255, Math.max(0, (int) (start.getBlue() * (1 - transition) + end.getBlue() * transition)));
 		return new Color(r, g, b);
 	}
 
@@ -177,13 +177,5 @@ public class Block {
 
 	public static Color getDefaultColor() {
 		return Color.pink;
-	}
-
-	public long getAbilityCooldown() {
-		return abilityCooldown;
-	}
-
-	public void setAbilityCooldown(long abilityCooldown) {
-		this.abilityCooldown = abilityCooldown;
 	}
 }

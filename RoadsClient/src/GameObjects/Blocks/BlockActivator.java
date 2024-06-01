@@ -45,8 +45,8 @@ public class BlockActivator extends Block {
 		g.drawRect(x, y, size, size);
 	}
 
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		super.drawInventory(g, x, y, size, selected);
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected,int id) {
+		super.drawInventory(g, x, y, size, selected, id);
 		if (World.playerInventory[World.selectedInventory] == this) {
 			Random r = new Random();
 			for (int i = 0; i < 3; i++) {

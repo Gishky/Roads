@@ -54,7 +54,7 @@ public class BlockChest extends Block {
 		drawPixel(g, x, y, 5, 0, size);
 
 		if (inventory != null) {
-			inventory.drawInventory(g, x + size / 4, y + size / 4, size / 2, false);
+			inventory.drawInventory(g, x + size / 4, y + size / 4, size / 2, false, -1);
 		}
 
 		g.setColor(getColor().brighter());

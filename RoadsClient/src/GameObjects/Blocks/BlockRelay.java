@@ -55,8 +55,8 @@ public class BlockRelay extends Block {
 		g.drawRect(x, y, size, size);
 	}
 
-	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected) {
-		super.drawInventory(g, x, y, size, selected);
+	public void drawInventory(Graphics2D g, int x, int y, int size, boolean selected, int id) {
+		super.drawInventory(g, x, y, size, selected, id);
 
 		Random r = new Random();
 		if (World.playerInventory[World.selectedInventory] == this) {

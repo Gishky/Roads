@@ -137,7 +137,7 @@ public class Panel extends JPanel
 			if (b != null) {
 				b.drawInventory(g, (int) (windowWidth - Block.size * 2),
 						(int) (windowHeight / 2 - Block.size * 5.2 + Block.size * 2.2 * i), (int) (Block.size * 1.6),
-						i == World.selectedInventory);
+						i == World.selectedInventory, i);
 			}
 
 			if (World.selectedInventory == i) {

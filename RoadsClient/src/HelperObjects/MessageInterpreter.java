@@ -59,7 +59,7 @@ public class MessageInterpreter implements UDPMessageListener {
 	private void setCooldown(JSONObject message) {
 		int id = Integer.parseInt(message.get("block"));
 		if (World.playerInventory[id] != null) {
-			World.playerInventory[id].setAbilityCooldown(Long.parseLong(message.get("cooldown")));
+			World.playerInventoryCooldown[id] = Long.parseLong(message.get("cooldown"));
 		}
 	}
 

@@ -15,6 +15,7 @@ public class World {
 	public static double cameraX, cameraY;
 	public static int playerid = -1;
 	public static Block[] playerInventory = new Block[5];
+	public static Long[] playerInventoryCooldown = { (long) 0, (long) 0, (long) 0, (long) 0, (long) 0 };
 	public static int selectedInventory = 0;
 	public static int wantedSelectedInventory = 0;
 
