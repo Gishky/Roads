@@ -117,7 +117,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 				getHeldBlock().activateAbility(this);
 				if (getHeldBlock().getAbilityTime() > System.currentTimeMillis()) {
 					connection.sendMessage("{action:setCooldown,block:" + heldBlock + ",cooldown:"
-							+ getHeldBlock().getAbilityTime() + "}", true);
+							+ (getHeldBlock().getAbilityTime() - System.currentTimeMillis()) + "}", true);
 				}
 			} else {
 				if (Math.sqrt(Math.pow(mouse.getX(), 2) + Math.pow(mouse.getY(), 2)) <= craftingRange) {

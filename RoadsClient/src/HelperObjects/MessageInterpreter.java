@@ -7,6 +7,7 @@ import GameObjects.OvenEntity;
 import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
+import UDPClient.UDPConnectionEvaluator;
 import UDPClient.UDPMessageListener;
 import Window.Frame;
 import Window.Panel;
@@ -59,7 +60,8 @@ public class MessageInterpreter implements UDPMessageListener {
 	private void setCooldown(JSONObject message) {
 		int id = Integer.parseInt(message.get("block"));
 		if (World.playerInventory[id] != null) {
-			World.playerInventoryCooldown[id] = Long.parseLong(message.get("cooldown"));
+			World.playerInventoryCooldown[id] = System.currentTimeMillis() + Long.parseLong(message.get("cooldown"))
+					- Panel.getServerConnection().getPing();
 		}
 	}
 
