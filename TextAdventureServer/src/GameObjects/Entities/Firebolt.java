@@ -1,5 +1,7 @@
 package GameObjects.Entities;
 
+import java.util.ArrayList;
+
 import GameObjects.World;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
@@ -52,29 +54,32 @@ public class Firebolt extends Entity {
 		double targetx = pos.getX() + velocity[0];
 		double[] castResult = World.getCastResultFirst(pos.getX(), pos.getY(), targetx, targety);
 		if (castResult[0] != -1) {
+			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), castResult[0],
+					castResult[1]);
+			if (!hitEntities.contains(owner))
+				owner = null;
+			for (Entity e : hitEntities) {
+				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
+					((PlayerCharacter) e).receiveDamage(damage);
+					GameMaster.removeEntity(this, false);
+					return false;
+				}
+			}
 			pos.set(castResult[0], castResult[1]);
 			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
 			isGrounded = true;
 		} else {
-			pos.set(targetx, targety);
-		}
-
-		for (Entity e : GameMaster.getEntities()) {
-			if (e.equals(owner)) {
-				if (!hitBox.isHit(e.getHitBox(), e.getPos().getX() - pos.getX(), e.getPos().getY() - pos.getY())) {
-					owner = null;
-				}
-			} else {
-				if (e instanceof PlayerCharacter) {
-					PlayerCharacter p = (PlayerCharacter) e;
-					if (p.getHP() > 0 && hitBox.isHit(p.getHitBox(), p.getPos().getX() - pos.getX(),
-							p.getPos().getY() - pos.getY())) {
-						p.receiveDamage(damage);
-						isGrounded = true;
-						break;
-					}
+			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), targetx, targety);
+			if (!hitEntities.contains(owner))
+				owner = null;
+			for (Entity e : hitEntities) {
+				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
+					((PlayerCharacter) e).receiveDamage(damage);
+					GameMaster.removeEntity(this, false);
+					return false;
 				}
 			}
+			pos.set(targetx, targety);
 		}
 		return true;
 	}

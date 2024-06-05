@@ -1,56 +1,70 @@
 package HelperObjects;
 
+import java.util.ArrayList;
+
+import GameObjects.Entities.Entity;
+import Server.GameMaster;
+
 public class Hitbox {
-	private boolean isSquare;
-	private double radius; // halbe seitenlänge bei square
+
+	private double radius;
 
 	public Hitbox(boolean isSquare, double radius) {
 		this.radius = radius;
-		this.isSquare = isSquare;
 	}
 
-	public boolean isHit(Hitbox checkBox, double xOffset, double yOffset) {
-		double x = Math.abs(xOffset);
-		double y = Math.abs(yOffset);
-		if (isSquare) {
-			return squareHit(checkBox, x, y);
-		} else {
-			return circleHit(checkBox, x, y);
+	public ArrayList<Entity> getEntityCollissions(double xFrom, double yFrom, double xTo, double yTo) {
+		ArrayList<Entity> hitEntities = new ArrayList<Entity>();
+		ArrayList<Double> hitEntitiesDistances = new ArrayList<Double>();
+		double xDiff = xTo - xFrom;
+		double yDiff = yTo - yFrom;
+		double angle = Math.atan(yDiff / xDiff);
+		double distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+		if (xDiff < 0) {
+			angle += Math.PI;
 		}
-	}
 
-	private boolean squareHit(Hitbox checkBox, double xOffset, double yOffset) {
-		double radiusSum = radius + checkBox.getRadius();
-		if (checkBox.isSquare) {
-			return xOffset <= radiusSum && yOffset <= radiusSum;
-		} else {
-			double cradius = checkBox.getRadius();
-			return checkOverlap(cradius, 0, 0, xOffset - radius / 2, yOffset - radius / 2, xOffset + radius / 2,
-					yOffset + radius / 2);
+		for (Entity e : GameMaster.getEntities()) {
+			if (e.getHitBox() == this)
+				continue;
+			xDiff = e.getPos().getY() - xFrom;
+			yDiff = e.getPos().getX() - yFrom;
+			double entityDistance = Math
+					.sqrt(Math.pow(e.getPos().getX() - xFrom, 2) + Math.pow(e.getPos().getY() - yFrom, 2));
+			if (entityDistance >= distance + radius + e.getHitBox().getRadius())
+				continue;
+
+			double maxAngleDiff = Math.atan((radius + e.getHitBox().getRadius()) / entityDistance);
+
+			xDiff = e.getPos().getY() - xFrom;
+			yDiff = e.getPos().getX() - yFrom;
+			double entityAngle = Math.atan(yDiff / xDiff);
+			if (xDiff < 0) {
+				entityAngle += Math.PI;
+			}
+			double angleDiff = (angle - entityAngle + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+
+			if (angleDiff < maxAngleDiff) {
+				double gamma = Math.asin(distance * Math.sin(angleDiff) / (radius + e.getHitBox().getRadius()))
+						+ Math.PI / 2;
+				double alpha = 180 - gamma - angleDiff;
+				double hitDistance = Math.sin(alpha) * distance / Math.sin(gamma);
+				if (distance >= hitDistance) {
+					for (int i = 0; i <= hitEntitiesDistances.size(); i++) {
+						if (i == hitEntitiesDistances.size()) {
+							hitEntitiesDistances.add(hitDistance);
+							hitEntities.add(e);
+							break;
+						} else if (hitEntitiesDistances.get(i) > hitDistance) {
+							hitEntitiesDistances.add(i, hitDistance);
+							hitEntities.add(i, e);
+							break;
+						}
+					}
+				}
+			}
 		}
-	}
-
-	private boolean circleHit(Hitbox checkBox, double xOffset, double yOffset) {
-		if (checkBox.isSquare) {
-			double sradius = checkBox.getRadius();
-			return checkOverlap(radius, 0, 0, xOffset - sradius / 2, yOffset - sradius / 2, xOffset + sradius / 2,
-					yOffset + sradius / 2);
-		} else {
-			return Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2)) <= radius + checkBox.getRadius();
-		}
-	}
-
-	private boolean checkOverlap(double R, double Xc, double Yc, double X1, double Y1, double X2, double Y2) {
-		double Xn = Math.max(X1, Math.min(Xc, X2));
-		double Yn = Math.max(Y1, Math.min(Yc, Y2));
-
-		double Dx = Xn - Xc;
-		double Dy = Yn - Yc;
-		return (Dx * Dx + Dy * Dy) <= R * R;
-	}
-
-	public boolean isSquare() {
-		return isSquare;
+		return hitEntities;
 	}
 
 	public double getRadius() {
