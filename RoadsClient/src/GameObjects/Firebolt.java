@@ -1,5 +1,6 @@
 package GameObjects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -12,6 +13,7 @@ import Window.Panel;
 public class Firebolt extends Entity {
 
 	private Block colourBlock;
+	private int size;
 
 	public Firebolt(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
@@ -19,12 +21,14 @@ public class Firebolt extends Entity {
 
 		lastx = pos.getX();
 		lasty = pos.getY();
+		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
 	}
 
 	public void updateEntity(JSONObject entity) {
 		pos.setX(entity.get("x"));
 		pos.setY(entity.get("y"));
 		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
+		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
 	}
 
 	private double lastx, lasty;
@@ -60,6 +64,10 @@ public class Firebolt extends Entity {
 
 		lastx = pos.getX();
 		lasty = pos.getY();
+
+		g.setColor(colourBlock.getColor());
+		g.fillOval((int) pos.getX() - size / 2 - cameraX + Panel.windowWidth / 2,
+				(int) pos.getY() - size / 2 - cameraY + Panel.windowHeight / 2, size, size);
 
 		super.draw(g, cameraX, cameraY);
 	}

@@ -42,16 +42,12 @@ public class GrassCrawler extends Entity {
 		double targetx = pos.getX() + velocity[0];
 		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
 		if (castResult[0] != -1) {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), castResult[0],
-					castResult[1]);
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
+					e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				GameMaster.removeEntity(this, false);
+				return false;
 			}
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
@@ -69,16 +65,12 @@ public class GrassCrawler extends Entity {
 					velocity[1] = 0;
 			}
 		} else {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), targetx,
-					targety);
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
+					e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				GameMaster.removeEntity(this, false);
+				return false;
 			}
 			isGrounded = false;
 			pos.set(targetx, targety);
@@ -87,29 +79,22 @@ public class GrassCrawler extends Entity {
 		double target = pos.getX() + speed * (goLeft ? -1 : 1);
 		castResult = World.getCastResultFirst(pos.getX(), pos.getY(), target, pos.getY());
 		if (castResult[0] == -1) {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), target, pos.getY());
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), target, pos.getY(),
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
+					e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				GameMaster.removeEntity(this, false);
+				return false;
 			}
 			pos.setX(target);
 			return true;
 		} else {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), castResult[0],
-					castResult[1]);
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], pos.getY(),
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
+					e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				GameMaster.removeEntity(this, false);
+				return false;
 			}
 			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
 			GameMaster.removeEntity(this, false);
@@ -124,6 +109,7 @@ public class GrassCrawler extends Entity {
 		json.put("x", String.format("%.4f", pos.getX()));
 		json.put("y", String.format("%.4f", pos.getY()));
 		json.put("colourBlock", "" + colourBlockID);
+		json.put("size", "" + hitBox.getRadius());
 		return json.getJSON();
 	}
 }

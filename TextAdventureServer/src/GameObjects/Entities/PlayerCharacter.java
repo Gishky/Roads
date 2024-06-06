@@ -307,6 +307,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		json.put("breakCount", "" + breakCount);
 		json.put("hp%", "" + getHPPercentile());
 		json.put("name", username);
+		json.put("size", "" + hitBox.getRadius());
 		return json.getJSON();
 	}
 

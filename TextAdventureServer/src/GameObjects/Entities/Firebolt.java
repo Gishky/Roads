@@ -54,30 +54,23 @@ public class Firebolt extends Entity {
 		double targetx = pos.getX() + velocity[0];
 		double[] castResult = World.getCastResultFirst(pos.getX(), pos.getY(), targetx, targety);
 		if (castResult[0] != -1) {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), castResult[0],
-					castResult[1]);
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter), e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				isGrounded = true;
+				return true;
 			}
 			pos.set(castResult[0], castResult[1]);
 			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
 			isGrounded = true;
 		} else {
-			ArrayList<Entity> hitEntities = hitBox.getEntityCollissions(pos.getX(), pos.getY(), targetx, targety);
-			if (!hitEntities.contains(owner))
-				owner = null;
-			for (Entity e : hitEntities) {
-				if (!e.equals(owner) && e instanceof PlayerCharacter && ((PlayerCharacter) e).getHP() > 0) {
-					((PlayerCharacter) e).receiveDamage(damage);
-					GameMaster.removeEntity(this, false);
-					return false;
-				}
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
+					e -> (!e.equals(owner) && e instanceof PlayerCharacter), e -> ((PlayerCharacter) e).receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				isGrounded = true;
+				return true;
 			}
 			pos.set(targetx, targety);
 		}
@@ -91,6 +84,7 @@ public class Firebolt extends Entity {
 		json.put("x", String.format("%.4f", pos.getX()));
 		json.put("y", String.format("%.4f", pos.getY()));
 		json.put("colourBlock", "" + colourBlockID);
+		json.put("size", "" + hitBox.getRadius());
 		return json.getJSON();
 	}
 }

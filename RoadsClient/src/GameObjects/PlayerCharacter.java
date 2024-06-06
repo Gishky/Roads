@@ -16,6 +16,7 @@ public class PlayerCharacter extends Entity {
 	protected Block heldBlock;
 	protected int breakCount;
 	protected int HPPercent = 100;
+	private int size;
 
 	public PlayerCharacter(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
@@ -23,6 +24,7 @@ public class PlayerCharacter extends Entity {
 		HPPercent = Integer.parseInt(entity.get("hp%"));
 		heldBlock = Block.getBlockFromID(new JSONObject(entity.get("heldBlock")).get("id"), null);
 		name = entity.get("name");
+		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
 	}
 
 	public void updateEntity(JSONObject json) {
@@ -32,6 +34,7 @@ public class PlayerCharacter extends Entity {
 		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"), null);
 		breakCount = Integer.parseInt(json.get("breakCount"));
 		name = json.get("name");
+		size = (int) (Double.parseDouble(json.get("size")) * Block.size) * 2;
 
 		if (id == World.playerid) {
 			World.cameraX = Double.parseDouble(json.get("x"));
@@ -66,8 +69,8 @@ public class PlayerCharacter extends Entity {
 			g.setColor(heldBlock.getColor().darker());
 		}
 
-		g.fillOval((int) pos.getX() - 5 - cameraX + Panel.windowWidth / 2,
-				(int) pos.getY() - 5 - cameraY + Panel.windowHeight / 2, 10, 10);
+		g.fillOval((int) pos.getX() - size / 2 - cameraX + Panel.windowWidth / 2,
+				(int) pos.getY() - size / 2 - cameraY + Panel.windowHeight / 2, size, size);
 
 		if (breakCount != 0) {
 			int blockx = (int) pos.getX() / Block.size;
