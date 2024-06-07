@@ -38,7 +38,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
 		inventory = new Block[5];
-		hitBox = new Hitbox(false, 0.25);
+		hitBox = new Hitbox(false, 0.15);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
@@ -70,8 +70,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public boolean action() {
-		if (HP < maxHP)
-			HP += 0.05;
 
 		int oldX = (int) pos.getX();
 		int oldY = (int) pos.getY();
@@ -80,6 +78,11 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			return false;
 
 		boolean update = false;
+
+		if (HP < maxHP) {
+			HP += 0.05;
+			update = true;
+		}
 
 		if (keyboard.getKey("" + KeyEvent.VK_A)) {
 			velocity[0] -= accelleration * (velocity[0] > 0 ? 2 : 1) * (isGrounded ? 2 : 1);

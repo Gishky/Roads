@@ -85,8 +85,6 @@ public class Entity {
 		return false;
 	}
 
-	
-
 	public int getId() {
 		return id;
 	}
@@ -94,7 +92,6 @@ public class Entity {
 	public static int getNextID() {
 		return count;
 	}
-
 
 	public Hitbox getHitBox() {
 		return hitBox;
@@ -118,5 +115,13 @@ public class Entity {
 
 	public String toJSON() {
 		return "";
+	}
+
+	public double getX() {
+		return pos.getX();
+	}
+
+	public double getY() {
+		return pos.getY();
 	}
 }

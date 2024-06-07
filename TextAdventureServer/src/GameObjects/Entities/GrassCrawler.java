@@ -1,7 +1,5 @@
 package GameObjects.Entities;
 
-import java.util.ArrayList;
-
 import GameObjects.World;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
@@ -19,7 +17,7 @@ public class GrassCrawler extends Entity {
 
 	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner, int colourBlockID) {
 		pos = initialPosition;
-		hitBox = new Hitbox(false, 0.15);
+		hitBox = new Hitbox(false, 0.1);
 		velocity = initialVelocity;
 		goLeft = initialVelocity[0] < 0;
 		this.owner = owner;

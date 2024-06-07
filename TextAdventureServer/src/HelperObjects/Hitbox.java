@@ -37,10 +37,9 @@ public class Hitbox {
 
 			xDiff = e.getPos().getX() - xFrom;
 			yDiff = e.getPos().getY() - yFrom;
-			double entityDistance = Math
-					.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+			double entityDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
-			if (currentDistance != -1 && entityDistance - radSum > currentDistance) {
+			if (entityDistance > distance || (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
 				continue;
 			}
 
@@ -60,7 +59,6 @@ public class Hitbox {
 			double hitDistance = Math.sin(gamma) * radSum / sinangle;
 
 			if (distance >= hitDistance && (currentDistance == -1 || hitDistance < currentDistance)) {
-				System.out.println(gamma + "/" + angleDiff);
 				currentDistance = hitDistance;
 				hit = e;
 			}

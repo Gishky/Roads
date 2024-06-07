@@ -34,4 +34,10 @@ public class Position {
 		this.y = y;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return (x + "/" + y);
+	}
+
 }

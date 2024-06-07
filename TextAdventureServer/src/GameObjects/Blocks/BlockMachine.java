@@ -47,6 +47,10 @@ public class BlockMachine extends Block {
 			diry = (e.getMousePosition().getY() > 0 ? 1 : -1);
 			dirx = 0;
 		}
+		if (World.getBlock((int) e.getPos().getX() + dirx, (int) e.getPos().getY() + diry).isBlocksMovement())
+			if (pushBlock((int) e.getPos().getX() + dirx, (int) e.getPos().getY() + diry, 100)) {
+				World.setBlock((int) e.getPos().getX() + dirx, (int) e.getPos().getY() + diry, new BlockAir());
+			}
 		e.updateInventory();
 	}
 
@@ -64,6 +68,10 @@ public class BlockMachine extends Block {
 		push = true;
 		scheduleUpdate();
 		GameMaster.sendToAll("{action:activate,x:" + x + ",y:" + y + "}", true);
+	}
+
+	protected int getAbilityCooldown() {
+		return 1000;
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package GameObjects.Entities;
 
-import java.util.ArrayList;
-
 import GameObjects.World;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
@@ -21,7 +19,7 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.025;
 		isGrounded = false;
 		drag = 1.000005;
-		hitBox = new Hitbox(false, 0.25);
+		hitBox = new Hitbox(false, 0.1);
 		this.owner = owner;
 		this.colourBlockID = colourBlockID;
 		this.damage = damage;
@@ -34,7 +32,7 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.025;
 		isGrounded = false;
 		drag = 1.000005;
-		hitBox = new Hitbox(false, 0.25);
+		hitBox = new Hitbox(false, 0.1);
 		this.owner = owner;
 		this.colourBlockID = colourBlockID;
 		createEntity();
