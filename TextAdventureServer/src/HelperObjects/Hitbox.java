@@ -18,7 +18,6 @@ public class Hitbox {
 			Consumer<Entity> consequence) {
 		Entity hit = null;
 		double currentDistance = -1;
-		double hitangle = 0;
 
 		double xDiff = xTo - xFrom;
 		double yDiff = yTo - yFrom;
@@ -36,22 +35,20 @@ public class Hitbox {
 				continue;
 			}
 
-			xDiff = e.getPos().getY() - xFrom;
-			yDiff = e.getPos().getX() - yFrom;
+			xDiff = e.getPos().getX() - xFrom;
+			yDiff = e.getPos().getY() - yFrom;
 			double entityDistance = Math
-					.sqrt(Math.pow(e.getPos().getX() - xFrom, 2) + Math.pow(e.getPos().getY() - yFrom, 2));
+					.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
 			if (currentDistance != -1 && entityDistance - radSum > currentDistance) {
 				continue;
 			}
-			System.out.println("got here");
 
 			double entityAngle = Math.atan(yDiff / xDiff);
 			if (xDiff < 0) {
 				entityAngle += Math.PI;
 			}
-			double angleDiff = (angle - entityAngle + Math.PI * 3) % (Math.PI * 2) - Math.PI;
-
+			double angleDiff = Math.abs(entityAngle - angle);
 			double sinangle = Math.sin(angleDiff);
 
 			double c = sinangle * entityDistance / radSum;
@@ -63,18 +60,16 @@ public class Hitbox {
 			double hitDistance = Math.sin(gamma) * radSum / sinangle;
 
 			if (distance >= hitDistance && (currentDistance == -1 || hitDistance < currentDistance)) {
-				System.out.println("hit");
+				System.out.println(gamma + "/" + angleDiff);
 				currentDistance = hitDistance;
-				hitangle = entityAngle;
 				hit = e;
 			}
 		}
 		double[] result = { -1, -1 };
 		if (currentDistance != -1) {
-			System.out.println("consuming");
 			consequence.accept(hit);
-			result[0] = xFrom + Math.cos(hitangle) * currentDistance;
-			result[1] = yFrom + Math.sin(hitangle) * currentDistance;
+			result[0] = xFrom + Math.cos(angle) * currentDistance;
+			result[1] = yFrom + Math.sin(angle) * currentDistance;
 		}
 		return result;
 	}
