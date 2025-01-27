@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class AdminConsole extends Thread {
 		LocalTime time = LocalTime.now();
 		synchronized (log) {
 			if (!supressTime)
-				s = time.getHour() + ":" + time.getMinute() + "-" + s;
+				s = LocalDate.now().toString() + " " + time.getHour() + ":" + time.getMinute() + "-" + s;
 			System.out.println(s);
 			log.add(s);
 			synchronized (connections) {

@@ -49,7 +49,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("80.109.230.74", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("gishky.duckdns.org", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			String username = System.getProperty("user.name");
 			connection.sendMessage("username;" + username, true);
@@ -274,9 +274,18 @@ public class Panel extends JPanel
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (pressedKeys.contains(17)) {
+			Block.size -= e.getWheelRotation() * 10;
+			if (Block.size <= 10)
+				Block.size = 10;
+			if (Block.size >= 100)
+				Block.size = 100;
+			return;
+		}
 		World.wantedSelectedInventory += e.getWheelRotation();
 		World.wantedSelectedInventory = Math.min(4, Math.max(0, World.wantedSelectedInventory));
 		if (World.wantedSelectedInventory != World.selectedInventory)
 			connection.sendMessage("scroll;" + World.wantedSelectedInventory, true);
+
 	}
 }

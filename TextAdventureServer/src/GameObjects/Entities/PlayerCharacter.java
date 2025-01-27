@@ -258,6 +258,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void scrollInventory(String string) {
+		if(keyboard.getKey("" + KeyEvent.VK_CONTROL)) {
+			return;
+		}
 		try {
 			heldBlock = Integer.parseInt(string);
 
