@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import GameObjects.Blocks.Block;
+import GameObjects.Blocks.BlockFogged;
 import HelperObjects.Particle;
 import Window.Panel;
 
@@ -47,6 +48,8 @@ public class World {
 					world[x][y].draw(x, y, g, cameraX, cameraY);
 				} else {
 					Panel.getServerConnection().sendMessage("block;" + x + ";" + y, true);
+					world[x][y] = new BlockFogged();
+					world[x][y].draw(x, y, g, cameraX, cameraY);
 				}
 			}
 		}
@@ -65,7 +68,7 @@ public class World {
 		if (world == null)
 			return;
 
-		if (World.getWorld()[x][y] != null && !block.getClass().equals(world[x][y].getClass())) {
+		if (World.getWorld()[x][y] != null && !(World.getWorld()[x][y] instanceof BlockFogged) && !block.getClass().equals(world[x][y].getClass())) {
 			Random r = new Random();
 			Color c = World.getWorld()[x][y].getColor().brighter();
 			for (int i = 0; i < 50; i++) {

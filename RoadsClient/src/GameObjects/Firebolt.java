@@ -1,6 +1,5 @@
 package GameObjects;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -25,8 +24,7 @@ public class Firebolt extends Entity {
 	}
 
 	public void updateEntity(JSONObject entity) {
-		pos.setX(entity.get("x"));
-		pos.setY(entity.get("y"));
+		pos.set(entity.get("x"),entity.get("y"));
 		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
 		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
 	}

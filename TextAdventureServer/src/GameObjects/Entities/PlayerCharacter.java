@@ -90,6 +90,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (keyboard.getKey("" + KeyEvent.VK_D)) {
 			velocity[0] += accelleration * (velocity[0] < 0 ? 2 : 1) * (isGrounded ? 2 : 1);
 		}
+		if(isGrounded && !keyboard.getKey("" + KeyEvent.VK_D) && !keyboard.getKey("" + KeyEvent.VK_A)) {
+			velocity[0] /= World.getWorld()[(int) pos.getX()][(int) pos.getY() + 1].getFriction();
+		}
 		if (keyboard.getKey("" + KeyEvent.VK_W)) {
 			if (isGrounded)
 				velocity[1] = -jumpforce;

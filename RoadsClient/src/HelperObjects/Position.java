@@ -1,6 +1,7 @@
 package HelperObjects;
 
 import GameObjects.Blocks.Block;
+import Window.Panel;
 
 public class Position {
 	private double x, y;
