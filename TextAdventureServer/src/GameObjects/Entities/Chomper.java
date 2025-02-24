@@ -55,6 +55,7 @@ public class Chomper extends Entity{
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
 					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}
@@ -77,6 +78,7 @@ public class Chomper extends Entity{
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
 					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}

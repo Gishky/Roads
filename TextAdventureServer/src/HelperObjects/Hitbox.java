@@ -21,11 +21,8 @@ public class Hitbox {
 
 		double xDiff = xTo - xFrom;
 		double yDiff = yTo - yFrom;
-		double angle = Math.atan(yDiff / xDiff);
+		double angle = Math.atan2(yDiff,xDiff);
 		double distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
-		if (xDiff < 0) {
-			angle += Math.PI;
-		}
 
 		for (Entity e : GameMaster.getEntities()) {
 			if (e.getHitBox() == this)
@@ -39,25 +36,18 @@ public class Hitbox {
 			yDiff = e.getPos().getY() - yFrom;
 			double entityDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
-			if (entityDistance - radSum > distance
-					|| (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
+			if (entityDistance - radSum > distance || (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
 				continue;
 			}
 
-			double entityAngle = Math.atan(yDiff / xDiff);
-			if (xDiff < 0) {
-				entityAngle += Math.PI;
-			}
+			double entityAngle = Math.atan2(yDiff, xDiff);
 			double angleDiff = Math.abs(entityAngle - angle);
-			double sinangle = Math.sin(angleDiff);
+			double sinAngleDiff = Math.sin(angleDiff);
 
-			double c = sinangle * entityDistance / radSum;
-			if (c < -1 || 1 < c) {
-				continue;
-			}
+			double sinBeta = sinAngleDiff * entityDistance / radSum;
 
-			double gamma = Math.asin(c) - angleDiff;
-			double hitDistance = Math.sin(gamma) * radSum / sinangle;
+			double beta = Math.asin(sinBeta);
+			double hitDistance = entityDistance * Math.sin(180 - angleDiff - beta) / Math.sin(beta);
 
 			if (distance >= hitDistance && (currentDistance == -1 || hitDistance < currentDistance)) {
 				currentDistance = hitDistance;

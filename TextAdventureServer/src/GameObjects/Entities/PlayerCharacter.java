@@ -37,7 +37,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
 		inventory = new Block[5];
-		hitBox = new Hitbox(false, 1);
+		hitBox = new Hitbox(false, 0.15);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
