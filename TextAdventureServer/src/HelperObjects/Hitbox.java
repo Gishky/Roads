@@ -39,7 +39,8 @@ public class Hitbox {
 			yDiff = e.getPos().getY() - yFrom;
 			double entityDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
-			if (entityDistance > distance || (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
+			if (entityDistance - radSum > distance
+					|| (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
 				continue;
 			}
 
