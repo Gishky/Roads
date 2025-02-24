@@ -30,12 +30,11 @@ public class Entity {
 
 	public Entity(Position pos) {
 		this.pos = pos;
-		id = count++;
-		GameMaster.addEntity(this);
+		createEntity();
 	}
 
 	public Entity() {
-	};
+	}
 
 	public void createEntity() {
 		id = count++;

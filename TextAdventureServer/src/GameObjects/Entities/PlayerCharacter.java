@@ -2,6 +2,7 @@ package GameObjects.Entities;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Random;
 
 import AdminConsole.AdminConsole;
@@ -190,10 +191,23 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		return update;
 	}
 
+	private ArrayList<Entity> spawnedEnemies = new ArrayList<Entity>();
 	private void spawnEnemies() {
+		if(spawnedEnemies.size() >= 20)
+			return;
+		
 		Random r = new Random();
-		if(r.nextInt(50) == 1) {
-			GameMaster.addEntity(new Chomper(this));
+		if(r.nextInt(10) == 1) {
+			Chomper chomp = new Chomper(this);
+			spawnedEnemies.add(chomp);
+			GameMaster.addEntity(chomp);
+		}
+		
+		for(int i = 0;i<spawnedEnemies.size();i++) {
+			if(spawnedEnemies.get(i).isDeleted()) {
+				spawnedEnemies.remove(i);
+				i--;
+			}
 		}
 	}
 

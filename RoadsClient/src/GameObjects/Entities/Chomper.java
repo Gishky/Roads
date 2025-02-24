@@ -1,6 +1,7 @@
 package GameObjects.Entities;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -62,6 +63,11 @@ public class Chomper extends Entity {
 				Panel.addParticle(p);
 			}
 		}
+		g.setColor(Color.black);
+		g.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		g.drawString(""+id,
+				(int) pos.getX() - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(id+"") / 2,
+				(int) pos.getY() - cameraY + Panel.windowHeight / 2 - 15);
 		super.draw(g, cameraX, cameraY);
 	}
 }

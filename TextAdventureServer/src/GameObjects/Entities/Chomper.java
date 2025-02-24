@@ -10,18 +10,18 @@ import Server.GameMaster;
 
 public class Chomper extends Entity{
 
-	private int damage = 1;
+	private int damage = 20;
 	private double speed = 0.01;
-	private PlayerCharacter targetPlayer;
+	private boolean moveLeft;
 	
-	public Chomper(PlayerCharacter targetPlayer) {
+	public Chomper(PlayerCharacter player) {
 		Random r = new Random();
 		double x = r.nextDouble()*30;
 		x+=5;
 		if(r.nextBoolean()) {
 			x*=-1;
 		}
-		x+=targetPlayer.getX();
+		x+=player.getX();
 		if(x < 0 || x > World.getWorld().length) {
 			x = 0;
 			deleteEntity();
@@ -29,16 +29,17 @@ public class Chomper extends Entity{
 		Position pos = new Position(x, 0);
 		
 		this.pos = pos;
-		id = count++;
-		GameMaster.addEntity(this);
-		this.targetPlayer = targetPlayer;
+		moveLeft = pos.getX()>player.getX();
 		hitBox = new Hitbox(false, 0.2);
 		maxHP = 5;
 		HP = maxHP;
+		createEntity();
 	}
 	
 	@Override
 	public boolean action() {
+		if(maxHPisZero())
+		System.out.println("error:"+id);
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
 				|| pos.getY() > World.getWorld()[0].length) {
 			GameMaster.removeEntity(this, false);
@@ -60,9 +61,10 @@ public class Chomper extends Entity{
 				return false;
 			}
 			isGrounded = castResult[1] < targety;
-			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
+			if (castResult[0] != targetx) {
 				velocity[0] = 0;
 				velocity[1] = 0;
+				moveLeft = !moveLeft;
 			} else {
 				if ((int) pos.getX() != (int) castResult[0]) {
 				}
@@ -74,6 +76,7 @@ public class Chomper extends Entity{
 				if (Math.abs(velocity[1]) < 0.001)
 					velocity[1] = 0;
 			}
+			pos.set(castResult[0], castResult[1]);
 		} else {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
 					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
@@ -85,30 +88,9 @@ public class Chomper extends Entity{
 			isGrounded = false;
 			pos.set(targetx, targety);
 		}
-
-		double target = pos.getX() + speed * (pos.getX()>targetPlayer.getX() ? -1 : 1);
-		castResult = World.getCastResultFirst(pos.getX(), pos.getY(), target, pos.getY());
-		if (castResult[0] == -1) {
-			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), target, pos.getY(),
-					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
-			if (hit[0] != -1) {
-				pos.set(hit[0], hit[1]);
-				GameMaster.removeEntity(this, false);
-				return false;
-			}
-			pos.setX(target);
-			return true;
-		} else {
-			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], pos.getY(),
-					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
-			if (hit[0] != -1) {
-				pos.set(hit[0], hit[1]);
-				GameMaster.removeEntity(this, false);
-				return false;
-			}
-			GameMaster.removeEntity(this, false);
-			return false;
-		}
+		if(isGrounded)
+			velocity[0] += speed * (moveLeft ? -1 : 1);
+		return true;
 	}
 	
 	public String toJSON() {

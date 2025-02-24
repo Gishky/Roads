@@ -56,7 +56,9 @@ public class GameMaster implements ActionListener {
 
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
-			if (entity.action()) {
+			if (entity.isDeleted())
+				entities.remove(i);
+			else if (entity.action()) {
 				sendToAll("{action:updateEntity,entity:" + entity.toJSON() + "}", false);
 			}
 		}
@@ -81,8 +83,7 @@ public class GameMaster implements ActionListener {
 	public static void removeEntity(Entity e, Boolean silent) {
 		master.entities.remove(e);
 		e.deleteEntity();
-		// System.out.println("removing: " + e.getId());
-		if(!silent)
+		if (!silent)
 			sendToAll("{action:removeEntity,entity:{id:" + e.getId() + "}}", true);
 	}
 
