@@ -1,10 +1,11 @@
-package GameObjects;
+package GameObjects.Entities;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.World;
 import GameObjects.Blocks.Block;
 import HelperObjects.JSONObject;
 import HelperObjects.Particle;
@@ -15,8 +16,6 @@ public class PlayerCharacter extends Entity {
 	private String name = "";
 	protected Block heldBlock;
 	protected int breakCount;
-	protected int HPPercent = 100;
-	private int size;
 
 	public PlayerCharacter(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
@@ -48,28 +47,22 @@ public class PlayerCharacter extends Entity {
 			cameraY += World.cameraY * Block.size - cameraY;
 		}
 
-		if (HPPercent != 100) {
-			int HPBarLength = 20;
-			int HPBarHeight = 5;
-			int HPBarOffset = -10;
-
-			g.setColor(Color.gray);
-			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2, HPBarLength,
-					HPBarHeight);
-			g.setColor(Color.green);
-			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					(int) pos.getY() - cameraY - HPBarHeight / 2 + HPBarOffset + Panel.windowHeight / 2,
-					HPBarLength * HPPercent / 100, HPBarHeight);
-		}
-
 		g.setColor(Color.blue.brighter().brighter());
 		if (heldBlock != null) {
 			g.setColor(heldBlock.getColor().darker());
 		}
 
-		g.fillOval((int) pos.getX() - size / 2 - cameraX + Panel.windowWidth / 2,
-				(int) pos.getY() - size / 2 - cameraY + Panel.windowHeight / 2, size, size);
+		int rad = (int) Math.round(Block.size * 0.06);
+		if(rad ==0)
+			rad = 1;
+		for (double x = -size / 2; x < size / 2; x += rad) {
+			double diff = Math.sin(Math.acos(x / (size / 2))) * (size / 2);
+			for (double y = (int) (-diff); y < diff; y += rad) {
+				g.fillRect((int) (pos.getX() - x - rad/2) - cameraX + Panel.windowWidth / 2,
+						(int) (pos.getY() - y - rad/2) - cameraY + Panel.windowHeight / 2,
+						rad, rad);
+			}
+		}
 
 		if (breakCount != 0) {
 			int blockx = (int) pos.getX() / Block.size;

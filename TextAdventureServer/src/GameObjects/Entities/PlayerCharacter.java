@@ -2,6 +2,7 @@ package GameObjects.Entities;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import AdminConsole.AdminConsole;
 import Crafting.CraftingHandler;
@@ -31,14 +32,12 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private int heldBlock = 0;
 	private Block[] inventory;
 	private int breakCount = 0;
-	private int maxHP = 0;
-	private double HP;
 
 	public PlayerCharacter() {
 		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
 		inventory = new Block[5];
-		hitBox = new Hitbox(false, 0.15);
+		hitBox = new Hitbox(false, 1);
 		keyboard = new VirtualKeyboard();
 		maxHP = 100;
 		HP = maxHP;
@@ -185,17 +184,17 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (oldX != (int) pos.getX() || oldY != (int) pos.getY()) {
 			breakCount = 0;
 		}
+		
+		spawnEnemies();
 
 		return update;
 	}
 
-	public void receiveDamage(int damage) {
-		HP -= damage;
-		if (HP <= 0) {
-			GameMaster.removeEntity(this, false);
-			return;
+	private void spawnEnemies() {
+		Random r = new Random();
+		if(r.nextInt(50) == 1) {
+			GameMaster.addEntity(new Chomper(this));
 		}
-		actionUpdateOverride = true;
 	}
 
 	public UDPClientConnection getConnection() {
@@ -222,16 +221,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (inventory == null || inventory[slot] == null)
 			return new Block();
 		return inventory[slot];
-	}
-
-	private int getHPPercentile() {
-		if (maxHP == 0)
-			return 100;
-		return (int) HP * 100 / maxHP;
-	}
-
-	public double getHP() {
-		return HP;
 	}
 
 	@Override

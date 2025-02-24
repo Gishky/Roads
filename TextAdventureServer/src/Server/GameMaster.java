@@ -80,6 +80,7 @@ public class GameMaster implements ActionListener {
 
 	public static void removeEntity(Entity e, Boolean silent) {
 		master.entities.remove(e);
+		e.deleteEntity();
 		// System.out.println("removing: " + e.getId());
 		if(!silent)
 			sendToAll("{action:removeEntity,entity:{id:" + e.getId() + "}}", true);

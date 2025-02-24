@@ -41,9 +41,9 @@ public class GrassCrawler extends Entity {
 		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
 		if (castResult[0] != -1) {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
-					e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}
@@ -64,9 +64,9 @@ public class GrassCrawler extends Entity {
 			}
 		} else {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
-					e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}
@@ -78,9 +78,9 @@ public class GrassCrawler extends Entity {
 		castResult = World.getCastResultFirst(pos.getX(), pos.getY(), target, pos.getY());
 		if (castResult[0] == -1) {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), target, pos.getY(),
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
-					e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}
@@ -88,9 +88,9 @@ public class GrassCrawler extends Entity {
 			return true;
 		} else {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], pos.getY(),
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter),
-					e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return false;
 			}

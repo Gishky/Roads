@@ -1,13 +1,8 @@
 package HelperObjects;
 
-import GameObjects.Entity;
-import GameObjects.Firebolt;
-import GameObjects.OvenAbilityJet;
-import GameObjects.OvenEntity;
-import GameObjects.PlayerCharacter;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
-import UDPClient.UDPConnectionEvaluator;
+import GameObjects.Entities.*;
 import UDPClient.UDPMessageListener;
 import Window.Frame;
 import Window.Panel;
@@ -144,6 +139,9 @@ public class MessageInterpreter implements UDPMessageListener {
 			break;
 		case "ovenAbility":
 			Panel.getEntities().add(new OvenAbilityJet(entity));
+			break;
+		case "chomper":
+			Panel.getEntities().add(new Chomper(entity));
 			break;
 		}
 	}

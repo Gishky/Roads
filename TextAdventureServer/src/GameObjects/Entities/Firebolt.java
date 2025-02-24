@@ -53,7 +53,7 @@ public class Firebolt extends Entity {
 		double[] castResult = World.getCastResultFirst(pos.getX(), pos.getY(), targetx, targety);
 		if (castResult[0] != -1) {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter), e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				isGrounded = true;
@@ -64,7 +64,7 @@ public class Firebolt extends Entity {
 			isGrounded = true;
 		} else {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-					e -> (!e.equals(owner) && e instanceof PlayerCharacter), e -> ((PlayerCharacter) e).receiveDamage(damage));
+					e -> (!e.equals(owner) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				isGrounded = true;

@@ -1,5 +1,6 @@
-package GameObjects;
+package GameObjects.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import HelperObjects.JSONObject;
@@ -13,6 +14,8 @@ public class Entity {
 	protected Position pos;
 
 	protected boolean delete = false;
+	protected int HPPercent = 100;
+	protected int size;
 
 	public Entity(String id, String x, String y) {
 		this.id = Integer.parseInt(id);
@@ -38,6 +41,19 @@ public class Entity {
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		if (delete) {
 			Panel.removeEntity(this);
+		}
+		if (HPPercent != 100) {
+			int HPBarLength = 20;
+			int HPBarHeight = 5;
+
+			g.setColor(Color.gray);
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size, HPBarLength,
+					HPBarHeight);
+			g.setColor(Color.green);
+			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
+					HPBarLength * HPPercent / 100, HPBarHeight);
 		}
 	}
 

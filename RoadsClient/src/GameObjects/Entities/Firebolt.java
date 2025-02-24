@@ -1,4 +1,4 @@
-package GameObjects;
+package GameObjects.Entities;
 
 import java.awt.Graphics2D;
 import java.util.Random;

@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import GameObjects.Entity;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
+import GameObjects.Entities.Entity;
 import HelperObjects.MessageInterpreter;
 import HelperObjects.Particle;
 import UDPClient.UDPServerConnection;
