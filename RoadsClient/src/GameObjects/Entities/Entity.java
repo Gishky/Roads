@@ -3,6 +3,7 @@ package GameObjects.Entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import GameObjects.Blocks.Block;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Window.Panel;
@@ -14,8 +15,8 @@ public class Entity {
 	protected Position pos;
 
 	protected boolean delete = false;
-	protected int HPPercent = 100;
-	protected int size;
+	protected float HPPercent = 100;
+	protected double size;
 
 	public Entity(String id, String x, String y) {
 		this.id = Integer.parseInt(id);
@@ -42,7 +43,9 @@ public class Entity {
 		if (delete) {
 			Panel.removeEntity(this);
 		}
-		if (HPPercent != 100) {
+
+		int size = (int) (this.size * Block.size);
+		if (HPPercent < 100) {
 			int HPBarLength = 20;
 			int HPBarHeight = 5;
 
@@ -53,7 +56,7 @@ public class Entity {
 			g.setColor(Color.green);
 			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
 					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
-					HPBarLength * HPPercent / 100, HPBarHeight);
+					(int) (HPBarLength * HPPercent / 100), HPBarHeight);
 		}
 	}
 

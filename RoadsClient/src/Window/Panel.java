@@ -32,7 +32,7 @@ public class Panel extends JPanel
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
-	private String version = "v1.8";
+	private String version = "v1.9";
 
 	public static int windowWidth, windowHeight;
 
@@ -118,34 +118,35 @@ public class Panel extends JPanel
 
 	private void drawInventory(Graphics2D g) {
 		g.setColor(Color.gray.brighter());
-		g.fillRect((int) (windowWidth - Block.size * 2.4), (int) (windowHeight / 2 - Block.size * 5.6),
-				(int) (Block.size * 2.4), (int) (Block.size * 11.2));
+		int size = 30;
+		g.fillRect((int) (windowWidth - size * 2.4), (int) (windowHeight / 2 - size * 5.6),
+				(int) (size * 2.4), (int) (size * 11.2));
 
 		g.setColor(Color.gray.brighter().brighter());
-		g.drawRect((int) (windowWidth - Block.size * 2.4), (int) (windowHeight / 2 - Block.size * 5.6),
-				(int) (Block.size * 2.4), (int) (Block.size * 11.2));
+		g.drawRect((int) (windowWidth - size * 2.4), (int) (windowHeight / 2 - size * 5.6),
+				(int) (size * 2.4), (int) (size * 11.2));
 
 		for (int i = 0; i < World.playerInventory.length; i++) {
 			g.setColor(Color.gray);
-			g.fillRect((int) (windowWidth - Block.size * 2.2),
-					(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2, Block.size * 2);
+			g.fillRect((int) (windowWidth - size * 2.2),
+					(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2, size * 2);
 			g.setColor(Color.gray.brighter().brighter());
-			g.drawRect((int) (windowWidth - Block.size * 2.2),
-					(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2, Block.size * 2);
+			g.drawRect((int) (windowWidth - size * 2.2),
+					(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2, size * 2);
 
 			Block b = World.playerInventory[i];
 			if (b != null) {
-				b.drawInventory(g, (int) (windowWidth - Block.size * 2),
-						(int) (windowHeight / 2 - Block.size * 5.2 + Block.size * 2.2 * i), (int) (Block.size * 1.6),
+				b.drawInventory(g, (int) (windowWidth - size * 2),
+						(int) (windowHeight / 2 - size * 5.2 + size * 2.2 * i), (int) (size * 1.6),
 						i == World.selectedInventory, i);
 			}
 
 			if (World.selectedInventory == i) {
 				g.setColor(Color.yellow.brighter());
 				g.setStroke(new BasicStroke(3));
-				g.drawRect((int) (windowWidth - Block.size * 2.2),
-						(int) (windowHeight / 2 - Block.size * 5.4 + Block.size * 2.2 * i), Block.size * 2,
-						Block.size * 2);
+				g.drawRect((int) (windowWidth - size * 2.2),
+						(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2,
+						size * 2);
 				g.setStroke(new BasicStroke(1));
 			}
 		}

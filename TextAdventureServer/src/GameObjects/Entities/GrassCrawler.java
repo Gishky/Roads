@@ -17,7 +17,7 @@ public class GrassCrawler extends Entity {
 
 	public GrassCrawler(Position initialPosition, double[] initialVelocity, Entity owner, int colourBlockID) {
 		pos = initialPosition;
-		hitBox = new Hitbox(false, 0.1);
+		hitBox = new Hitbox(false, 0.15);
 		velocity = initialVelocity;
 		goLeft = initialVelocity[0] < 0;
 		this.owner = owner;
@@ -45,7 +45,9 @@ public class GrassCrawler extends Entity {
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
+			} else {
+				owner = null;
 			}
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
@@ -68,7 +70,9 @@ public class GrassCrawler extends Entity {
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
+			} else {
+				owner = null;
 			}
 			isGrounded = false;
 			pos.set(targetx, targety);
@@ -82,7 +86,9 @@ public class GrassCrawler extends Entity {
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
+			} else {
+				owner = null;
 			}
 			pos.setX(target);
 			return true;
@@ -92,11 +98,13 @@ public class GrassCrawler extends Entity {
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
+			} else {
+				owner = null;
 			}
-			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
+			pos.set(castResult[0], castResult[1]);
 			GameMaster.removeEntity(this, false);
-			return false;
+			return true;
 		}
 	}
 

@@ -16,8 +16,8 @@ public class Chomper extends Entity{
 	
 	public Chomper(PlayerCharacter player) {
 		Random r = new Random();
-		double x = r.nextDouble()*30;
-		x+=5;
+		double x = r.nextDouble()*60;
+		x+=30;
 		if(r.nextBoolean()) {
 			x*=-1;
 		}
@@ -45,10 +45,16 @@ public class Chomper extends Entity{
 			GameMaster.removeEntity(this, false);
 			return false;
 		}
+		
+		if (HP < maxHP) {
+			HP += 0.01;
+			if(HP > maxHP)
+				HP = maxHP;
+		}
 
 		velocity[0] /= drag;
 		velocity[1] /= drag;
-		velocity[1] += fallingaccelleration;
+		velocity[1] += fallingaccelleration/2;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
 		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
@@ -62,9 +68,10 @@ public class Chomper extends Entity{
 			}
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] != targetx) {
-				velocity[0] = 0;
-				velocity[1] = 0;
 				moveLeft = !moveLeft;
+				velocity[0] = 8*speed * (moveLeft ? -1 : 1);
+				velocity[1] = -5*fallingaccelleration;
+				receiveDamage(0.4);
 			} else {
 				if ((int) pos.getX() != (int) castResult[0]) {
 				}
@@ -88,8 +95,7 @@ public class Chomper extends Entity{
 			isGrounded = false;
 			pos.set(targetx, targety);
 		}
-		if(isGrounded)
-			velocity[0] += speed * (moveLeft ? -1 : 1);
+		velocity[0] += speed * (moveLeft ? -1 : 1);
 		return true;
 	}
 	

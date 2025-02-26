@@ -23,7 +23,7 @@ public class BlockGoldChunk extends Block {
 
 		if (block == null)
 			return;
-		
+
 		if (block.get("x") != null)
 			setX(Integer.parseInt(block.get("x")));
 		if (block.get("y") != null)
@@ -33,7 +33,7 @@ public class BlockGoldChunk extends Block {
 	public void activateAbility(PlayerCharacter e) {
 		if (!canAbilityActivate())
 			return;
-		
+
 		for (int i = 0; i < 3; i++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -45,8 +45,8 @@ public class BlockGoldChunk extends Block {
 			fireboltVelocity[0] = Math.cos(angle) * velocityLength;
 			fireboltVelocity[1] = Math.sin(angle) * velocityLength;
 			double[] unitVelocity = { fireboltVelocity[0] / velocityLength, fireboltVelocity[1] / velocityLength };
-			fireboltVelocity[0] = unitVelocity[0] * 4;
-			fireboltVelocity[1] = unitVelocity[1] * 4;
+			fireboltVelocity[0] = unitVelocity[0] / 2;
+			fireboltVelocity[1] = unitVelocity[1] / 2;
 
 			Position fireboltpos = new Position();
 			fireboltpos.set(e.getPos().getX(), e.getPos().getY());

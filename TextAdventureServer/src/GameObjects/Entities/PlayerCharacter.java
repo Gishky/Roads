@@ -81,6 +81,8 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 		if (HP < maxHP) {
 			HP += 0.05;
+			if(HP > maxHP)
+				HP = maxHP;
 			update = true;
 		}
 
@@ -193,7 +195,14 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	private ArrayList<Entity> spawnedEnemies = new ArrayList<Entity>();
 	private void spawnEnemies() {
-		if(spawnedEnemies.size() >= 20)
+		for(int i = 0;i<spawnedEnemies.size();i++) {
+			if(spawnedEnemies.get(i).isDeleted()) {
+				spawnedEnemies.remove(i);
+				i--;
+			}
+		}
+		
+		if(spawnedEnemies.size() >= 10)
 			return;
 		
 		Random r = new Random();
@@ -201,13 +210,6 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			Chomper chomp = new Chomper(this);
 			spawnedEnemies.add(chomp);
 			GameMaster.addEntity(chomp);
-		}
-		
-		for(int i = 0;i<spawnedEnemies.size();i++) {
-			if(spawnedEnemies.get(i).isDeleted()) {
-				spawnedEnemies.remove(i);
-				i--;
-			}
 		}
 	}
 

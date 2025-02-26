@@ -20,13 +20,13 @@ public class Firebolt extends Entity {
 
 		lastx = pos.getX();
 		lasty = pos.getY();
-		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
+		size = (int) (Double.parseDouble(entity.get("size"))) * 2;
 	}
 
 	public void updateEntity(JSONObject entity) {
 		pos.set(entity.get("x"),entity.get("y"));
 		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
-		size = (int) (Double.parseDouble(entity.get("size")) * Block.size) * 2;
+		size = (int) (Double.parseDouble(entity.get("size"))) * 2;
 	}
 
 	private double lastx, lasty;
@@ -45,6 +45,8 @@ public class Firebolt extends Entity {
 
 		if (colourBlock == null)
 			return;
+		
+		int size = this.size * Block.size;
 
 		Random r = new Random();
 		for (int i = 0; i < 5; i++) {

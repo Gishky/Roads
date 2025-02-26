@@ -22,10 +22,10 @@ public class Entity {
 
 	protected boolean isGrounded = false;
 	protected Position mouse;
-	
+
 	protected int maxHP = 0;
 	protected double HP;
-	
+
 	private boolean deleted = false;
 
 	public Entity(Position pos) {
@@ -117,22 +117,22 @@ public class Entity {
 		this.velocity = velocity;
 	}
 
-	public int getHPPercentile() {
+	public float getHPPercentile() {
 		if (maxHP == 0)
 			return 100;
-		return (int) HP * 100 / maxHP;
+		return (float) (HP * 100 / maxHP);
 	}
 
 	public double getHP() {
 		return HP;
 	}
-	
+
 	public boolean maxHPisZero() {
 		return maxHP == 0;
 	}
 
-	public void receiveDamage(int damage) {
-		HP -= damage;
+	public void receiveDamage(double d) {
+		HP -= d;
 		if (HP <= 0) {
 			GameMaster.removeEntity(this, false);
 			return;
@@ -156,7 +156,7 @@ public class Entity {
 		maxHP = 0;
 		deleted = true;
 	}
-	
+
 	public boolean isDeleted() {
 		return deleted;
 	}

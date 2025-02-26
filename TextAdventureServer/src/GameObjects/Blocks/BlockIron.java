@@ -35,7 +35,7 @@ public class BlockIron extends Block {
 		if (!canAbilityActivate())
 			return;
 		
-		for (int c = 0; c < 6; c++) {
+		for (int c = 0; c < 2; c++) {
 			double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 			double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
 			double angle = Math.atan(fireboltVelocity[1] / fireboltVelocity[0]);
@@ -50,8 +50,7 @@ public class BlockIron extends Block {
 
 			Position fireboltpos = new Position();
 			fireboltpos.set(e.getPos().getX(), e.getPos().getY());
-			Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
-			bolt.setFallingAccelleration(0);
+			Firebolt bolt = new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e, 2, true);
 		}
 	}
 

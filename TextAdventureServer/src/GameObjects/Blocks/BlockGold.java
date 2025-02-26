@@ -34,7 +34,6 @@ public class BlockGold extends Block {
 		if (!canAbilityActivate())
 			return;
 		
-		for (int c = 0; c < 2; c++)
 			for (int i = 0; i < 3; i++) {
 				double[] fireboltVelocity = { e.getMousePosition().getX(), e.getMousePosition().getY() };
 				double velocityLength = Math.sqrt(Math.pow(fireboltVelocity[0], 2) + Math.pow(fireboltVelocity[1], 2));
@@ -49,9 +48,11 @@ public class BlockGold extends Block {
 				fireboltVelocity[0] = unitVelocity[0] * 4;
 				fireboltVelocity[1] = unitVelocity[1] * 4;
 
-				Position fireboltpos = new Position();
-				fireboltpos.set(e.getPos().getX(), e.getPos().getY());
-				new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
+				for (int c = 0; c < 2; c++) {
+					Position fireboltpos = new Position();
+					fireboltpos.set(e.getPos().getX(), e.getPos().getY());
+					new Firebolt(fireboltpos, fireboltVelocity, e.getHeldBlock().getId(), e);
+				}
 			}
 	}
 

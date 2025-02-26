@@ -12,6 +12,7 @@ public class Firebolt extends Entity {
 	private int damage = 2;
 	private Entity owner = null;
 	private int colourBlockID;
+	private boolean destructive = false;
 
 	public Firebolt(Position initialPosition, double[] initialVelocity, int colourBlockID, Entity owner, int damage) {
 		pos = initialPosition;
@@ -19,10 +20,24 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.025;
 		isGrounded = false;
 		drag = 1.000005;
-		hitBox = new Hitbox(false, 0.1);
+		hitBox = new Hitbox(false, 0.3);
 		this.owner = owner;
 		this.colourBlockID = colourBlockID;
 		this.damage = damage;
+		createEntity();
+	}
+	
+	public Firebolt(Position initialPosition, double[] initialVelocity, int colourBlockID, Entity owner, int damage, boolean destructive) {
+		pos = initialPosition;
+		this.velocity = initialVelocity;
+		fallingaccelleration = 0.025;
+		isGrounded = false;
+		drag = 1.000005;
+		hitBox = new Hitbox(false, 0.3);
+		this.owner = owner;
+		this.colourBlockID = colourBlockID;
+		this.damage = damage;
+		this.destructive = destructive;
 		createEntity();
 	}
 
@@ -32,7 +47,7 @@ public class Firebolt extends Entity {
 		fallingaccelleration = 0.025;
 		isGrounded = false;
 		drag = 1.000005;
-		hitBox = new Hitbox(false, 0.1);
+		hitBox = new Hitbox(false, 0.3);
 		this.owner = owner;
 		this.colourBlockID = colourBlockID;
 		createEntity();
@@ -60,7 +75,8 @@ public class Firebolt extends Entity {
 				return true;
 			}
 			pos.set(castResult[0], castResult[1]);
-			World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
+			if(destructive)
+				World.setBlock((int) (castResult[2]), (int) (castResult[3]), new BlockAir());
 			isGrounded = true;
 		} else {
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,

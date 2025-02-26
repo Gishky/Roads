@@ -15,16 +15,17 @@ public class Chomper extends Entity {
 	public Chomper(JSONObject json) {
 		super(json.get("id"), json.get("x"), json.get("y"));
 
-		size = (int) (Double.parseDouble(json.get("size")) * Block.size) * 2;
-		HPPercent = Integer.parseInt(json.get("hp%"));
+		size = Double.parseDouble(json.get("size")) * 2;
+		HPPercent = Float.parseFloat(json.get("hp%"));
 	}
 
 	public void updateEntity(JSONObject json) {
 		pos.set(json.get("x"), json.get("y"));
-		if (Integer.parseInt(json.get("hp%")) != HPPercent) {
+		float newhp = Float.parseFloat(json.get("hp%"));
+		if (newhp < HPPercent) {
 			Random r = new Random();
 			Color c = Color.red;
-			for (int i = 0; i < 2 * size; i++) {
+			for (int i = 0; i < 2 * size * Block.size; i++) {
 				Particle p = new Particle(pos.getX() + r.nextDouble() * size - size / 2,
 						pos.getY() + r.nextDouble() * size - size / 2,
 						r.nextDouble() * 0.1 * Block.size - 0.05 * Block.size, -(r.nextDouble() * 0.1 * Block.size), 0,
@@ -33,22 +34,26 @@ public class Chomper extends Entity {
 				Panel.addParticle(p);
 			}
 		}
-		HPPercent = Integer.parseInt(json.get("hp%"));
-		size = (int) (Double.parseDouble(json.get("size")) * Block.size) * 2;
+		HPPercent = newhp;
+		size = Double.parseDouble(json.get("size")) * 2;
 	}
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		g.setColor(new Color(255, 0, 0, 100));
-		int rad = (int) Math.round(Block.size * 0.06);
-		if(rad ==0)
+
+		int size = (int) (this.size * Block.size);
+		int rad = (int) Math.round(0.08 * Block.size);
+		if (rad == 0)
 			rad = 1;
-		for (double x = -size / 2; x < size / 2; x += rad) {
+		double offset = pos.getX() % rad;
+		for (double x = -size / 2 + offset; x < size / 2 + offset; x += rad) {
 			double diff = Math.sin(Math.acos(x / (size / 2))) * (size / 2);
 			for (double y = (int) (-diff); y < diff; y += rad) {
-				g.fillRect((int) (pos.getX() - x - rad/2) - cameraX + Panel.windowWidth / 2,
-						(int) (pos.getY() - y - rad/2) - cameraY + Panel.windowHeight / 2,
-						rad, rad);
+				int drawx = (int) (pos.getX() + x) / rad * rad;
+				int drawy = (int) (pos.getY() + y) / rad * rad;
+				g.fillRect((int) ((drawx - rad / 2) - cameraX + Panel.windowWidth / 2),
+						(int) ((drawy - rad / 2) - cameraY + Panel.windowHeight / 2), rad, rad);
 			}
 		}
 		if (delete) {
@@ -63,11 +68,6 @@ public class Chomper extends Entity {
 				Panel.addParticle(p);
 			}
 		}
-		g.setColor(Color.black);
-		g.setFont(new Font("Monospaced", Font.PLAIN, 15));
-		g.drawString(""+id,
-				(int) pos.getX() - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(id+"") / 2,
-				(int) pos.getY() - cameraY + Panel.windowHeight / 2 - 15);
 		super.draw(g, cameraX, cameraY);
 	}
 }
