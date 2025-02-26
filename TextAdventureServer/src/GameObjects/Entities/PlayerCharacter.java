@@ -206,7 +206,12 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 			return;
 		
 		Random r = new Random();
-		if(r.nextInt(10) == 1) {
+		int spawn = r.nextInt(100);
+		if(spawn < 100) {
+			Hoverer hover = new Hoverer(this);
+			spawnedEnemies.add(hover);
+			GameMaster.addEntity(hover);
+		}else if(spawn == 10){
 			Chomper chomp = new Chomper(this);
 			spawnedEnemies.add(chomp);
 			GameMaster.addEntity(chomp);

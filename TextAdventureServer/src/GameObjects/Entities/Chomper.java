@@ -26,7 +26,7 @@ public class Chomper extends Entity{
 			x = 0;
 			deleteEntity();
 		}
-		Position pos = new Position(x, 0);
+		Position pos = new Position(x, World.getCastResultSlide(x, 0, x, World.getWorld()[0].length)[1]);
 		
 		this.pos = pos;
 		moveLeft = pos.getX()>player.getX();
@@ -38,8 +38,6 @@ public class Chomper extends Entity{
 	
 	@Override
 	public boolean action() {
-		if(maxHPisZero())
-		System.out.println("error:"+id);
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
 				|| pos.getY() > World.getWorld()[0].length) {
 			GameMaster.removeEntity(this, false);
@@ -64,7 +62,7 @@ public class Chomper extends Entity{
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
 			}
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] != targetx) {
@@ -90,7 +88,7 @@ public class Chomper extends Entity{
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
-				return false;
+				return true;
 			}
 			isGrounded = false;
 			pos.set(targetx, targety);
