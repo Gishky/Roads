@@ -143,6 +143,9 @@ public class MessageInterpreter implements UDPMessageListener {
 		case "chomper":
 			Panel.getEntities().add(new Chomper(entity));
 			break;
+		case "hoverer":
+			Panel.getEntities().add(new Hoverer(entity));
+			break;
 		}
 	}
 }

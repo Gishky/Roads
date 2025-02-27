@@ -81,7 +81,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 		if (HP < maxHP) {
 			HP += 0.05;
-			if(HP > maxHP)
+			if (HP > maxHP)
 				HP = maxHP;
 			update = true;
 		}
@@ -92,7 +92,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (keyboard.getKey("" + KeyEvent.VK_D)) {
 			velocity[0] += accelleration * (velocity[0] < 0 ? 2 : 1) * (isGrounded ? 2 : 1);
 		}
-		if(isGrounded && !keyboard.getKey("" + KeyEvent.VK_D) && !keyboard.getKey("" + KeyEvent.VK_A)) {
+		if (isGrounded && !keyboard.getKey("" + KeyEvent.VK_D) && !keyboard.getKey("" + KeyEvent.VK_A)) {
 			velocity[0] /= World.getWorld()[(int) pos.getX()][(int) pos.getY() + 1].getFriction();
 		}
 		if (keyboard.getKey("" + KeyEvent.VK_W)) {
@@ -187,34 +187,35 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 		if (oldX != (int) pos.getX() || oldY != (int) pos.getY()) {
 			breakCount = 0;
 		}
-		
+
 		spawnEnemies();
 
 		return update;
 	}
 
 	private ArrayList<Entity> spawnedEnemies = new ArrayList<Entity>();
+
 	private void spawnEnemies() {
-		for(int i = 0;i<spawnedEnemies.size();i++) {
-			if(spawnedEnemies.get(i).isDeleted()) {
+		for (int i = 0; i < spawnedEnemies.size(); i++) {
+			if (spawnedEnemies.get(i).isDeleted()) {
 				spawnedEnemies.remove(i);
 				i--;
 			}
 		}
-		
-		if(spawnedEnemies.size() >= 10)
+
+		if (spawnedEnemies.size() >= 10)
 			return;
-		
+
 		Random r = new Random();
 		int spawn = r.nextInt(100);
-		if(spawn < 100) {
-			Hoverer hover = new Hoverer(this);
-			spawnedEnemies.add(hover);
-			GameMaster.addEntity(hover);
-		}else if(spawn == 10){
+		if (spawn < 10) {
 			Chomper chomp = new Chomper(this);
 			spawnedEnemies.add(chomp);
 			GameMaster.addEntity(chomp);
+		} else if (spawn < 15) {
+			Hoverer hover = new Hoverer(this);
+			spawnedEnemies.add(hover);
+			GameMaster.addEntity(hover);
 		}
 	}
 
@@ -271,7 +272,7 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	}
 
 	private void scrollInventory(String string) {
-		if(keyboard.getKey("" + KeyEvent.VK_CONTROL)) {
+		if (keyboard.getKey("" + KeyEvent.VK_CONTROL)) {
 			return;
 		}
 		try {

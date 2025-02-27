@@ -3,16 +3,7 @@ package GameObjects;
 import java.util.Random;
 
 import AdminConsole.AdminConsole;
-import GameObjects.Blocks.Block;
-import GameObjects.Blocks.BlockAir;
-import GameObjects.Blocks.BlockCoalOre;
-import GameObjects.Blocks.BlockDirt;
-import GameObjects.Blocks.BlockGoldOre;
-import GameObjects.Blocks.BlockGrass;
-import GameObjects.Blocks.BlockIronOre;
-import GameObjects.Blocks.BlockLeaf;
-import GameObjects.Blocks.BlockStone;
-import GameObjects.Blocks.BlockWood;
+import GameObjects.Blocks.*;
 import HelperObjects.OpenSimplex2S;
 import Server.GameMaster;
 

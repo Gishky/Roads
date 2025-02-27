@@ -32,7 +32,7 @@ public class Panel extends JPanel
 
 	private Timer t = new Timer(50, this);
 	private static UDPServerConnection connection;
-	private String version = "v1.9";
+	private String version = "v1.10";
 
 	public static int windowWidth, windowHeight;
 
@@ -49,7 +49,7 @@ public class Panel extends JPanel
 
 		entities = new ArrayList<Entity>();
 
-		connection = new UDPServerConnection("localhost", 61852, new MessageInterpreter());
+		connection = new UDPServerConnection("gishky.duckdns.org", 61852, new MessageInterpreter());
 		if (connection.startConnection(version)) {
 			String username = System.getProperty("user.name");
 			connection.sendMessage("username;" + username, true);

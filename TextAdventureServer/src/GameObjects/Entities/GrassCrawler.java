@@ -46,8 +46,6 @@ public class GrassCrawler extends Entity {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
 				return true;
-			} else {
-				owner = null;
 			}
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
