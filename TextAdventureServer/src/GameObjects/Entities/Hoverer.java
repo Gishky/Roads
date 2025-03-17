@@ -73,6 +73,7 @@ public class Hoverer extends Entity {
 				pathFind();
 			} else {
 				nonPathFind();
+				usedStart = null;
 			}
 		}
 		return true;
@@ -131,7 +132,6 @@ public class Hoverer extends Entity {
 	private void rush() {
 		actioncount = 0;
 		double distance = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
-		System.out.println(id+":"+target.id+" "+target.getX()+"/"+target.getY());
 		velocity[0] += (getX() - target.getX()) / distance * speed / 6;
 		velocity[1] += (getY() - target.getY()) / distance * speed / 6;
 		double targetx = pos.getX() - velocity[0];
@@ -175,21 +175,26 @@ public class Hoverer extends Entity {
 		}
 		if (currentTarget == null) {
 			if (currentPath == null) {
-				double dist = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
-				for (Entity e : GameMaster.getEntities()) {
-					if (e instanceof PlayerCharacter) {
-						double entitydist = Math.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
-						if (entitydist < dist) {
-							dist = entitydist;
-							target = (PlayerCharacter) e;
+				int y = 0;
+				Point start = null;
+				if (usedStart == null) {
+					double dist = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
+					for (Entity e : GameMaster.getEntities()) {
+						if (e instanceof PlayerCharacter) {
+							double entitydist = Math
+									.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
+							if (entitydist < dist) {
+								dist = entitydist;
+								target = (PlayerCharacter) e;
+							}
 						}
 					}
-				}
-				Point start = new Point((int) getX(), (int) getY(), null);
-				int y = (int) (World.getCastResultFirst(target.getX(), target.getY(), target.getX(),
-						target.getY() - 3)[1]);
-				if (y == -1) {
-					y = (int) (target.getY() - 3);
+					start = new Point((int) getX(), (int) getY(), null);
+					y = (int) (World.getCastResultFirst(target.getX(), target.getY(), target.getX(),
+							target.getY() - 3)[1]);
+					if (y == -1) {
+						y = (int) (target.getY() - 3);
+					}
 				}
 				Point end = new Point((int) target.getX(), y, null);
 				currentPath = FindPath(start, end);
@@ -199,19 +204,11 @@ public class Hoverer extends Entity {
 				}
 			}
 			if (currentPath != null) {
-				while (currentPath.size() != 0) {
-					Point point = currentPath.get(0);
-					double targetx = point.x + 0.5;
-					double targety = point.y + 0.5;
-					if (World.getCastResultFirst(getX(), getY(), targetx, targety)[0] == -1) {
-						currentTarget = point;
-						currentPath.remove(0);
-						break;
-					}
-					currentPath.remove(0);
-				}
-				if (currentPath.size() == 0)
+				currentTarget = currentPath.pop();
+				if (currentPath.size() == 0) {
+					usedStart = null;
 					currentPath = null;
+				}
 			}
 		}
 		if (currentTarget != null) {
@@ -253,6 +250,7 @@ public class Hoverer extends Entity {
 		public int x;
 		public int y;
 		public Point previous;
+		public boolean used = false;
 
 		public Point(int x, int y, Point previous) {
 			this.x = x;
@@ -282,7 +280,7 @@ public class Hoverer extends Entity {
 		}
 	}
 
-	public static boolean IsWalkable(Block[][] map, Point point) {
+	public boolean IsWalkable(Block[][] map, Point point) {
 		if (point.y < 0 || point.y > map[0].length - 1)
 			return false;
 		if (point.x < 0 || point.x > map.length - 1)
@@ -290,7 +288,7 @@ public class Hoverer extends Entity {
 		return !map[point.x][point.y].isBlocksMovement();
 	}
 
-	public static LinkedList<Point> FindNeighbors(Block[][] map, Point point) {
+	public LinkedList<Point> FindNeighbors(Block[][] map, Point point) {
 		LinkedList<Point> neighbors = new LinkedList<>();
 		Point up = point.offset(0, -1);
 		Point down = point.offset(0, 1);
@@ -307,33 +305,53 @@ public class Hoverer extends Entity {
 		return neighbors;
 	}
 
-	public static LinkedList<Point> FindPath(Point start, Point end) {
-		if (start.equals(end))
-			return null;
+	private LinkedList<Point> usedStart;
+	private LinkedList<Point> usedEnd;
+	private Point end;
+
+	public LinkedList<Point> FindPath(Point start, Point end) {
+		if (usedStart == null) {
+			if (start.equals(end))
+				return null;
+			usedStart = new LinkedList<>();
+			usedEnd = new LinkedList<>();
+			usedStart.add(start);
+			usedEnd.add(end);
+			this.end = end;
+		}
 		boolean finished = false;
 		Block[][] map = World.getWorld();
-		LinkedList<Point> usedStart = new LinkedList<>();
-		LinkedList<Point> usedEnd = new LinkedList<>();
-		usedStart.add(start);
-		usedEnd.add(end);
-		int count = 0;
+		int count = usedStart.size() + usedEnd.size();
+		System.out.println(id + ":" + usedStart.size());
 		while (!finished) {
-			if (count++ > 5000) {
+			if (usedStart.size() + usedEnd.size() - count > 10) {
 				return null;
 			}
 			LinkedList<Point> newOpenStart = new LinkedList<>();
 			LinkedList<Point> newOpenEnd = new LinkedList<>();
 			for (Point point : usedStart) {
-				for (Point neighbor : FindNeighbors(map, point)) {
-					if (!usedStart.contains(neighbor) && !newOpenStart.contains(neighbor)) {
-						newOpenStart.add(0, neighbor);
+				if (newOpenStart.size() > 10) {
+					break;
+				}
+				if(!point.used) {
+					point.used = true;
+					for (Point neighbor : FindNeighbors(map, point)) {
+						if (!usedStart.contains(neighbor) && !newOpenStart.contains(neighbor)) {
+							newOpenStart.add(0, neighbor);
+						}
 					}
 				}
 			}
 			for (Point point : usedEnd) {
-				for (Point neighbor : FindNeighbors(map, point)) {
-					if (!usedEnd.contains(neighbor) && !newOpenEnd.contains(neighbor)) {
-						newOpenEnd.add(0, neighbor);
+				if (newOpenEnd.size() > 10) {
+					break;
+				}
+				if(!point.used) {
+					point.used = true;
+					for (Point neighbor : FindNeighbors(map, point)) {
+						if (!usedEnd.contains(neighbor) && !newOpenEnd.contains(neighbor)) {
+							newOpenEnd.add(0, neighbor);
+						}
 					}
 				}
 			}
@@ -356,14 +374,15 @@ public class Hoverer extends Entity {
 				}
 
 			if (!finished && (newOpenEnd.isEmpty() || newOpenStart.isEmpty())) {
+				usedStart = null;
 				return null;
 			}
 		}
 
 		LinkedList<Point> path = new LinkedList<>();
-		while (end.previous != null) {
-			path.add(0, end);
-			end = end.previous;
+		while (this.end.previous != null) {
+			path.add(0, this.end);
+			this.end = this.end.previous;
 		}
 		return path;
 	}
