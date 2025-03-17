@@ -55,4 +55,9 @@ public class Position {
 		this.y = Double.parseDouble(y) * Block.size;
 	}
 
+	@Override
+	public String toString() {
+		return "[x=" + x + ", y=" + y + "]";
+	}
+
 }

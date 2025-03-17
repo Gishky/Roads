@@ -66,7 +66,7 @@ public class Panel extends JPanel
 	}
 
 	private long timestamp = 0;
-	private boolean statistics = false;
+	private static boolean statistics = false;
 
 	@Override
 	public void paintComponent(Graphics gr) {
@@ -288,5 +288,9 @@ public class Panel extends JPanel
 		if (World.wantedSelectedInventory != World.selectedInventory)
 			connection.sendMessage("scroll;" + World.wantedSelectedInventory, true);
 
+	}
+
+	public static boolean isStatistics() {
+		return statistics;
 	}
 }

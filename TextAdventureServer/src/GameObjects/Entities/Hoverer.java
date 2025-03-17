@@ -38,6 +38,8 @@ public class Hoverer extends Entity {
 		createEntity();
 	}
 
+	private int actioncount = 0;
+
 	@Override
 	public boolean action() {
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
@@ -45,62 +47,123 @@ public class Hoverer extends Entity {
 			GameMaster.removeEntity(this, false);
 			return false;
 		}
-		
-		if(target.isDeleted() || target == null) {
-			double dist = Math.sqrt(Math.pow(getX()-target.getX(), 2)+Math.pow(getY()-target.getY(), 2));
+
+		if (target == null || target.isDeleted()) {
+			double dist = -1;
 			target = null;
-			for(Entity e: GameMaster.getEntities()) {
-				if(e instanceof PlayerCharacter) {
-					double entitydist = Math.sqrt(Math.pow(getX()-e.getX(), 2)+Math.pow(getY()-e.getY(), 2));
-					if(entitydist < dist || target == null) {
+			for (Entity e : GameMaster.getEntities()) {
+				if (e instanceof PlayerCharacter) {
+					double entitydist = Math.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
+					if (target == null || entitydist < dist) {
 						dist = entitydist;
 						target = (PlayerCharacter) e;
 					}
 				}
 			}
 		}
-		
-		velocity[0] /= drag;
-		velocity[1] /= drag;
-		if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
-			pathFind();
-			return true;
-		} else {
-			currentTarget = new Point((int) target.getX(), (int) target.getY(), null);
-			currentPath = null;
-			double distance = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
-			velocity[0] += (getX() - target.getX()) / distance * speed;
-			velocity[1] += (getY() - target.getY()) / distance * speed;
-			double targetx = pos.getX() - velocity[0];
-			double targety = pos.getY() - velocity[1];
 
-			double[] castResult = World.getCastResultFirst(getX(), getY(), targetx, targety);
-			if (castResult[0] == -1) {
-				double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-						e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
-				if (hit[0] != -1) {
-					pos.set(hit[0], hit[1]);
-					GameMaster.removeEntity(this, false);
-					return true;
-				}
-				pos.set(targetx, targety);
-			} else {
-				if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
-					velocity[0] = 0;
-					velocity[1] = 0;
-				} else {
-					if ((int) (pos.getX()) != (int) (castResult[0])) {
-					}
-					pos.set(castResult[0], castResult[1]);
-
-					velocity[0] -= targetx - castResult[0];
-					velocity[1] -= targety - castResult[1];
-				}
+		if (target != null) {
+			if (!rush) {
+				velocity[0] /= drag;
+				velocity[1] /= drag;
 			}
-
+			if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
+				actioncount = 0;
+				rush = false;
+				pathFind();
+			} else {
+				nonPathFind();
+			}
 		}
-
 		return true;
+	}
+
+	private boolean rush = false;
+
+	private void nonPathFind() {
+		currentTarget = null;
+		if (new Random().nextInt(1000) == 1) {
+			velocity[0] = 0;
+			velocity[1] = 0;
+			rush = true;
+		}
+		if (rush) {
+			rush();
+			return;
+		}
+		if (actioncount == 0) {
+			actioncount = new Random().nextInt(160);
+		}
+		double offsetx = Math.sin(actioncount++ / 20) * 5;
+		double offsety = Math.cos(actioncount / 6) * 2;
+		double distance = Math.sqrt(Math.pow(getX() - target.getX() + offsetx, 2)
+				+ Math.pow(getY() - (target.getY() - 3 - offsety / 3), 2));
+		velocity[0] += (getX() - target.getX() + offsetx) / distance * speed;
+		velocity[1] += (getY() - (target.getY() - 3 - offsety / 3)) / distance * speed;
+		double targetx = pos.getX() - velocity[0];
+		double targety = pos.getY() - velocity[1];
+
+		double[] castResult = World.getCastResultSlide(getX(), getY(), targetx, targety);
+		if (castResult[0] == -1) {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				return;
+			}
+			pos.set(targetx, targety);
+		} else {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				return;
+			}
+			pos.set(castResult[0], castResult[1]);
+
+			velocity[0] += targetx - castResult[0];
+			velocity[1] += targety - castResult[1];
+		}
+	}
+
+	private void rush() {
+		actioncount = 0;
+		double distance = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
+		System.out.println(id+":"+target.id+" "+target.getX()+"/"+target.getY());
+		velocity[0] += (getX() - target.getX()) / distance * speed / 6;
+		velocity[1] += (getY() - target.getY()) / distance * speed / 6;
+		double targetx = pos.getX() - velocity[0];
+		double targety = pos.getY() - velocity[1];
+
+		double[] castResult = World.getCastResultSlide(getX(), getY(), targetx, targety);
+		if (castResult[0] == -1) {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				rush = false;
+				return;
+			}
+			pos.set(targetx, targety);
+		} else {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				rush = false;
+				return;
+			}
+			pos.set(castResult[0], castResult[1]);
+
+			velocity[0] += targetx - castResult[0];
+			velocity[1] += targety - castResult[1];
+
+			rush = false;
+		}
 	}
 
 	private Point currentTarget = null;
@@ -112,19 +175,28 @@ public class Hoverer extends Entity {
 		}
 		if (currentTarget == null) {
 			if (currentPath == null) {
-				double dist = Math.sqrt(Math.pow(getX()-target.getX(), 2)+Math.pow(getY()-target.getY(), 2));
-				for(Entity e: GameMaster.getEntities()) {
-					if(e instanceof PlayerCharacter) {
-						double entitydist = Math.sqrt(Math.pow(getX()-e.getX(), 2)+Math.pow(getY()-e.getY(), 2));
-						if(entitydist < dist) {
+				double dist = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
+				for (Entity e : GameMaster.getEntities()) {
+					if (e instanceof PlayerCharacter) {
+						double entitydist = Math.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
+						if (entitydist < dist) {
 							dist = entitydist;
 							target = (PlayerCharacter) e;
 						}
 					}
 				}
 				Point start = new Point((int) getX(), (int) getY(), null);
-				Point end = new Point((int) target.getX(), (int) target.getY(), null);
+				int y = (int) (World.getCastResultFirst(target.getX(), target.getY(), target.getX(),
+						target.getY() - 3)[1]);
+				if (y == -1) {
+					y = (int) (target.getY() - 3);
+				}
+				Point end = new Point((int) target.getX(), y, null);
 				currentPath = FindPath(start, end);
+				if (currentPath == null) {
+					nonPathFind();
+					return;
+				}
 			}
 			if (currentPath != null) {
 				while (currentPath.size() != 0) {
@@ -150,10 +222,10 @@ public class Hoverer extends Entity {
 			velocity[1] += (getY() - targety) / distance * speed;
 			targetx = pos.getX() - velocity[0];
 			targety = pos.getY() - velocity[1];
-			double[] castResult = World.getCastResultFirst(getX(), getY(), targetx, targety);
+			double[] castResult = World.getCastResultSlide(getX(), getY(), targetx, targety);
 			if (castResult[0] == -1) {
 				double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-						e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
+						e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 				if (hit[0] != -1) {
 					pos.set(hit[0], hit[1]);
 					GameMaster.removeEntity(this, false);
@@ -161,18 +233,18 @@ public class Hoverer extends Entity {
 				}
 				pos.set(targetx, targety);
 			} else {
-				currentTarget = null;
-				if (castResult[0] == pos.getX() && castResult[1] == pos.getY()) {
-					velocity[0] = 0;
-					velocity[1] = 0;
-				} else {
-					if ((int) (pos.getX()) != (int) (castResult[0])) {
-					}
-					pos.set(castResult[0], castResult[1]);
-
-					velocity[0] -= targetx - castResult[0];
-					velocity[1] -= targety - castResult[1];
+				double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+						e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+				if (hit[0] != -1) {
+					pos.set(hit[0], hit[1]);
+					GameMaster.removeEntity(this, false);
+					return;
 				}
+				currentTarget = null;
+				pos.set(castResult[0], castResult[1]);
+
+				velocity[0] += targetx - castResult[0];
+				velocity[1] += targety - castResult[1];
 			}
 		}
 	}
@@ -244,7 +316,11 @@ public class Hoverer extends Entity {
 		LinkedList<Point> usedEnd = new LinkedList<>();
 		usedStart.add(start);
 		usedEnd.add(end);
+		int count = 0;
 		while (!finished) {
+			if (count++ > 5000) {
+				return null;
+			}
 			LinkedList<Point> newOpenStart = new LinkedList<>();
 			LinkedList<Point> newOpenEnd = new LinkedList<>();
 			for (Point point : usedStart) {
@@ -300,6 +376,7 @@ public class Hoverer extends Entity {
 		json.put("y", String.format("%.4f", getY()));
 		json.put("hp%", "" + getHPPercentile());
 		json.put("size", "" + hitBox.getRadius());
+		json.put("rush", "" + rush);
 		return json.getJSON();
 	}
 }

@@ -11,6 +11,8 @@ import HelperObjects.Particle;
 import Window.Panel;
 
 public class Hoverer extends Entity {
+	
+	private boolean rush = false;
 
 	public Hoverer(JSONObject json) {
 		super(json.get("id"), json.get("x"), json.get("y"));
@@ -36,11 +38,15 @@ public class Hoverer extends Entity {
 		}
 		HPPercent = newhp;
 		size = Double.parseDouble(json.get("size")) * 2;
+		rush = Boolean.parseBoolean(json.get("rush"));
 	}
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
 		g.setColor(new Color(14, 0, 186, 160));
+		if(rush) {
+			g.setColor(new Color(140, 30, 186, 160));
+		}
 
 		int size = (int) (this.size * Block.size);
 		int rad = (int) Math.round(0.08 * Block.size);

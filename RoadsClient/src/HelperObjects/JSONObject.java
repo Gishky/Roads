@@ -30,7 +30,6 @@ public class JSONObject {
 	}
 
 	private void putMap(String substring) {
-		//System.out.println(substring);
 		String[] pair = substring.split(":");
 		map.put(pair[0], substring.substring(pair[0].length() + 1));
 	}

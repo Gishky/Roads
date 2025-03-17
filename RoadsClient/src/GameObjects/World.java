@@ -44,7 +44,7 @@ public class World {
 					break;
 				else if (y < 0)
 					continue;
-				if (world[x][y] != null) {
+				if (world[x][y] != null && !(world[x][y] instanceof BlockFogged)) {
 					world[x][y].draw(x, y, g, cameraX, cameraY);
 				} else {
 					Panel.getServerConnection().sendMessage("block;" + x + ";" + y, true);
@@ -68,7 +68,8 @@ public class World {
 		if (world == null)
 			return;
 
-		if (World.getWorld()[x][y] != null && !(World.getWorld()[x][y] instanceof BlockFogged) && !block.getClass().equals(world[x][y].getClass())) {
+		if (World.getWorld()[x][y] != null && !(World.getWorld()[x][y] instanceof BlockFogged)
+				&& !block.getClass().equals(world[x][y].getClass())) {
 			Random r = new Random();
 			Color c = World.getWorld()[x][y].getColor().brighter();
 			for (int i = 0; i < 50; i++) {

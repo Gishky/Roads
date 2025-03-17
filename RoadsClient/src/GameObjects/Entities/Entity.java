@@ -1,6 +1,7 @@
 package GameObjects.Entities;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 
 import GameObjects.Blocks.Block;
@@ -57,6 +58,13 @@ public class Entity {
 			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
 					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
 					(int) (HPBarLength * HPPercent / 100), HPBarHeight);
+		}
+		if(Panel.isStatistics()) {
+			g.setColor(Color.black);
+			g.setFont(new Font("Monospaced", Font.PLAIN, 15));
+			g.drawString(""+id,
+					(int) pos.getX() - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(""+id) / 2,
+					(int) pos.getY() - cameraY + Panel.windowHeight / 2 - 15);
 		}
 	}
 

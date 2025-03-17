@@ -248,6 +248,7 @@ public class World {
 			castResult[3] = sourceY;
 			castResult[4] = sourceBlockX;
 			castResult[5] = sourceBlockY;
+			return castResult;
 		}
 
 		double velX = targetX - sourceX;
@@ -257,14 +258,15 @@ public class World {
 
 		if (velX == 0 || velY == 0) {
 			double[] straightCast = getStraightCastResult(sourceX, sourceY, targetX, targetY);
-			if (straightCast[0] != targetX || straightCast[1] != targetY) {
-				castResult[0] = straightCast[0];
-				castResult[1] = straightCast[1];
-				castResult[2] = straightCast[0];
-				castResult[3] = straightCast[1];
-				castResult[4] = straightCast[2];
-				castResult[5] = straightCast[3];
+			if (straightCast[0] == targetX && straightCast[1] == targetY) {
+				return castResult;
 			}
+			castResult[0] = straightCast[0];
+			castResult[1] = straightCast[1];
+			castResult[2] = straightCast[0];
+			castResult[3] = straightCast[1];
+			castResult[4] = straightCast[2];
+			castResult[5] = straightCast[3];
 			return castResult;
 		} else {
 
@@ -277,51 +279,55 @@ public class World {
 			int cornerModX = velX > 0 ? 1 : 0;
 			int cornerModY = velY > 0 ? 1 : 0;
 
-			while (true) {
+			try {
+				while (true) {
 
-				if (sourceBlockX + castModifierX == targetBlockX && sourceBlockY + castModifierY == targetBlockY) {
-					// arrived at target without hitting a block
-					return castResult;
-				}
-
-				int cornerX = sourceBlockX + castModifierX + cornerModX;
-				int cornerY = sourceBlockY + castModifierY + cornerModY;
-
-				double castCornerY = slope * cornerX + offset;
-				boolean isHitFloor = velY > 0 == castCornerY >= cornerY;
-
-				if (isHitFloor)
-					castModifierY += unitVelY;
-				else
-					castModifierX += unitVelX;
-
-				if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
-					// hit a block
-					if (isHitFloor) {
-						castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1);
-						castResult[0] = (castResult[1] - offset) / slope;
-
-						if (castSliding) {
-							double[] straightCast = getStraightCastResult(castResult[0], castResult[1], targetX,
-									castResult[1]);
-							castResult[2] = straightCast[0];
-							castResult[3] = straightCast[1];
-						}
-					} else {
-						castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1);
-						castResult[1] = slope * castResult[0] + offset;
-
-						if (castSliding) {
-							double[] straightCast = getStraightCastResult(castResult[0], castResult[1], castResult[0],
-									targetY);
-							castResult[2] = straightCast[0];
-							castResult[3] = straightCast[1];
-						}
+					if (sourceBlockX + castModifierX == targetBlockX && sourceBlockY + castModifierY == targetBlockY) {
+						// arrived at target without hitting a block
+						return castResult;
 					}
-					castResult[4] = sourceBlockX + castModifierX;
-					castResult[5] = sourceBlockY + castModifierY;
-					return castResult;
+
+					int cornerX = sourceBlockX + castModifierX + cornerModX;
+					int cornerY = sourceBlockY + castModifierY + cornerModY;
+
+					double castCornerY = slope * cornerX + offset;
+					boolean isHitFloor = velY > 0 == castCornerY >= cornerY;
+
+					if (isHitFloor)
+						castModifierY += unitVelY;
+					else
+						castModifierX += unitVelX;
+
+					if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
+						// hit a block
+						if (isHitFloor) {
+							castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1.0001);
+							castResult[0] = (castResult[1] - offset) / slope;
+
+							if (castSliding) {
+								double[] straightCast = getStraightCastResult(castResult[0], castResult[1], targetX,
+										castResult[1]);
+								castResult[2] = straightCast[0];
+								castResult[3] = straightCast[1];
+							}
+						} else {
+							castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1.0001);
+							castResult[1] = slope * castResult[0] + offset;
+
+							if (castSliding) {
+								double[] straightCast = getStraightCastResult(castResult[0], castResult[1],
+										castResult[0], targetY);
+								castResult[2] = straightCast[0];
+								castResult[3] = straightCast[1];
+							}
+						}
+						castResult[4] = sourceBlockX + castModifierX;
+						castResult[5] = sourceBlockY + castModifierY;
+						return castResult;
+					}
 				}
+			} catch (Exception e) {
+				return castResult;
 			}
 		}
 	}
@@ -355,10 +361,10 @@ public class World {
 			if (world[sourceBlockX + castModifierX][sourceBlockY + castModifierY].isBlocksMovement()) {
 				// hit a block
 				if (unitVelX == 0) {
-					castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1);
+					castResult[1] = sourceBlockY + castModifierY + (velY > 0 ? -0.0001 : 1.0001);
 					castResult[0] = targetX;
 				} else {
-					castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1);
+					castResult[0] = sourceBlockX + castModifierX + (velX > 0 ? -0.0001 : 1.0001);
 					castResult[1] = targetY;
 				}
 				castResult[2] = sourceBlockX + castModifierX;
