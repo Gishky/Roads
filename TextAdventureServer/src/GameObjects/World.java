@@ -380,6 +380,10 @@ public class World {
 		if (world[x][y] != null)
 			world[x][y].breakBlock();
 
+		if (!block.isBlocksMovement() && world[x][y] != null) {
+			block.setDirectionToPlayer(world[x][y].getDirectionToPlayer());
+		}
+
 		block.setPosition(x, y);
 		GameMaster.sendToAll("{action:setBlock,block:" + block.toJSON() + "}", true);
 		world[x][y] = block;

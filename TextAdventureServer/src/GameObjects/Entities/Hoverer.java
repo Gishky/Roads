@@ -1,10 +1,8 @@
 package GameObjects.Entities;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 import GameObjects.World;
-import GameObjects.Blocks.Block;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;
 import HelperObjects.Position;
@@ -48,33 +46,19 @@ public class Hoverer extends Entity {
 			return false;
 		}
 
-		if (target == null || target.isDeleted()) {
-			double dist = -1;
-			target = null;
-			for (Entity e : GameMaster.getEntities()) {
-				if (e instanceof PlayerCharacter) {
-					double entitydist = Math.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
-					if (target == null || entitydist < dist) {
-						dist = entitydist;
-						target = (PlayerCharacter) e;
-					}
-				}
-			}
+		if (!rush) {
+			velocity[0] /= drag;
+			velocity[1] /= drag;
 		}
-
-		if (target != null) {
-			if (!rush) {
-				velocity[0] /= drag;
-				velocity[1] /= drag;
+		if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
+			if (World.getBlock((int) getX(), (int) getY()).getPathToPlayer() != target) {
+				target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
 			}
-			if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
-				actioncount = 0;
-				rush = false;
-				pathFind();
-			} else {
-				nonPathFind();
-				usedStart = null;
-			}
+			actioncount = 0;
+			rush = false;
+			pathFind();
+		} else {
+			nonPathFind();
 		}
 		return true;
 	}
@@ -82,7 +66,17 @@ public class Hoverer extends Entity {
 	private boolean rush = false;
 
 	private void nonPathFind() {
-		currentTarget = null;
+		if (target == null || target.isDeleted()) {
+			for (Entity e : GameMaster.getEntities()) {
+				if (e instanceof PlayerCharacter) {
+					if (World.getCastResultFirst(getX(), getY(), e.getX(), e.getY())[0] != -1) {
+						target = (PlayerCharacter) e;
+						break;
+					}
+				}
+			}
+		}
+
 		if (new Random().nextInt(1000) == 1) {
 			velocity[0] = 0;
 			velocity[1] = 0;
@@ -166,225 +160,40 @@ public class Hoverer extends Entity {
 		}
 	}
 
-	private Point currentTarget = null;
-	private LinkedList<Point> currentPath = null;
-
 	private void pathFind() {
-		if (currentTarget != null && (int) getX() == currentTarget.x && (int) getY() == currentTarget.y) {
-			currentTarget = null;
+		int[] direction = World.getBlock((int) getX(), (int) getY()).getDirectionToPlayer();
+		if (direction[0] == 0 && direction[1] == 0) {
+			nonPathFind();
+			return;
 		}
-		if (currentTarget == null) {
-			if (currentPath == null) {
-				int y = 0;
-				Point start = null;
-				if (usedStart == null) {
-					double dist = Math.sqrt(Math.pow(getX() - target.getX(), 2) + Math.pow(getY() - target.getY(), 2));
-					for (Entity e : GameMaster.getEntities()) {
-						if (e instanceof PlayerCharacter) {
-							double entitydist = Math
-									.sqrt(Math.pow(getX() - e.getX(), 2) + Math.pow(getY() - e.getY(), 2));
-							if (entitydist < dist) {
-								dist = entitydist;
-								target = (PlayerCharacter) e;
-							}
-						}
-					}
-					start = new Point((int) getX(), (int) getY(), null);
-					y = (int) (World.getCastResultFirst(target.getX(), target.getY(), target.getX(),
-							target.getY() - 3)[1]);
-					if (y == -1) {
-						y = (int) (target.getY() - 3);
-					}
-				}
-				Point end = new Point((int) target.getX(), y, null);
-				currentPath = FindPath(start, end);
-				if (currentPath == null) {
-					nonPathFind();
-					return;
-				}
+		velocity[0] += direction[0] * speed;
+		velocity[1] += direction[1] * speed;
+		double targetx = pos.getX() - velocity[0];
+		double targety = pos.getY() - velocity[1];
+
+		double[] castResult = World.getCastResultSlide(getX(), getY(), targetx, targety);
+		if (castResult[0] == -1) {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				return;
 			}
-			if (currentPath != null) {
-				currentTarget = currentPath.pop();
-				if (currentPath.size() == 0) {
-					usedStart = null;
-					currentPath = null;
-				}
+			pos.set(targetx, targety);
+		} else {
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
+					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
+			if (hit[0] != -1) {
+				pos.set(hit[0], hit[1]);
+				GameMaster.removeEntity(this, false);
+				return;
 			}
+			pos.set(castResult[0], castResult[1]);
+
+			velocity[0] += targetx - castResult[0];
+			velocity[1] += targety - castResult[1];
 		}
-		if (currentTarget != null) {
-			double targetx = currentTarget.x + 0.5;
-			double targety = currentTarget.y + 0.5;
-			double distance = Math.sqrt(Math.pow(getX() - targetx, 2) + Math.pow(getY() - targety, 2));
-			velocity[0] += (getX() - targetx) / distance * speed;
-			velocity[1] += (getY() - targety) / distance * speed;
-			targetx = pos.getX() - velocity[0];
-			targety = pos.getY() - velocity[1];
-			double[] castResult = World.getCastResultSlide(getX(), getY(), targetx, targety);
-			if (castResult[0] == -1) {
-				double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-						e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
-				if (hit[0] != -1) {
-					pos.set(hit[0], hit[1]);
-					GameMaster.removeEntity(this, false);
-					return;
-				}
-				pos.set(targetx, targety);
-			} else {
-				double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
-						e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
-				if (hit[0] != -1) {
-					pos.set(hit[0], hit[1]);
-					GameMaster.removeEntity(this, false);
-					return;
-				}
-				currentTarget = null;
-				pos.set(castResult[0], castResult[1]);
-
-				velocity[0] += targetx - castResult[0];
-				velocity[1] += targety - castResult[1];
-			}
-		}
-	}
-
-	public static class Point {
-		public int x;
-		public int y;
-		public Point previous;
-		public boolean used = false;
-
-		public Point(int x, int y, Point previous) {
-			this.x = x;
-			this.y = y;
-			this.previous = previous;
-		}
-
-		@Override
-		public String toString() {
-			return x + "/" + y;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			Point point = (Point) o;
-			return x == point.x && y == point.y;
-		}
-
-		public Point offset(int ox, int oy) {
-			return new Point(x + ox, y + oy, this);
-		}
-
-		public void backTrace(Point p) {
-			if (previous != null)
-				previous.backTrace(this);
-			previous = p;
-		}
-	}
-
-	public boolean IsWalkable(Block[][] map, Point point) {
-		if (point.y < 0 || point.y > map[0].length - 1)
-			return false;
-		if (point.x < 0 || point.x > map.length - 1)
-			return false;
-		return !map[point.x][point.y].isBlocksMovement();
-	}
-
-	public LinkedList<Point> FindNeighbors(Block[][] map, Point point) {
-		LinkedList<Point> neighbors = new LinkedList<>();
-		Point up = point.offset(0, -1);
-		Point down = point.offset(0, 1);
-		Point left = point.offset(-1, 0);
-		Point right = point.offset(1, 0);
-		if (IsWalkable(map, up))
-			neighbors.add(0, up);
-		if (IsWalkable(map, down))
-			neighbors.add(0, down);
-		if (IsWalkable(map, left))
-			neighbors.add(0, left);
-		if (IsWalkable(map, right))
-			neighbors.add(0, right);
-		return neighbors;
-	}
-
-	private LinkedList<Point> usedStart;
-	private LinkedList<Point> usedEnd;
-	private Point end;
-
-	public LinkedList<Point> FindPath(Point start, Point end) {
-		if (usedStart == null) {
-			if (start.equals(end))
-				return null;
-			usedStart = new LinkedList<>();
-			usedEnd = new LinkedList<>();
-			usedStart.add(start);
-			usedEnd.add(end);
-			this.end = end;
-		}
-		boolean finished = false;
-		Block[][] map = World.getWorld();
-		int count = usedStart.size() + usedEnd.size();
-		System.out.println(id + ":" + usedStart.size());
-		while (!finished) {
-			if (usedStart.size() + usedEnd.size() - count > 10) {
-				return null;
-			}
-			LinkedList<Point> newOpenStart = new LinkedList<>();
-			LinkedList<Point> newOpenEnd = new LinkedList<>();
-			for (Point point : usedStart) {
-				if (newOpenStart.size() > 10) {
-					break;
-				}
-				if(!point.used) {
-					point.used = true;
-					for (Point neighbor : FindNeighbors(map, point)) {
-						if (!usedStart.contains(neighbor) && !newOpenStart.contains(neighbor)) {
-							newOpenStart.add(0, neighbor);
-						}
-					}
-				}
-			}
-			for (Point point : usedEnd) {
-				if (newOpenEnd.size() > 10) {
-					break;
-				}
-				if(!point.used) {
-					point.used = true;
-					for (Point neighbor : FindNeighbors(map, point)) {
-						if (!usedEnd.contains(neighbor) && !newOpenEnd.contains(neighbor)) {
-							newOpenEnd.add(0, neighbor);
-						}
-					}
-				}
-			}
-
-			for (Point pointEnd : newOpenEnd) {
-				for (Point pointStart : usedStart) {
-					if (pointStart.equals(pointEnd)) {
-						pointEnd.backTrace(pointStart.previous);
-						finished = true;
-						break;
-					}
-				}
-				usedEnd.add(0, pointEnd);
-				if (finished)
-					break;
-			}
-			if (!finished)
-				for (Point point : newOpenStart) {
-					usedStart.add(0, point);
-				}
-
-			if (!finished && (newOpenEnd.isEmpty() || newOpenStart.isEmpty())) {
-				usedStart = null;
-				return null;
-			}
-		}
-
-		LinkedList<Point> path = new LinkedList<>();
-		while (this.end.previous != null) {
-			path.add(0, this.end);
-			this.end = this.end.previous;
-		}
-		return path;
 	}
 
 	public String toJSON() {

@@ -12,6 +12,7 @@ import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockAir;
 import HelperObjects.Hitbox;
 import HelperObjects.JSONObject;
+import HelperObjects.PlayerPathfinderThread;
 import HelperObjects.Position;
 import HelperObjects.VirtualKeyboard;
 import Server.GameMaster;
@@ -34,9 +35,12 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 	private Block[] inventory;
 	private int breakCount = 0;
 
+	private PlayerPathfinderThread pathFinder;
+
 	public PlayerCharacter() {
 		super(new Position(World.getWorld().length / 2 + 0.5,
 				World.getHeight((int) (World.getWorld().length / 2 + 0.5)) - 0.5));
+		pathFinder = new PlayerPathfinderThread((int) getX(), (int) getY(), this);
 		inventory = new Block[5];
 		hitBox = new Hitbox(false, 0.15);
 		keyboard = new VirtualKeyboard();
@@ -70,6 +74,9 @@ public class PlayerCharacter extends Entity implements UDPClientObject {
 
 	@Override
 	public boolean action() {
+		if (pathFinder != null && pathFinder.isDone()) {
+			pathFinder = new PlayerPathfinderThread((int) getX(), (int) getY(), this);
+		}
 
 		int oldX = (int) pos.getX();
 		int oldY = (int) pos.getY();

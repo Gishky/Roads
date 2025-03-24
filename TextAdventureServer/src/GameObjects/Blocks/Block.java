@@ -25,6 +25,11 @@ public class Block {
 
 	private long abilityTime = 0;
 
+	private int[] directionToPlayer = { 0, 0 };
+	private long distanceToPlayer = Long.MAX_VALUE;
+	private int pathFindID = 0;
+	private PlayerCharacter pathToPlayer = null;
+
 	public Block() {
 		this(null);
 	}
@@ -164,6 +169,42 @@ public class Block {
 		this.abilityTime = abilityTime;
 	}
 
+	public int[] getDirectionToPlayer() {
+		return directionToPlayer;
+	}
+
+	public void setDirectionToPlayer(int[] directionToPlayer) {
+		this.directionToPlayer = directionToPlayer;
+	}
+
+	public Block getNextPathBlock() {
+		return World.getBlock(x + directionToPlayer[0], y + directionToPlayer[0]);
+	}
+
+	public long getDistanceToPlayer() {
+		return distanceToPlayer;
+	}
+
+	public void setDistanceToPlayer(long distanceToPlayer) {
+		this.distanceToPlayer = distanceToPlayer;
+	}
+
+	public int getPathFindID() {
+		return pathFindID;
+	}
+
+	public void setPathFindID(int pathFindID) {
+		this.pathFindID = pathFindID;
+	}
+
+	public PlayerCharacter getPathToPlayer() {
+		return pathToPlayer;
+	}
+
+	public void setPathToPlayer(PlayerCharacter pathToPlayer) {
+		this.pathToPlayer = pathToPlayer;
+	}
+
 	public Block popInventory() {
 		if (inventory.size() != 0) {
 			Block b = inventory.pop();
@@ -171,5 +212,10 @@ public class Block {
 			return b;
 		}
 		return null;
+	}
+
+	public void setDirectionToPlayer(int x, int y) {
+		directionToPlayer[0] = x;
+		directionToPlayer[1] = y;
 	}
 }
