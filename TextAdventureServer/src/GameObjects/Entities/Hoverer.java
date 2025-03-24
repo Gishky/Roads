@@ -24,9 +24,8 @@ public class Hoverer extends Entity {
 		x += player.getX();
 		if (x < 0 || x > World.getWorld().length) {
 			x = 0;
-			deleteEntity();
 		}
-		Position pos = new Position(x, World.getCastResultFirst(x, 0, x, World.getWorld().length)[1] - 10);
+		Position pos = new Position(x, World.getCastResultFirst(x, 0, x, World.getWorld()[0].length)[1] - 10);
 
 		this.pos = pos;
 		target = player;
@@ -66,6 +65,9 @@ public class Hoverer extends Entity {
 	private boolean rush = false;
 
 	private void nonPathFind() {
+		if (World.getBlock((int) getX(), (int) getY()).getPathToPlayer() != target) {
+			target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
+		}
 		if (target == null || target.isDeleted()) {
 			for (Entity e : GameMaster.getEntities()) {
 				if (e instanceof PlayerCharacter) {

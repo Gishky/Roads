@@ -29,7 +29,7 @@ public class Chomper extends Entity{
 		Position pos = new Position(x, World.getCastResultSlide(x, 0, x, World.getWorld()[0].length)[1]);
 		
 		this.pos = pos;
-		moveLeft = pos.getX()>player.getX();
+		moveLeft = r.nextBoolean();
 		hitBox = new Hitbox(false, 0.2);
 		maxHP = 5;
 		HP = maxHP;
