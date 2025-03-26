@@ -21,7 +21,7 @@ public class Hitbox {
 
 		double xDiff = xTo - xFrom;
 		double yDiff = yTo - yFrom;
-		double angle = Math.atan2(yDiff,xDiff);
+		double angle = Math.atan2(yDiff, xDiff);
 		double distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 
 		for (Entity e : GameMaster.getEntities()) {
@@ -36,7 +36,8 @@ public class Hitbox {
 			yDiff = e.getPos().getY() - yFrom;
 			double entityDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
-			if (entityDistance - radSum > distance || (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
+			if (entityDistance - radSum > distance
+					|| (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
 				continue;
 			}
 
@@ -47,9 +48,15 @@ public class Hitbox {
 			double sinBeta = sinAngleDiff * entityDistance / radSum;
 
 			double beta = Math.asin(sinBeta);
+
 			double hitDistance = entityDistance * Math.sin(180 - angleDiff - beta) / Math.sin(beta);
 
 			if (distance >= hitDistance && (currentDistance == -1 || hitDistance < currentDistance)) {
+				DebugCreator.createDebugLine(xFrom, yFrom, xFrom + Math.cos(angle) * hitDistance,
+						yFrom + Math.sin(angle) * hitDistance, 50, 255, 0, 0);
+				DebugCreator.createDebugLine(xFrom, yFrom, xTo, yTo, 50, 0, 255, 0);
+				DebugCreator.createDebugLine(xFrom, yFrom, e.getX(), e.getY(), 50, 0, 0, 255);
+				DebugCreator.createDebugText(xFrom, yFrom, "" + entityDistance, 50, 0, 0, 0);
 				currentDistance = hitDistance;
 				hit = e;
 			}

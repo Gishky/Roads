@@ -23,6 +23,10 @@ public class Entity {
 		this.id = Integer.parseInt(id);
 		pos = new Position(Double.parseDouble(x), Double.parseDouble(y));
 	}
+	
+	public Entity() {
+		
+	}
 
 	public void updateEntity(JSONObject entity) {
 

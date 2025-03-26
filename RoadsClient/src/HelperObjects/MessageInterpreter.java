@@ -3,6 +3,7 @@ package HelperObjects;
 import GameObjects.World;
 import GameObjects.Blocks.Block;
 import GameObjects.Entities.*;
+import GameObjects.Entities.Debug.*;
 import UDPClient.UDPMessageListener;
 import Window.Frame;
 import Window.Panel;
@@ -47,8 +48,22 @@ public class MessageInterpreter implements UDPMessageListener {
 		case "setCooldown":
 			setCooldown(message);
 			break;
+		case "addDebug":
+			addDebug(message);
+			break;
 		default:
 			System.out.println("unknown command: " + receivedMessage);
+		}
+	}
+
+	private void addDebug(JSONObject message) {
+		switch (message.get("type")) {
+		case "line":
+			Panel.getEntities().add(new DebugLine(message));
+			break;
+		case "text":
+			Panel.getEntities().add(new DebugText(message));
+			break;
 		}
 	}
 
