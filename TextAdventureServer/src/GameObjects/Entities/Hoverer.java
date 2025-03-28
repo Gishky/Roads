@@ -49,15 +49,26 @@ public class Hoverer extends Entity {
 			velocity[0] /= drag;
 			velocity[1] /= drag;
 		}
-		if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
-			if (World.getBlock((int) getX(), (int) getY()).getPathToPlayer() != target) {
-				target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
+		if (target != null) {
+			if (World.getCastResultFirst(getX(), getY(), target.getX(), target.getY())[0] != -1) {
+				if (World.getBlock((int) getX(), (int) getY()).getPathToPlayer() != target) {
+					target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
+				}
+				actioncount = 0;
+				rush = false;
+				pathFind();
+			} else {
+				nonPathFind();
 			}
-			actioncount = 0;
-			rush = false;
-			pathFind();
 		} else {
-			nonPathFind();
+			if (target == null || target.isDeleted()) {
+				for (Entity e : GameMaster.getEntities()) {
+					if (e instanceof PlayerCharacter) {
+						target = (PlayerCharacter) e;
+						break;
+					}
+				}
+			}
 		}
 		return true;
 	}
@@ -90,6 +101,9 @@ public class Hoverer extends Entity {
 		}
 		if (actioncount == 0) {
 			actioncount = new Random().nextInt(160);
+		}
+		if (target == null) {
+			return;
 		}
 		double offsetx = Math.sin(actioncount++ / 20) * 5;
 		double offsety = Math.cos(actioncount / 6) * 2;

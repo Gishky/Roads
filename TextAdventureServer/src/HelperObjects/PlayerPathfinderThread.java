@@ -82,18 +82,6 @@ public class PlayerPathfinderThread extends Thread {
 		int[] down = { block[0], block[1] + 1 };
 		int[] left = { block[0] - 1, block[1] };
 		int[] right = { block[0] + 1, block[1] };
-		if (IsWalkable(map, up)
-				&& (map[up[0]][up[1]].getDistanceToPlayer() - 1 > map[block[0]][block[1]].getDistanceToPlayer()
-						|| map[up[0]][up[1]].getPathToPlayer() == map[block[0]][block[1]].getPathToPlayer()
-						|| map[up[0]][up[1]].getPathToPlayer().isDeleted())
-				&& map[up[0]][up[1]].getPathFindID() != map[block[0]][block[1]].getPathFindID())
-			neighbors.add(0, up);
-		if (IsWalkable(map, down)
-				&& (map[down[0]][down[1]].getDistanceToPlayer() - 1 > map[block[0]][block[1]].getDistanceToPlayer()
-						|| map[down[0]][down[1]].getPathToPlayer() == map[block[0]][block[1]].getPathToPlayer()
-						|| map[down[0]][down[1]].getPathToPlayer().isDeleted())
-				&& map[down[0]][down[1]].getPathFindID() != map[block[0]][block[1]].getPathFindID())
-			neighbors.add(0, down);
 		if (IsWalkable(map, left)
 				&& (map[left[0]][left[1]].getDistanceToPlayer() - 1 > map[block[0]][block[1]].getDistanceToPlayer()
 						|| map[left[0]][left[1]].getPathToPlayer() == map[block[0]][block[1]].getPathToPlayer()
@@ -106,6 +94,18 @@ public class PlayerPathfinderThread extends Thread {
 						|| map[right[0]][right[1]].getPathToPlayer().isDeleted())
 				&& map[right[0]][right[1]].getPathFindID() != map[block[0]][block[1]].getPathFindID())
 			neighbors.add(0, right);
+		if (IsWalkable(map, up)
+				&& (map[up[0]][up[1]].getDistanceToPlayer() - 1 > map[block[0]][block[1]].getDistanceToPlayer()
+						|| map[up[0]][up[1]].getPathToPlayer() == map[block[0]][block[1]].getPathToPlayer()
+						|| map[up[0]][up[1]].getPathToPlayer().isDeleted())
+				&& map[up[0]][up[1]].getPathFindID() != map[block[0]][block[1]].getPathFindID())
+			neighbors.add(0, up);
+		if (IsWalkable(map, down)
+				&& (map[down[0]][down[1]].getDistanceToPlayer() - 1 > map[block[0]][block[1]].getDistanceToPlayer()
+						|| map[down[0]][down[1]].getPathToPlayer() == map[block[0]][block[1]].getPathToPlayer()
+						|| map[down[0]][down[1]].getPathToPlayer().isDeleted())
+				&& map[down[0]][down[1]].getPathFindID() != map[block[0]][block[1]].getPathFindID())
+			neighbors.add(0, down);
 		return neighbors;
 	}
 

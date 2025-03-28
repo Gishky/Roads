@@ -18,6 +18,7 @@ public class Hitbox {
 			Consumer<Entity> consequence) {
 		Entity hit = null;
 		double currentDistance = -1;
+		double[] result = { -1, -1 };
 
 		double xDiff = xTo - xFrom;
 		double yDiff = yTo - yFrom;
@@ -36,36 +37,39 @@ public class Hitbox {
 			yDiff = e.getPos().getY() - yFrom;
 			double entityDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 			double radSum = radius + e.getHitBox().getRadius();
+			if (entityDistance <= radSum) {
+				consequence.accept(e);
+				result[0] = xFrom;
+				result[1] = yFrom;
+				DebugCreator.createDebugLine(result[0], result[1], e.getX(),
+						e.getY(), 50, 255, 0, 0);
+				return result;
+			}
 			if (entityDistance - radSum > distance
 					|| (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
+				DebugCreator.createDebugLine(xFrom, yFrom, e.getX(),
+						e.getY(), 50, 0, 255, 0);
 				continue;
 			}
+			double entityAngle = angle - Math.atan2(yDiff, xDiff);
+			double rootIn = radSum - Math.pow(entityDistance * Math.sin(entityAngle),2);
+			if (rootIn < 0) {
+				continue;
+			}
+			double hitDistance = entityDistance * Math.cos(entityAngle) - Math.sqrt(rootIn);
 
-			double entityAngle = Math.atan2(yDiff, xDiff);
-			double angleDiff = Math.abs(entityAngle - angle);
-			double sinAngleDiff = Math.sin(angleDiff);
-
-			double sinBeta = sinAngleDiff * entityDistance / radSum;
-
-			double beta = Math.asin(sinBeta);
-
-			double hitDistance = entityDistance * Math.sin(180 - angleDiff - beta) / Math.sin(beta);
-
-			if (distance >= hitDistance && (currentDistance == -1 || hitDistance < currentDistance)) {
-				DebugCreator.createDebugLine(xFrom, yFrom, xFrom + Math.cos(angle) * hitDistance,
-						yFrom + Math.sin(angle) * hitDistance, 50, 255, 0, 0);
-				DebugCreator.createDebugLine(xFrom, yFrom, xTo, yTo, 50, 0, 255, 0);
-				DebugCreator.createDebugLine(xFrom, yFrom, e.getX(), e.getY(), 50, 0, 0, 255);
-				DebugCreator.createDebugText(xFrom, yFrom, "" + entityDistance, 50, 0, 0, 0);
-				currentDistance = hitDistance;
+			if (hitDistance > 0 && distance >= hitDistance
+					&& (currentDistance == -1 || hitDistance < currentDistance)) {
 				hit = e;
+				currentDistance = hitDistance;
 			}
 		}
-		double[] result = { -1, -1 };
 		if (currentDistance != -1) {
 			consequence.accept(hit);
 			result[0] = xFrom + Math.cos(angle) * currentDistance;
 			result[1] = yFrom + Math.sin(angle) * currentDistance;
+			DebugCreator.createDebugLine(result[0], result[1], hit.getX(),
+					hit.getY(), 50, 255, 0, 0);
 		}
 		return result;
 	}

@@ -31,7 +31,7 @@ public class Particle {
 		this.accellerationx = accellerationx;
 		this.accellerationy = accellerationy;
 		this.c = c;
-		size = 0.1 * Block.size;
+		size = 0.1;
 
 		lifetime = new Random().nextInt(15) + 5;
 	}
@@ -45,7 +45,7 @@ public class Particle {
 		this.accellerationx = accellerationx;
 		this.accellerationy = accellerationy;
 		this.c = c;
-		size = 0.1 * Block.size;
+		size = 0.1;
 
 		this.lifetime = lifetime;
 	}
@@ -59,7 +59,7 @@ public class Particle {
 		this.accellerationx = accellerationx;
 		this.accellerationy = accellerationy;
 		this.c = c;
-		this.size = 0.1 * Block.size * size;
+		this.size = 0.1 * size;
 		if (size < 1)
 			size = 1;
 
@@ -77,13 +77,14 @@ public class Particle {
 		x += velocityx;
 		y += velocityy;
 
+		double size = this.size * Block.size;
+
 		if ((int) size <= 0)
 			return false;
 
 		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), (lifetime < 10 ? lifetime * 25 : 255)));
-		g.fillRect(((int) x - (int) size / 2) / (int) size * (int) size - cameraX + Panel.windowWidth / 2,
-				((int) y - (int) size / 2) / (int) size * (int) size - cameraY + Panel.windowHeight / 2, (int) size,
-				(int) size);
+		g.fillRect((int) (x * Block.size - size / 2 - cameraX + Panel.windowWidth / 2),
+				(int) (y * Block.size - size / 2 - cameraY + Panel.windowHeight / 2), (int) size, (int) size);
 
 		return false;
 	}

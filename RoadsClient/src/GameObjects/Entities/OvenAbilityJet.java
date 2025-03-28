@@ -18,7 +18,7 @@ public class OvenAbilityJet extends Entity {
 	public OvenAbilityJet(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
 		for (Entity e : Panel.getEntities()) {
-			if (e.getId() == (int) pos.getX() / Block.size) {
+			if (e.getId() == (int) pos.getX()) {
 				pos = e.getPos();
 				break;
 			}

@@ -82,6 +82,7 @@ public class Panel extends JPanel
 
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
+			if(e!=null)
 			e.draw(g, cameraX, cameraY);
 		}
 
@@ -120,19 +121,20 @@ public class Panel extends JPanel
 		g.setColor(Color.gray.brighter());
 		int size = 30;
 		g.fillRect((int) (windowWidth - size * 2.4), (int) (windowHeight / 2 - size * 5.6),
-				(int) (size * 2.4), (int) (size * 11.2));
+				(int) (size * 2.4),
+				(int) (size * 11.2));
 
 		g.setColor(Color.gray.brighter().brighter());
-		g.drawRect((int) (windowWidth - size * 2.4), (int) (windowHeight / 2 - size * 5.6),
-				(int) (size * 2.4), (int) (size * 11.2));
+		g.drawRect((int) (windowWidth - size * 2.4), (int) (windowHeight / 2 - size * 5.6), (int) (size * 2.4),
+				(int) (size * 11.2));
 
 		for (int i = 0; i < World.playerInventory.length; i++) {
 			g.setColor(Color.gray);
-			g.fillRect((int) (windowWidth - size * 2.2),
-					(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2, size * 2);
+			g.fillRect((int) (windowWidth - size * 2.2), (int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i),
+					size * 2, size * 2);
 			g.setColor(Color.gray.brighter().brighter());
-			g.drawRect((int) (windowWidth - size * 2.2),
-					(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2, size * 2);
+			g.drawRect((int) (windowWidth - size * 2.2), (int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i),
+					size * 2, size * 2);
 
 			Block b = World.playerInventory[i];
 			if (b != null) {
@@ -144,9 +146,8 @@ public class Panel extends JPanel
 			if (World.selectedInventory == i) {
 				g.setColor(Color.yellow.brighter());
 				g.setStroke(new BasicStroke(3));
-				g.drawRect((int) (windowWidth - size * 2.2),
-						(int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i), size * 2,
-						size * 2);
+				g.drawRect((int) (windowWidth - size * 2.2), (int) (windowHeight / 2 - size * 5.4 + size * 2.2 * i),
+						size * 2, size * 2);
 				g.setStroke(new BasicStroke(1));
 			}
 		}

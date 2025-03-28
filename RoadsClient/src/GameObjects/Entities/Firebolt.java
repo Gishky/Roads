@@ -1,8 +1,10 @@
 package GameObjects.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import GameObjects.World;
 import GameObjects.Blocks.Block;
 import GameObjects.Blocks.BlockGrass;
 import HelperObjects.JSONObject;
@@ -12,7 +14,6 @@ import Window.Panel;
 public class Firebolt extends Entity {
 
 	private Block colourBlock;
-	private int size;
 
 	public Firebolt(JSONObject entity) {
 		super(entity.get("id"), entity.get("x"), entity.get("y"));
@@ -20,54 +21,37 @@ public class Firebolt extends Entity {
 
 		lastx = pos.getX();
 		lasty = pos.getY();
-		size = (int) (Double.parseDouble(entity.get("size"))) * 2;
+		size = (Double.parseDouble(entity.get("size")));
 	}
 
 	public void updateEntity(JSONObject entity) {
-		pos.set(entity.get("x"),entity.get("y"));
+		pos.set(entity.get("x"), entity.get("y"));
 		colourBlock = Block.getBlockFromID(entity.get("colourBlock"), null);
-		size = (int) (Double.parseDouble(entity.get("size"))) * 2;
+		size = Double.parseDouble(entity.get("size"));
 	}
 
 	private double lastx, lasty;
 
 	@Override
 	public void draw(Graphics2D g, int cameraX, int cameraY) {
-		// System.out.println(id+":
-		// "+((pos.getX()-World.getWorld().length*Block.size/2)/Block.size)+"/"+(pos.getY()/Block.size));
-
-		// System.out.println(id+ ": "+pos.getX()+"/"+pos.getY()+"
-		// ("+heldBlock.getColor()+")");
+		double stepcount = size * size * 300;
 		double stepx = lastx - pos.getX();
-		stepx /= 5;
+		stepx /= stepcount;
 		double stepy = lasty - pos.getY();
-		stepy /= 5;
+		stepy /= stepcount;
 
 		if (colourBlock == null)
 			return;
-		
-		int size = this.size * Block.size;
 
 		Random r = new Random();
-		for (int i = 0; i < 5; i++) {
-			if (!(colourBlock instanceof BlockGrass))
-				Panel.addParticle(
-						new Particle(pos.getX() + stepx * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size,
-								pos.getY() + stepy * i + r.nextDouble() * 0.2 * Block.size - 0.1 * Block.size, 0, 0,
-								r.nextDouble() * 0.025 * Block.size - 0.015 * Block.size,
-								-r.nextDouble() * 0.025 * Block.size, colourBlock.getColor()));
-			else
-				Panel.addParticle(new Particle(pos.getX() + stepx * i, pos.getY() + stepy * i,
-						r.nextDouble() * 0.1 * Block.size - 0.05 * Block.size, -0.05 * Block.size * r.nextDouble(), 0,
-						r.nextDouble() * 0.005 * Block.size, colourBlock.getColor()));
+		for (int i = 0; i < stepcount; i++) {
+			Panel.addParticle(new Particle(pos.getX() + stepx * i + r.nextDouble() * size * 2 - size,
+					pos.getY() + stepy * i + r.nextDouble() * size * 2 - size, 0, 0, r.nextDouble() * 0.025 - 0.015,
+					-r.nextDouble() * 0.025, colourBlock.getColor()));
 		}
 
 		lastx = pos.getX();
 		lasty = pos.getY();
-
-		g.setColor(colourBlock.getColor());
-		g.fillOval((int) pos.getX() - size / 2 - cameraX + Panel.windowWidth / 2,
-				(int) pos.getY() - size / 2 - cameraY + Panel.windowHeight / 2, size, size);
 
 		super.draw(g, cameraX, cameraY);
 	}

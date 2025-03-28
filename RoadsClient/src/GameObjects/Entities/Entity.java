@@ -23,9 +23,9 @@ public class Entity {
 		this.id = Integer.parseInt(id);
 		pos = new Position(Double.parseDouble(x), Double.parseDouble(y));
 	}
-	
+
 	public Entity() {
-		
+
 	}
 
 	public void updateEntity(JSONObject entity) {
@@ -49,26 +49,29 @@ public class Entity {
 			Panel.removeEntity(this);
 		}
 
+		int x = (int) (pos.getX() * Block.size);
+		int y = (int) (pos.getY() * Block.size);
 		int size = (int) (this.size * Block.size);
 		if (HPPercent < 100) {
 			int HPBarLength = 20;
 			int HPBarHeight = 5;
 
 			g.setColor(Color.gray);
-			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size, HPBarLength,
-					HPBarHeight);
+			g.fillRect(x - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size, HPBarLength, HPBarHeight);
 			g.setColor(Color.green);
-			g.fillRect((int) pos.getX() - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					(int) pos.getY() - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
+			g.fillRect(x - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
+					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
 					(int) (HPBarLength * HPPercent / 100), HPBarHeight);
 		}
-		if(Panel.isStatistics()) {
+		if (Panel.isStatistics()) {
 			g.setColor(Color.black);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 15));
-			g.drawString(""+id,
-					(int) pos.getX() - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(""+id) / 2,
-					(int) pos.getY() - cameraY + Panel.windowHeight / 2 - 15);
+			g.drawString("" + id, x - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth("" + id) / 2,
+					y - cameraY + Panel.windowHeight / 2 - 15);
+
+			g.drawOval((x - cameraX + Panel.windowWidth / 2 - size), (y - cameraY + Panel.windowHeight / 2 - size),
+					(size * 2), (size * 2));
 		}
 	}
 
