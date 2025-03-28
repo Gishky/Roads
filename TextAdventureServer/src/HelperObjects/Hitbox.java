@@ -45,10 +45,7 @@ public class Hitbox {
 						e.getY(), 50, 255, 0, 0);
 				return result;
 			}
-			if (entityDistance - radSum > distance
-					|| (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
-				DebugCreator.createDebugLine(xFrom, yFrom, e.getX(),
-						e.getY(), 50, 0, 255, 0);
+			if ( (currentDistance != -1 && entityDistance - radSum > currentDistance)) {
 				continue;
 			}
 			double entityAngle = angle - Math.atan2(yDiff, xDiff);

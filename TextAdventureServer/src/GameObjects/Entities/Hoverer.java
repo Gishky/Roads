@@ -61,14 +61,7 @@ public class Hoverer extends Entity {
 				nonPathFind();
 			}
 		} else {
-			if (target == null || target.isDeleted()) {
-				for (Entity e : GameMaster.getEntities()) {
-					if (e instanceof PlayerCharacter) {
-						target = (PlayerCharacter) e;
-						break;
-					}
-				}
-			}
+			target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
 		}
 		return true;
 	}
