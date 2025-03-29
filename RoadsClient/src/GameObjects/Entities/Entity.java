@@ -58,10 +58,10 @@ public class Entity {
 
 			g.setColor(Color.gray);
 			g.fillRect(x - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size, HPBarLength, HPBarHeight);
+					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - 2 * size, HPBarLength, HPBarHeight);
 			g.setColor(Color.green);
 			g.fillRect(x - cameraX - HPBarLength / 2 + Panel.windowWidth / 2,
-					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - size,
+					y - cameraY - HPBarHeight / 2 + Panel.windowHeight / 2 - 2 * size,
 					(int) (HPBarLength * HPPercent / 100), HPBarHeight);
 		}
 		if (Panel.isStatistics()) {

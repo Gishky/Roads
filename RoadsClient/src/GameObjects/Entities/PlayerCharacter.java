@@ -55,19 +55,19 @@ public class PlayerCharacter extends Entity {
 		double posx = (pos.getX() * Block.size);
 		double posy = (pos.getY() * Block.size);
 		int size = (int) (this.size * Block.size);
-		int rad = (int) Math.round(0.08 * Block.size);
+		int rad = (int) (0.08 * Block.size);
 		if (rad == 0)
 			rad = 1;
 		double offset = posx % rad;
 		for (double x = -size + offset; x < size + offset; x += rad) {
 			double diff = Math.sin(Math.acos(x / (size))) * (size);
-			for (double y = (int) (-diff); y < diff; y += rad) {
+			for (double y = (int) (-diff) + offset; y < diff + offset; y += rad) {
 				int drawx = (int) (posx + x) / rad * rad;
 				int drawy = (int) (posy + y) / rad * rad;
 				g.setColor(new Color(Math.max(0, Math.min((int) (c.getRed() + (x * y % rad * 5)), 255)),
 						Math.max(0, Math.min((int) (c.getGreen() + (x * y % rad * 5)), 255)),
 						Math.max(0, Math.min((int) (c.getBlue() + (x * y % rad * 5)), 255)), c.getAlpha()));
-				g.fillRect((int) ((drawx - rad / 2) - cameraX + Panel.windowWidth / 2),
+				g.fillRect((int) ((drawx) - cameraX + Panel.windowWidth / 2),
 						(int) ((drawy - rad / 2) - cameraY + Panel.windowHeight / 2), rad, rad);
 			}
 		}
