@@ -28,7 +28,19 @@ public class PlayerCharacter extends Entity {
 
 	public void updateEntity(JSONObject json) {
 		pos.set(json.get("x"), json.get("y"));
-		HPPercent = Float.parseFloat(json.get("hp%"));
+		float newhp = Float.parseFloat(json.get("hp%"));
+		if (newhp < HPPercent) {
+			Random r = new Random();
+			Color c = Color.red;
+			for (int i = 0; i < 2 * size * Block.size; i++) {
+				Particle p = new Particle(pos.getX() + r.nextDouble() * this.size - this.size / 2,
+						pos.getY() + r.nextDouble() * this.size - this.size / 2, r.nextDouble() * 0.1 - 0.05,
+						-(r.nextDouble() * 0.1), 0, 0, c);
+				p.setLifetime(r.nextInt(10) + 3);
+				Panel.addParticle(p);
+			}
+		}
+		HPPercent = newhp;
 		heldBlock = Block.getBlockFromID(new JSONObject(json.get("heldBlock")).get("id"), null);
 		breakCount = Integer.parseInt(json.get("breakCount"));
 		name = json.get("name");
@@ -91,7 +103,18 @@ public class PlayerCharacter extends Entity {
 			g.drawString(name, (int) posx - cameraX + Panel.windowWidth / 2 - g.getFontMetrics().stringWidth(name) / 2,
 					(int) posy - cameraY + Panel.windowHeight / 2 - 15);
 		}
-
+		
+		if (delete) {
+			Random r = new Random();
+			c = Color.red;
+			for (int i = 0; i < 4 * size; i++) {
+				Particle p = new Particle(pos.getX() + r.nextDouble() * this.size - this.size / 2,
+						pos.getY() + r.nextDouble() * this.size - this.size / 2, r.nextDouble() * 0.1 - 0.05,
+						-(r.nextDouble() * 0.1), 0, 0, c);
+				p.setLifetime(r.nextInt(10) + 3);
+				Panel.addParticle(p);
+			}
+		}
 		super.draw(g, cameraX, cameraY);
 	}
 

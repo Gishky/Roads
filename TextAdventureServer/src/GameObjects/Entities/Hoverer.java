@@ -62,6 +62,7 @@ public class Hoverer extends Entity {
 			}
 		} else {
 			target = World.getBlock((int) getX(), (int) getY()).getPathToPlayer();
+			receiveDamage(0.1);
 		}
 		return true;
 	}
@@ -152,6 +153,7 @@ public class Hoverer extends Entity {
 			}
 			pos.set(targetx, targety);
 		} else {
+			receiveDamage(1);
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
 					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
@@ -191,6 +193,7 @@ public class Hoverer extends Entity {
 			}
 			pos.set(targetx, targety);
 		} else {
+			receiveDamage(0.1);
 			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), castResult[0], castResult[1],
 					e -> (!(e instanceof Hoverer) && !e.maxHPisZero()), e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {

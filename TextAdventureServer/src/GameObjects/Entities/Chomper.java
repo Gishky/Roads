@@ -8,26 +8,26 @@ import HelperObjects.JSONObject;
 import HelperObjects.Position;
 import Server.GameMaster;
 
-public class Chomper extends Entity{
+public class Chomper extends Entity {
 
 	private int damage = 20;
 	private double speed = 0.01;
 	private boolean moveLeft;
-	
+
 	public Chomper(PlayerCharacter player) {
 		Random r = new Random();
-		double x = r.nextDouble()*60;
-		x+=30;
-		if(r.nextBoolean()) {
-			x*=-1;
+		double x = r.nextDouble() * 60;
+		x += 30;
+		if (r.nextBoolean()) {
+			x *= -1;
 		}
-		x+=player.getX();
-		if(x < 0 || x > World.getWorld().length) {
+		x += player.getX();
+		if (x < 0 || x > World.getWorld().length) {
 			x = 0;
 			deleteEntity();
 		}
 		Position pos = new Position(x, World.getCastResultSlide(x, 0, x, World.getWorld()[0].length)[1]);
-		
+
 		this.pos = pos;
 		moveLeft = r.nextBoolean();
 		hitBox = new Hitbox(false, 0.2);
@@ -35,7 +35,7 @@ public class Chomper extends Entity{
 		HP = maxHP;
 		createEntity();
 	}
-	
+
 	@Override
 	public boolean action() {
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > World.getWorld().length
@@ -43,16 +43,20 @@ public class Chomper extends Entity{
 			GameMaster.removeEntity(this, false);
 			return false;
 		}
-		
+
 		if (HP < maxHP) {
 			HP += 0.01;
-			if(HP > maxHP)
+			if (HP > maxHP)
 				HP = maxHP;
+		}
+
+		if (World.getBlock((int) getX(), (int) getY()).getDistanceToPlayer() > 100) {
+			receiveDamage(0.1);
 		}
 
 		velocity[0] /= drag;
 		velocity[1] /= drag;
-		velocity[1] += fallingaccelleration/2;
+		velocity[1] += fallingaccelleration / 2;
 		double targety = pos.getY() + velocity[1];
 		double targetx = pos.getX() + velocity[0];
 		double[] castResult = World.getCastResultSlide(pos.getX(), pos.getY(), targetx, targety);
@@ -67,8 +71,8 @@ public class Chomper extends Entity{
 			isGrounded = castResult[1] < targety;
 			if (castResult[0] != targetx) {
 				moveLeft = !moveLeft;
-				velocity[0] = 8*speed * (moveLeft ? -1 : 1);
-				velocity[1] = -5*fallingaccelleration;
+				velocity[0] = 8 * speed * (moveLeft ? -1 : 1);
+				velocity[1] = -5 * fallingaccelleration;
 				receiveDamage(0.4);
 			} else {
 				if ((int) pos.getX() != (int) castResult[0]) {
@@ -83,8 +87,8 @@ public class Chomper extends Entity{
 			}
 			pos.set(castResult[0], castResult[1]);
 		} else {
-			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety,
-					e -> (!e.maxHPisZero()), e -> e.receiveDamage(damage));
+			double[] hit = hitBox.getEntityCollission(pos.getX(), pos.getY(), targetx, targety, e -> (!e.maxHPisZero()),
+					e -> e.receiveDamage(damage));
 			if (hit[0] != -1) {
 				pos.set(hit[0], hit[1]);
 				GameMaster.removeEntity(this, false);
@@ -96,7 +100,7 @@ public class Chomper extends Entity{
 		velocity[0] += speed * (moveLeft ? -1 : 1);
 		return true;
 	}
-	
+
 	public String toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("type", "chomper");

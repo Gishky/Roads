@@ -26,10 +26,9 @@ public class Chomper extends Entity {
 			Random r = new Random();
 			Color c = Color.red;
 			for (int i = 0; i < 2 * size * Block.size; i++) {
-				Particle p = new Particle(pos.getX() + r.nextDouble() * size - size / 2,
-						pos.getY() + r.nextDouble() * size - size / 2,
-						r.nextDouble() * 0.1  - 0.05 , -(r.nextDouble() * 0.1 ), 0,
-						0, c);
+				Particle p = new Particle(pos.getX() + r.nextDouble() * this.size - this.size / 2,
+						pos.getY() + r.nextDouble() * this.size - this.size / 2, r.nextDouble() * 0.1 - 0.05,
+						-(r.nextDouble() * 0.1), 0, 0, c);
 				p.setLifetime(r.nextInt(10) + 3);
 				Panel.addParticle(p);
 			}
@@ -45,16 +44,16 @@ public class Chomper extends Entity {
 		double posx = (pos.getX() * Block.size);
 		double posy = (pos.getY() * Block.size);
 		int size = (int) (this.size * Block.size);
-		int rad = (int) Math.round(0.08 * Block.size);
+		int rad = (int) (0.08 * Block.size);
 		if (rad == 0)
 			rad = 1;
 		double offset = posx % rad;
-		for (double x = -size / 2 + offset; x < size + offset; x += rad) {
+		for (double x = -size + offset; x < size + offset; x += rad) {
 			double diff = Math.sin(Math.acos(x / (size))) * (size);
-			for (double y = (int) (-diff); y < diff; y += rad) {
+			for (double y = (int) (-diff) + offset; y < diff + offset; y += rad) {
 				int drawx = (int) (posx + x) / rad * rad;
 				int drawy = (int) (posy + y) / rad * rad;
-				g.fillRect((int) ((drawx - rad / 2) - cameraX + Panel.windowWidth / 2),
+				g.fillRect((int) ((drawx) - cameraX + Panel.windowWidth / 2),
 						(int) ((drawy - rad / 2) - cameraY + Panel.windowHeight / 2), rad, rad);
 			}
 		}
@@ -62,10 +61,9 @@ public class Chomper extends Entity {
 			Random r = new Random();
 			Color c = Color.red;
 			for (int i = 0; i < 4 * size; i++) {
-				Particle p = new Particle(posx + r.nextDouble() * size - size / 2,
-						posy + r.nextDouble() * size - size / 2,
-						r.nextDouble() * 0.1 * Block.size - 0.05 , -(r.nextDouble() * 0.1 ), 0,
-						0, c);
+				Particle p = new Particle(pos.getX() + r.nextDouble() * this.size - this.size / 2,
+						pos.getY() + r.nextDouble() * this.size - this.size / 2, r.nextDouble() * 0.1 - 0.05,
+						-(r.nextDouble() * 0.1), 0, 0, c);
 				p.setLifetime(r.nextInt(10) + 3);
 				Panel.addParticle(p);
 			}
